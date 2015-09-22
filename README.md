@@ -17,7 +17,7 @@ tiger主要有以下三块组成：
 
 ```
 <groupId>com.dianping</groupId>
-<artifactId>wed-tiger</artifactId>
+<artifactId>tiger</artifactId>
 <version>1.1.0</version>
 ```
 
@@ -35,7 +35,7 @@ tiger主要有以下三块组成：
 configp.setProperty(ScheduleManagerFactory.ScheduleKeys.taskStrategy.name(),DispatchTaskService.TaskFetchStrategy.Multi.getValue() + "");
 
 则实现各自捞取任务的操作接口
-com.dianping.wed.tiger.dispatch.DispatchMultiService
+com.dianping.tiger.dispatch.DispatchMultiService
 
 ```
 
@@ -46,7 +46,7 @@ com.dianping.wed.tiger.dispatch.DispatchMultiService
 configp.setProperty(ScheduleManagerFactory.ScheduleKeys.taskStrategy.name(),DispatchTaskService.TaskFetchStrategy.Single.getValue() + "");
 
 则实现统一捞取任务的操作接口
-com.dianping.wed.tiger.dispatch.DispatchSingleService
+com.dianping.tiger.dispatch.DispatchSingleService
 
 ```
 ***定义spring bean***
@@ -98,7 +98,7 @@ public List<DispatchTaskEntity> findDispatchTasksWithLimitByBackFetch(String han
 public List<DispatchTaskEntity> findDispatchTasksWithLimitByBackFetch(List<Integer> nodeList, int limit, int taskId);
 ```
 ### Step三. 实现任务分发接口
-``com.dianping.wed.tiger.dispatch.DispatchHandler``
+``com.dianping.tiger.dispatch.DispatchHandler``
 
 这里用于实现 ***业务逻辑***;
 
@@ -117,7 +117,7 @@ public class ChainTestHandler implements DispatchHandler {
 }
 ```
 ### Step四. 应用启动唤起
-``com.dianping.wed.tiger.ScheduleManagerFactory``
+``com.dianping.tiger.ScheduleManagerFactory``
 ***example***:
 
 ```
