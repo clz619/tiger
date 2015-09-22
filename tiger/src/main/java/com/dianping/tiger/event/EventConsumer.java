@@ -59,7 +59,7 @@ public class EventConsumer implements Runnable {
 		DispatchResult result = DispatchResult.SUCCESS;
 		
 		//cat 打点
-		String op = task.getHandler();
+//		String op = task.getHandler();
 //		Cat.logMetricForCount(CAT_NAME.concat(op));
 //		Transaction transaction = Cat.getProducer().newTransaction(CAT_NAME, op);
 //		
