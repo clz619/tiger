@@ -191,7 +191,7 @@ smf.initSchedule(configp);
   
 
 ## ======Tiger监控======
-tiger应用运行期间，支持任务监控，部署wed-tiger-monitor
+tiger应用运行期间，支持任务监控，部署tiger-monitor
 并且在tiger应用中增加如下配置:
 
 ```
