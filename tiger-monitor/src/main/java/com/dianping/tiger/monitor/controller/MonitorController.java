@@ -24,7 +24,8 @@ import com.dianping.tiger.monitor.service.IMonitorService;
 /**
  * monitor center
  * 
- * @author xuxueli
+ * @author xuxueli,yuantengkai <br/>
+ * <mail to: zjytk05@163.com/>
  */
 @Controller
 @RequestMapping("")
