@@ -20,7 +20,8 @@ import com.dianping.tiger.ScheduleManager;
 import com.dianping.tiger.ScheduleServer;
 
 /**
- * @author yuantengkai zookeeper服务
+ * @author yuantengkai zookeeper服务<br/>
+ * <mail to: zjytk05@163.com/>
  */
 public class ScheduleZkManager {
 

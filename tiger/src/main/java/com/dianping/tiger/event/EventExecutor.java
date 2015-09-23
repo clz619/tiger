@@ -26,7 +26,8 @@ import com.dianping.tiger.dispatch.DispatchTaskService;
 import com.dianping.tiger.repository.EventInConsumerRepository;
 
 /**
- * @author yuantengkai 事件执行器
+ * @author yuantengkai 事件执行器<br/>
+ * <mail to: zjytk05@163.com/>
  */
 public class EventExecutor {
 

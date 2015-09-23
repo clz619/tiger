@@ -17,7 +17,8 @@ import com.dianping.tiger.utils.EventConfigUtil;
 import com.dianping.tiger.zk.ScheduleZkManager;
 
 /**
- * @author yuantengkai 执行引擎构造器
+ * @author yuantengkai 执行引擎构造器<br/>
+ *         <mail to: zjytk05@163.com/>
  */
 public class ScheduleManagerFactory {
 
@@ -105,7 +106,8 @@ public class ScheduleManagerFactory {
 		String monitorurl = config.getProperty(MonitorKeys.monitorIP.name());
 		String coreSize = config.getProperty(ScheduleKeys.coreSize.name());
 		String maxSize = config.getProperty(ScheduleKeys.maxSize.name());
-		String taskStrategy = config.getProperty(ScheduleKeys.taskStrategy.name());
+		String taskStrategy = config.getProperty(ScheduleKeys.taskStrategy
+				.name());
 
 		if (!StringUtils.isBlank(rootPath)) {
 			ScheduleServer.getInstance().setRootPath(rootPath);
@@ -139,8 +141,10 @@ public class ScheduleManagerFactory {
 			ScheduleServer.getInstance().setHandlerMaxSize(
 					Integer.valueOf(maxSize));
 		}
-		if(!StringUtils.isBlank(taskStrategy) && StringUtils.isNumeric(taskStrategy)){
-			ScheduleServer.getInstance().setTaskStrategy(Integer.valueOf(taskStrategy));
+		if (!StringUtils.isBlank(taskStrategy)
+				&& StringUtils.isNumeric(taskStrategy)) {
+			ScheduleServer.getInstance().setTaskStrategy(
+					Integer.valueOf(taskStrategy));
 		}
 		// ==========监控相关============
 		if (!StringUtils.isBlank(enableMonitor)) {

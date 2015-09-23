@@ -19,7 +19,8 @@ import org.slf4j.LoggerFactory;
  *         1)轮询zk集群的变化.<br/>
  *         2)等待本机调度任务完成.<br/>
  *         3)等待集群注册版本全部更新完，自己变更注册版本.<br/>
- *         4)自己重新分配执行节点
+ *         4)自己重新分配执行节点<br/>
+ *         <mail to: zjytk05@163.com/>
  */
 public class ScheduleManager {
 

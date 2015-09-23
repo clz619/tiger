@@ -15,7 +15,8 @@ import com.dianping.tiger.event.EventExecutor;
 import com.dianping.tiger.event.EventExecutorManager;
 
 /**
- * @author yuantengkai 事件执行器的调度者
+ * @author yuantengkai 事件执行器的调度者<br/>
+ *         <mail to: zjytk05@163.com/>
  */
 public class EventExecutorScheduler {
 
