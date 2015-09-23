@@ -118,6 +118,7 @@ public class ChainTestHandler implements DispatchHandler {
 ```
 ### Step四. 应用启动唤起
 ``com.dianping.tiger.ScheduleManagerFactory``
+
 ***example***:
 
 ```
@@ -159,7 +160,7 @@ configp.setProperty(ScheduleManagerFactory.ScheduleKeys.enableBackFetch.name(),"
 ===========初始化启用==========
 smf.initSchedule(configp);
 ```
-***完成以上4步，启动你的应用就可以使用了.***
+***完成以上4步，启动你的应用就可以使用了.（应用启动前要部署启动zookeeper服务）***
 
 **注意点:**
 
@@ -205,6 +206,13 @@ configp.setProperty(ScheduleManagerFactory.MonitorKeys.enableMonitor.name(),"tru
 scheduleManagerFactory.setMonitorFlag(boolean flag);
 
 ```
+**注意点:**
+tiger监控用的是文件存储方式，需要对/data/appdatas/tiger/目录有读写权限
+
+tiger监控截图：
+
+![image](https://github.com/tkyuan/tiger/tree/master/tiger-monitor/src/main/resources/META-INF/img/monitor.jpg)
+
 
 **Thanks**
 
