@@ -10,7 +10,8 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 
 /**
- * @author yuantengkai 事件导航器：通过一定的巡航策略指示本次事件是否执行
+ * @author yuantengkai 事件导航器：通过一定的巡航策略指示本次事件是否执行<br/>
+ * <mail to: zjytk05@163.com/>
  */
 public class EventNavigator {
 

@@ -6,7 +6,8 @@ package com.dianping.tiger.dispatch;
 import java.util.Date;
 
 /**
- * @author yuantengkai 任务操作接口,对外暴露
+ * @author yuantengkai 任务操作接口,对外暴露<br/>
+ * <mail to: zjytk05@163.com/>
  */
 public interface DispatchTaskService {
 	

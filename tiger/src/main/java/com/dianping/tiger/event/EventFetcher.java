@@ -15,7 +15,8 @@ import com.dianping.tiger.dispatch.DispatchTaskEntity;
 import com.dianping.tiger.dispatch.DispatchTaskService;
 
 /**
- * @author yuantengkai 任务捞取类
+ * @author yuantengkai 任务捞取类<br/>
+ * <mail to: zjytk05@163.com/>
  */
 public class EventFetcher {
 

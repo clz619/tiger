@@ -12,7 +12,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * @author yuantengkai 执行器队列,用于串行执行策略(需要严格保证顺序的情况)
+ * @author yuantengkai 执行器队列,用于串行执行策略(需要严格保证顺序的情况)<br/>
+ * <mail to: zjytk05@163.com/>
  */
 public class EventQueue {
 
