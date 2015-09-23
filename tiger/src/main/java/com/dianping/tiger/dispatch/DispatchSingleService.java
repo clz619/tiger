@@ -6,8 +6,8 @@ package com.dianping.tiger.dispatch;
 import java.util.List;
 
 /**
- * @author yuantengkai
- * 统一捞取任务，再根据handler分发
+ * @author yuantengkai 统一捞取任务，再根据handler分发<br/>
+ *         <mail to: zjytk05@163.com/>
  */
 public interface DispatchSingleService extends DispatchTaskService {
 

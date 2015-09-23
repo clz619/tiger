@@ -12,7 +12,7 @@ import com.dianping.tiger.ScheduleServer;
 
 /**
  * @author yuantengkai
- *
+ * <mail to: zjytk05@163.com/>
  */
 public class DispatchResultManager {
 
