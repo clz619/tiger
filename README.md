@@ -1,6 +1,6 @@
 # tiger说明
 
-#### 如果阅读完文档后，还有任何疑问，请mail to tengkai.yuan@dianping.com
+#### 如果阅读完文档后，还有任何疑问，请mail to zjytk05@163.com
 
 **tiger**是一种分布式异步执行框架，偏重于执行层面，同一种任务可以由多台机器同时执行，并能保证一条任务不被重复执行。
 
@@ -137,7 +137,7 @@ configp.setProperty(ScheduleManagerFactory.ZookeeperKeys.zkConnectAddress.name()
 configp.setProperty(ScheduleManagerFactory.ScheduleKeys.handlers.name(),"handler1,hander2,hangdler3");
 
 zk节点rootpath,必须
-configp.setProperty(ScheduleManagerFactory.ZookeeperKeys.rootPath.name(),"/DPWED");
+configp.setProperty(ScheduleManagerFactory.ZookeeperKeys.rootPath.name(),"/XXXX");
 
 虚拟节点数，最好大于20，默认100,可选
 configp.setProperty(ScheduleManagerFactory.ScheduleKeys.visualNodeNum.name(),"30");
@@ -197,7 +197,7 @@ tiger应用运行期间，支持任务监控，部署tiger-monitor
 
 ```
 监控服务地址，必须
-configp.setProperty(ScheduleManagerFactory.MonitorKeys.monitorIP.name(),"http://10.128.122.126:8080");
+configp.setProperty(ScheduleManagerFactory.MonitorKeys.monitorIP.name(),"http://127.0.0.1:8080");
 
 监控开关，默认关闭，必须
 configp.setProperty(ScheduleManagerFactory.MonitorKeys.enableMonitor.name(),"true");
