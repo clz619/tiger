@@ -7,14 +7,22 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 import java.util.concurrent.atomic.AtomicBoolean;
+
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
+
 import com.dianping.tiger.event.EventConfig;
 import com.dianping.tiger.event.EventExecutorManager;
 import com.dianping.tiger.utils.EventConfigUtil;
 import com.dianping.tiger.zk.ScheduleZkManager;
+import com.dianping.tiger.EventExecutorScheduler;
+import com.dianping.tiger.ScheduleManager;
+import com.dianping.tiger.ScheduleManagerFactory;
+import com.dianping.tiger.ScheduleServer;
+import com.dianping.tiger.dispatch.DispatchHandler;
+import com.dianping.tiger.groovy.GroovyBeanFactory;
 
 /**
  * @author yuantengkai 执行引擎构造器<br/>
@@ -50,7 +58,7 @@ public class ScheduleManagerFactory {
 	}
 
 	public enum ScheduleKeys {
-		scheduleFlag, taskStrategy, enableNavigate, enableBackFetch, handlers, coreSize, maxSize, visualNodeNum, divideType;
+		scheduleFlag, taskStrategy, enableNavigate, enableBackFetch, enableGroovyCode, handlers, coreSize, maxSize, visualNodeNum, divideType;
 	}
 
 	public enum MonitorKeys {
@@ -101,13 +109,14 @@ public class ScheduleManagerFactory {
 				ScheduleKeys.enableNavigate.name(), "true");
 		String enableBackFetch = config.getProperty(
 				ScheduleKeys.enableBackFetch.name(), "false");
+		String enableGroovyCode = config.getProperty(
+				ScheduleKeys.enableGroovyCode.name(), "false");
 		String enableMonitor = config.getProperty(
 				MonitorKeys.enableMonitor.name(), "false");
 		String monitorurl = config.getProperty(MonitorKeys.monitorIP.name());
 		String coreSize = config.getProperty(ScheduleKeys.coreSize.name());
 		String maxSize = config.getProperty(ScheduleKeys.maxSize.name());
-		String taskStrategy = config.getProperty(ScheduleKeys.taskStrategy
-				.name());
+		String taskStrategy = config.getProperty(ScheduleKeys.taskStrategy.name());
 
 		if (!StringUtils.isBlank(rootPath)) {
 			ScheduleServer.getInstance().setRootPath(rootPath);
@@ -133,6 +142,9 @@ public class ScheduleManagerFactory {
 		if (!StringUtils.isBlank(enableBackFetch)) {
 			this.setBackFetchFlag("true".equals(enableBackFetch));
 		}
+		if (!StringUtils.isBlank(enableGroovyCode)) {
+			this.setGroovyCodeFlag("true".equals(enableGroovyCode));
+		}
 		if (!StringUtils.isBlank(coreSize) && StringUtils.isNumeric(coreSize)) {
 			ScheduleServer.getInstance().setHandlerCoreSize(
 					Integer.valueOf(coreSize));
@@ -141,10 +153,8 @@ public class ScheduleManagerFactory {
 			ScheduleServer.getInstance().setHandlerMaxSize(
 					Integer.valueOf(maxSize));
 		}
-		if (!StringUtils.isBlank(taskStrategy)
-				&& StringUtils.isNumeric(taskStrategy)) {
-			ScheduleServer.getInstance().setTaskStrategy(
-					Integer.valueOf(taskStrategy));
+		if(!StringUtils.isBlank(taskStrategy) && StringUtils.isNumeric(taskStrategy)){
+			ScheduleServer.getInstance().setTaskStrategy(Integer.valueOf(taskStrategy));
 		}
 		// ==========监控相关============
 		if (!StringUtils.isBlank(enableMonitor)) {
@@ -206,6 +216,15 @@ public class ScheduleManagerFactory {
 	 */
 	public void setBackFetchFlag(boolean flag) {
 		ScheduleServer.getInstance().setEnableBackFetch(flag);
+	}
+	
+	/**
+	 * 设置是否使用groovy动态加载handler
+	 * 
+	 * @param flag
+	 */
+	public void setGroovyCodeFlag(boolean flag) {
+		ScheduleServer.getInstance().setEnableGroovyCode(flag);
 	}
 
 	/**
@@ -288,6 +307,27 @@ public class ScheduleManagerFactory {
 			return appCtx.getBean(beanName);
 		} catch (Exception e) {
 			return null;
+		}
+	}
+	
+	public static Object getHandlerBean(String handlerName){
+		if(GroovyBeanFactory.getInstance().isGroovyHandler(handlerName)){
+			return GroovyBeanFactory.getInstance().getHandlerByName(handlerName);
+		}else{
+			return getBean(handlerName);
+		}
+	}
+	
+	@SuppressWarnings("unchecked")
+	public static Class<DispatchHandler> getHandlerClazz(String handlerName){
+		if(GroovyBeanFactory.getInstance().isGroovyHandler(handlerName)){
+			return GroovyBeanFactory.getInstance().getClazzByHandlerName(handlerName);
+		}else{
+			DispatchHandler h =  (DispatchHandler) getBean(handlerName);
+			if(h == null){
+				return null;
+			}
+			return (Class<DispatchHandler>) h.getClass();
 		}
 	}
 
