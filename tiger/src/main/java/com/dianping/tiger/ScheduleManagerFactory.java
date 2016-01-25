@@ -311,7 +311,8 @@ public class ScheduleManagerFactory {
 	}
 	
 	public static Object getHandlerBean(String handlerName){
-		if(GroovyBeanFactory.getInstance().isGroovyHandler(handlerName)){
+		if(ScheduleServer.getInstance().enableGroovyCode() && 
+				GroovyBeanFactory.getInstance().isGroovyHandler(handlerName)){
 			return GroovyBeanFactory.getInstance().getHandlerByName(handlerName);
 		}else{
 			return getBean(handlerName);
@@ -320,7 +321,7 @@ public class ScheduleManagerFactory {
 	
 	@SuppressWarnings("unchecked")
 	public static Class<DispatchHandler> getHandlerClazz(String handlerName){
-		if(GroovyBeanFactory.getInstance().isGroovyHandler(handlerName)){
+		if(ScheduleServer.getInstance().enableGroovyCode() && GroovyBeanFactory.getInstance().isGroovyHandler(handlerName)){
 			return GroovyBeanFactory.getInstance().getClazzByHandlerName(handlerName);
 		}else{
 			DispatchHandler h =  (DispatchHandler) getBean(handlerName);
