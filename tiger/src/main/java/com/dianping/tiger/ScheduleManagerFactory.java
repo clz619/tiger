@@ -58,7 +58,7 @@ public class ScheduleManagerFactory {
 	}
 
 	public enum ScheduleKeys {
-		scheduleFlag, taskStrategy, enableNavigate, enableBackFetch, enableGroovyCode, handlers, coreSize, maxSize, visualNodeNum, divideType;
+		scheduleFlag, taskStrategy, enableNavigate, enableBackFetch, enableGroovyCode, handlers, coreSize, maxSize, virtualNodeNum, divideType;
 	}
 
 	public enum MonitorKeys {
@@ -98,7 +98,7 @@ public class ScheduleManagerFactory {
 		String rootPath = config.getProperty(ZookeeperKeys.rootPath.name(),
 				"/TIGERZK");
 		String visualNode = config.getProperty(
-				ScheduleKeys.visualNodeNum.name(), "100");
+				ScheduleKeys.virtualNodeNum.name(), "100");
 		String divideType = config.getProperty(ScheduleKeys.divideType.name(),
 				ScheduleManager.DIVIDE_RNAGE_MODE + "");
 		String zkSessionTimeout = config.getProperty(
