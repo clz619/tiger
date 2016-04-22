@@ -37,7 +37,7 @@ www.12306.cn上购买火车票的例子：
 ```
 <groupId>com.dianping</groupId>
 <artifactId>tiger</artifactId>
-<version>1.1.0</version>
+<version>1.2.0</version>
 ```
 
 ### Step二. 实现任务操作管理接口
@@ -159,7 +159,7 @@ zk节点rootpath,必须
 configp.setProperty(ScheduleManagerFactory.ZookeeperKeys.rootPath.name(),"/XXXX");
 
 虚拟节点数，最好大于20，默认100,可选
-configp.setProperty(ScheduleManagerFactory.ScheduleKeys.visualNodeNum.name(),"30");
+configp.setProperty(ScheduleManagerFactory.ScheduleKeys.virtualNodeNum.name(),"30");
 
 zk虚拟节点分配策略,1-散列模式,2－分块模式,默认分块模式,建议用2,可选
 configp.setProperty(ScheduleManagerFactory.ScheduleKeys.divideType.name(), "2");
