@@ -189,7 +189,7 @@ smf.initSchedule(configp);
       <appender-ref ref="TIGER"/>
 </logger>
 ```
-应用启动后，tiger启动成功的日志，如图：
+应用启动后，查看tiger启动日志，看到红线标注部分(start success)，代表启动成功，如图：
 
 ![image](https://github.com/tkyuan/tiger/blob/master/tiger-monitor/src/main/resources/META-INF/img/startlog.png)
 
