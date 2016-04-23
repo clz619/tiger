@@ -269,7 +269,7 @@ tiger监控用的是文件存储方式，需要对/data/appdatas/tiger/目录有
 
 tiger监控截图：
 
-![image](https://github.com/tkyuan/tiger/tree/master/tiger-monitor/src/main/resources/META-INF/img/monitor.png)
+![image](https://github.com/tkyuan/tiger/blob/master/tiger-monitor/src/main/resources/META-INF/img/monitor.png)
 
 
 **Thanks**
