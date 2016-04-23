@@ -181,6 +181,18 @@ smf.initSchedule(configp);
 ```
 ***完成以上4步，启动你的应用就可以使用了.（应用启动前要部署启动zookeeper服务）***
 
+配置tiger日志：
+
+```
+<logger name="com.dianping.tiger" additivity="false">
+      <level value="INFO"/>
+      <appender-ref ref="TIGER"/>
+</logger>
+```
+应用启动后，tiger启动成功的日志，如图：
+
+![image](https://github.com/tkyuan/tiger/blob/master/tiger-monitor/src/main/resources/META-INF/img/startlog.png)
+
 **注意点:**
 
 
