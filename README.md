@@ -128,8 +128,8 @@ public List<DispatchTaskEntity> findDispatchTasksWithLimitByBackFetch(List<Integ
 public class ChainTestHandler implements DispatchHandler {
     @Override
     public DispatchResult invoke(DispatchParam param) throws Exception {
-        int taskId = (Integer) param.getProperty("id");
-        String jsonStr = (String) param.getProperty("param");
+        Integer taskId =  param.getTaskId();
+        String jsonStr = param.getBizParameter();
         Map<String, String> paramMap = (Map<String, String>) JSON.parse(jsonStr);
         ...
     }
