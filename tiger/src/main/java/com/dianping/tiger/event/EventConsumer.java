@@ -77,11 +77,11 @@ public class EventConsumer implements Runnable {
 //				transaction.setStatus(Transaction.SUCCESS);
 //			}
 			if(ScheduleServer.getInstance().enableMonitor()){
-				EventMonitor.getInstance().record(task.getHandler(), result == DispatchResult.FAIL?0:1, duration);
+				EventMonitor.getInstance().record(task.getHandler(), result == DispatchResult.FAIL2RETRY?0:1, duration);
 			}
 		} catch (Throwable t) {
 			logger.error("dispatch invoke exception," + task, t);
-			result = DispatchResult.FAIL;
+			result = DispatchResult.FAIL2RETRY;
 //			Cat.logError("task dispatch invoke exception:", t);
 //			transaction.setStatus(t);
 			if(ScheduleServer.getInstance().enableMonitor()){

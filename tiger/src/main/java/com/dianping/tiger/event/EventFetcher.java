@@ -13,6 +13,7 @@ import com.dianping.tiger.dispatch.DispatchMultiService;
 import com.dianping.tiger.dispatch.DispatchSingleService;
 import com.dianping.tiger.dispatch.DispatchTaskEntity;
 import com.dianping.tiger.dispatch.DispatchTaskService;
+import com.dianping.tiger.utils.ScheduleConstants;
 
 /**
  * @author yuantengkai 任务捞取类<br/>
@@ -39,7 +40,7 @@ public class EventFetcher {
 	 */
 	public List<DispatchTaskEntity> getTasks(String handlerName,
 			List<Integer> nodeList) {
-		if (ScheduleServer.getInstance().getTaskStrategy() == DispatchTaskService.TaskFetchStrategy.Multi
+		if (ScheduleServer.getInstance().getTaskStrategy() == ScheduleConstants.TaskFetchStrategy.Multi
 				.getValue()) {// 各个执行器捞取策略
 			if (StringUtils.isBlank(handlerName) || nodeList == null
 					|| nodeList.size() == 0) {
@@ -76,8 +77,8 @@ public class EventFetcher {
 	 * @return
 	 */
 	public List<DispatchTaskEntity> getTasksByBackFetch(String handlerName,
-			List<Integer> nodeList, int taskId) {
-		if (ScheduleServer.getInstance().getTaskStrategy() == DispatchTaskService.TaskFetchStrategy.Multi
+			List<Integer> nodeList, long taskId) {
+		if (ScheduleServer.getInstance().getTaskStrategy() == ScheduleConstants.TaskFetchStrategy.Multi
 				.getValue()) {// 各个执行器捞取策略
 			if (StringUtils.isBlank(handlerName) || nodeList == null
 					|| nodeList.size() == 0 || taskId < 1) {

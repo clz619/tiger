@@ -21,6 +21,7 @@
 	<modules>
 		<module>tiger</module>
 		<module>tiger-monitor</module>
+		<module>tiger-demo</module>
 	</modules>
 
 	<dependencyManagement>

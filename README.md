@@ -43,26 +43,26 @@ www.12306.cn上购买火车票的例子：
 ### Step二. 实现任务操作管理接口
 
 #### 任务操作支持两种策略，约定：
-***策略a***: 各个执行器捞取各自的任务
+***策略Multi***: 各个执行器捞取各自的任务
 
-***策略b***: 统一捞取任务
+***策略Single***: 统一捞取任务
 
-***策略a***情况下实现接口:
+***策略Multi***情况下实现接口:
 
 ```
 配置:
-configp.setProperty(ScheduleManagerFactory.ScheduleKeys.taskStrategy.name(),DispatchTaskService.TaskFetchStrategy.Multi.getValue() + "");
+configp.setProperty(ScheduleManagerFactory.ScheduleKeys.taskStrategy.name(),ScheduleConstants.TaskFetchStrategy.Multi.getValue() + "");
 
 则实现各自捞取任务的操作接口
 com.dianping.tiger.dispatch.DispatchMultiService
 
 ```
 
-***策略b***情况下实现接口:
+***策略Single***情况下实现接口:
 
 ```
 配置:
-configp.setProperty(ScheduleManagerFactory.ScheduleKeys.taskStrategy.name(),DispatchTaskService.TaskFetchStrategy.Single.getValue() + "");
+configp.setProperty(ScheduleManagerFactory.ScheduleKeys.taskStrategy.name(),ScheduleConstants.TaskFetchStrategy.Single.getValue() + "");
 
 则实现统一捞取任务的操作接口
 com.dianping.tiger.dispatch.DispatchSingleService
@@ -71,21 +71,21 @@ com.dianping.tiger.dispatch.DispatchSingleService
 ***定义spring bean***
 
 ``<bean id="dispatchTaskService" class="你的实现类"/>``
-#### 必须实现：
+#### Method[必须]实现：
 ##### 方法1. 添加一条任务
 ```
-public int addDispatchTask(DispatchTaskEntity taskEntity);
+public long addDispatchTask(DispatchTaskEntity taskEntity);
 ```
 ##### 方法2. 捞取一定数量的任务
 
-***策略a***情况下实现:
+***策略Multi***情况下实现:
 
 
 ```
 public List<DispatchTaskEntity> findDispatchTasksWithLimit(String handler,List<Integer> nodeList, int limit);
 ```
 
-***策略b***情况下实现:
+***策略Single***情况下实现:
 
 ```
 public List<DispatchTaskEntity> findDispatchTasksWithLimit(List<Integer> nodeList, int limit);
@@ -94,27 +94,27 @@ public List<DispatchTaskEntity> findDispatchTasksWithLimit(List<Integer> nodeLis
 
 ##### 方法3. 更新任务状态
 ```
-public boolean updateTaskStatus(int taskId,int status,String hostName);
+public boolean updateTaskStatus(long taskId,int status,String hostName);
 ```
 ##### 方法4. 执行不成功，希望下次继续重试
 ```
-public boolean addRetryTimesAndExecuteTime(int taskId,Date nextExecuteTime,String hostName);
+public boolean addRetryTimesAndExecuteTime(long taskId,Date nextExecuteTime,String hostName);
 ```
 
-#### 可选实现:
+#### Method[可选]实现:
 ##### 方法1. 反压获取一定数量的任务，使用前提:
 ``ScheduleManagerFactory.setBackFetchFlag(true)``
 
-***策略a***情况下实现:
+***策略Multi***情况下实现:
 
 ```
-public List<DispatchTaskEntity> findDispatchTasksWithLimitByBackFetch(String handler, List<Integer> nodeList, int limit,int taskId);
+public List<DispatchTaskEntity> findDispatchTasksWithLimitByBackFetch(String handler, List<Integer> nodeList, int limit,long taskId);
 ```
-***策略b***情况下实现:
+***策略Single***情况下实现:
 
 
 ```
-public List<DispatchTaskEntity> findDispatchTasksWithLimitByBackFetch(List<Integer> nodeList, int limit, int taskId);
+public List<DispatchTaskEntity> findDispatchTasksWithLimitByBackFetch(List<Integer> nodeList, int limit, long taskId);
 ```
 ### Step三. 实现任务分发接口
 ``com.dianping.tiger.dispatch.DispatchHandler``
@@ -128,7 +128,7 @@ public List<DispatchTaskEntity> findDispatchTasksWithLimitByBackFetch(List<Integ
 public class ChainTestHandler implements DispatchHandler {
     @Override
     public DispatchResult invoke(DispatchParam param) throws Exception {
-        Integer taskId =  param.getTaskId();
+        Long taskId =  param.getTaskId();
         String jsonStr = param.getBizParameter();
         Map<String, String> paramMap = (Map<String, String>) JSON.parse(jsonStr);
         ...
@@ -142,6 +142,8 @@ public class ChainTestHandler implements DispatchHandler {
 
 ```
 ===========声明 ScheduleManagerFactory=======
+
+设置30s轮询一次任务
 ScheduleManagerFactory smf = new ScheduleManagerFactory(30*1000);
 
 smf.setAppCtx(applicationcontext);
@@ -159,13 +161,14 @@ zk节点rootpath,必须
 configp.setProperty(ScheduleManagerFactory.ZookeeperKeys.rootPath.name(),"/XXXX");
 
 虚拟节点数，最好大于20，默认100,可选
-configp.setProperty(ScheduleManagerFactory.ScheduleKeys.virtualNodeNum.name(),"30");
+configp.setProperty(ScheduleManagerFactory.ScheduleKeys.virtualNodeNum.name(),"20");
 
-zk虚拟节点分配策略,1-散列模式,2－分块模式,默认分块模式,建议用2,可选
-configp.setProperty(ScheduleManagerFactory.ScheduleKeys.divideType.name(), "2");
+zk虚拟节点分配策略,0-散列模式,1－分块模式,默认分块模式,建议用1,可选
 
-执行器策略，可选，默认为策略a
-configp.setProperty(ScheduleManagerFactory.ScheduleKeys.taskStrategy.name(),"1");
+configp.setProperty(ScheduleManagerFactory.ScheduleKeys.divideType.name(),ScheduleConstants.NodeDivideMode.DIVIDE_RANGE_MODE.getValue()+"");
+
+执行器策略，可选，默认为策略Multi(多执行器各自捞取任务策略)
+configp.setProperty(ScheduleManagerFactory.ScheduleKeys.taskStrategy.name(),ScheduleConstants.TaskFetchStrategy.Multi.getValue()+"");
 
 总调度开关,默认true,可选
 configp.setProperty(ScheduleManagerFactory.ScheduleKeys.scheduleFlag.name(),"true");
@@ -184,6 +187,15 @@ smf.initSchedule(configp);
 配置tiger日志：
 
 ```
+<appender name="TIGER" class="org.apache.log4j.DailyRollingFileAppender">
+        <param name="file" value="/data/applogs/tiger-demo/logs/tiger.log"/>
+        <param name="append" value="true"/>
+        <param name="encoding" value="UTF-8"/>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="%-d{yyyy-MM-dd HH:mm:ss} [%c]-[%t]-[%M]-[%L]-[%p] %m%n"/>
+        </layout>
+    </appender>
+    
 <logger name="com.dianping.tiger" additivity="false">
       <level value="INFO"/>
       <appender-ref ref="TIGER"/>
@@ -200,6 +212,7 @@ smf.initSchedule(configp);
 
 2) DispatchHandler接口实现类的spring bean配置默认是 **单例**，所以在实现类里最好 **不用成员变量**，而要用局部变量， **成员变量是有状态的，会有线程安全问题;**
 
+##### 为了能快速基于tiger搭建分布式异步执行平台，可以直接下载tiger-demo进行修改部署。
 
 ### Step五. 运行中改变
   
@@ -235,7 +248,7 @@ configp.setProperty(ScheduleManagerFactory.ScheduleKeys.enableGroovyCode.name(),
 2 实现groovy code操作接口
 
 ```
-com.dianping.wed.tiger.groovy.IGroovyCodeRepo
+com.dianping.tiger.groovy.IGroovyCodeRepo
 ```
 
 3 接下来实现任务分发接口（同quick start step3）
