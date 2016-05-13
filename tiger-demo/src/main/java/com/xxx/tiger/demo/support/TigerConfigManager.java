@@ -17,21 +17,14 @@ import com.dianping.tiger.utils.ScheduleConstants;
  */
 public class TigerConfigManager implements InitializingBean,ApplicationContextAware{
 	
-	/**
-	 * 虚拟节点数量
-	 */
-	public static final int VIRTUAL_NODE_NUM = 100;
+	//10s轮询一次任务
+	private	ScheduleManagerFactory smf = new ScheduleManagerFactory(10*1000);
 	
 	private ApplicationContext applicationcontext;
 
 	@Override
 	public void afterPropertiesSet() throws Exception {
 		
-		//10s轮询一次任务
-		ScheduleManagerFactory smf = new ScheduleManagerFactory(10*1000);
-		
-		smf.setAppCtx(applicationcontext);
-
 		//===========初始化配置==============
 		Properties configp = new Properties();
 
@@ -39,13 +32,13 @@ public class TigerConfigManager implements InitializingBean,ApplicationContextAw
 		configp.setProperty(ScheduleManagerFactory.ZookeeperKeys.zkConnectAddress.name(),"127.0.0.1:2181");
 
 		//执行器名称，必须
-		configp.setProperty(ScheduleManagerFactory.ScheduleKeys.handlers.name(),"handler1,hander2,hangdler3");
+		configp.setProperty(ScheduleManagerFactory.ScheduleKeys.handlers.name(),"demoHandler");
 
 		//zk节点rootpath,必须
 		configp.setProperty(ScheduleManagerFactory.ZookeeperKeys.rootPath.name(),"/TigerDemo");
 
 		//虚拟节点数，最好大于20，默认100,可选
-		configp.setProperty(ScheduleManagerFactory.ScheduleKeys.virtualNodeNum.name(),"100");
+		configp.setProperty(ScheduleManagerFactory.ScheduleKeys.virtualNodeNum.name(),"20");
 
 		//zk虚拟节点分配策略,0-散列模式,1－分块模式,默认分块模式,建议用1,可选
 		configp.setProperty(ScheduleManagerFactory.ScheduleKeys.divideType.name(), ScheduleConstants.NodeDivideMode.DIVIDE_RANGE_MODE.getValue()+"");
@@ -62,6 +55,8 @@ public class TigerConfigManager implements InitializingBean,ApplicationContextAw
 		//启用反压模式，默认false,可选
 		configp.setProperty(ScheduleManagerFactory.ScheduleKeys.enableBackFetch.name(),"false");
 
+		smf.setAppCtx(applicationcontext);
+		
 		//===========初始化启用==========
 		smf.initSchedule(configp);
 		

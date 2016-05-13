@@ -23,6 +23,10 @@
 	
 	<bean id="dispatchTaskService" 
 		class="com.xxx.tiger.demo.support.impl.DispatchTaskServiceImpl"/>
+		
+	<bean id="tigerConfigManager" class="com.xxx.tiger.demo.support.TigerConfigManager"/>
+	
+	<bean id="demoHandler" class="com.xxx.tiger.demo.biz.DemoHandler"></bean>
 	
 	<bean id="dispatchTaskDao" 
 		class="com.xxx.tiger.demo.task.dao.impl.DispatchTaskDaoImpl" parent="baseDao" />
