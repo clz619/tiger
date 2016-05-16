@@ -2,8 +2,8 @@
 <!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://www.ibatis.com/dtd/sql-map-2.dtd">
 <sqlMap namespace="tigerTask">
 
-	<typeAlias alias=tigerTaskDo
-		type="com.dianping.tiger.demo.task.dataobject.TigerTaskDo" />
+	<typeAlias alias="tigerTaskDo"
+		type="com.xxx.tiger.demo.task.dataobject.TigerTaskDo" />
 
 	<sql id="tigerTask_columns">
 		id,
@@ -55,7 +55,7 @@
     	UPDATE Tiger_Task
     	SET   updateTime = now(),
     	      status = #status#,
-    	      host = #host#
+    	      host = #hostName#
     	WHERE id = #id# 
     </update>
     
@@ -63,7 +63,7 @@
     	UPDATE Tiger_Task
     	SET   updateTime = now(),
     	      earliestExecuteTime = #nextExecuteTime#,
-    	      host = #host#
+    	      host = #hostName#
     	WHERE id = #id# 
     </update>
     
