@@ -7,18 +7,16 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 import java.util.concurrent.atomic.AtomicBoolean;
-
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
-
 import com.dianping.tiger.event.EventConfig;
 import com.dianping.tiger.event.EventExecutorManager;
 import com.dianping.tiger.utils.EventConfigUtil;
+import com.dianping.tiger.utils.ScheduleConstants;
 import com.dianping.tiger.zk.ScheduleZkManager;
 import com.dianping.tiger.EventExecutorScheduler;
-import com.dianping.tiger.ScheduleManager;
 import com.dianping.tiger.ScheduleManagerFactory;
 import com.dianping.tiger.ScheduleServer;
 import com.dianping.tiger.dispatch.DispatchHandler;
@@ -100,7 +98,7 @@ public class ScheduleManagerFactory {
 		String visualNode = config.getProperty(
 				ScheduleKeys.virtualNodeNum.name(), "100");
 		String divideType = config.getProperty(ScheduleKeys.divideType.name(),
-				ScheduleManager.DIVIDE_RNAGE_MODE + "");
+				ScheduleConstants.NodeDivideMode.DIVIDE_RANGE_MODE.getValue() + "");
 		String zkSessionTimeout = config.getProperty(
 				ZookeeperKeys.zkSessionTimeout.name(), "60000");
 		String scheduleFlag = config.getProperty(

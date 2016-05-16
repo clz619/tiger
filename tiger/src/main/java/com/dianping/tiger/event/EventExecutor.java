@@ -11,10 +11,8 @@ import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.locks.ReentrantLock;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import com.dianping.tiger.EventFactory;
 import com.dianping.tiger.ScheduleManagerFactory;
 import com.dianping.tiger.ScheduleServer;
@@ -22,8 +20,8 @@ import com.dianping.tiger.annotation.AnnotationConstants;
 import com.dianping.tiger.annotation.ExecuteType;
 import com.dianping.tiger.dispatch.DispatchHandler;
 import com.dianping.tiger.dispatch.DispatchTaskEntity;
-import com.dianping.tiger.dispatch.DispatchTaskService;
 import com.dianping.tiger.repository.EventInConsumerRepository;
+import com.dianping.tiger.utils.ScheduleConstants;
 import com.dianping.tiger.event.EventConfig;
 import com.dianping.tiger.event.EventConsumer;
 import com.dianping.tiger.event.EventExecutor;
@@ -62,7 +60,7 @@ public class EventExecutor {
 		int coreSize = ScheduleServer.getInstance().getHandlerCoreSize();
 		int maxSize = ScheduleServer.getInstance().getHandlerMaxSize();
 		String handlerName = eventConfig.getHandler();
-		if (ScheduleServer.getInstance().getTaskStrategy() == DispatchTaskService.TaskFetchStrategy.Multi
+		if (ScheduleServer.getInstance().getTaskStrategy() == ScheduleConstants.TaskFetchStrategy.Multi
 				.getValue()) {
 			Class<DispatchHandler> clazz = ScheduleManagerFactory
 					.getHandlerClazz(handlerName);
@@ -133,7 +131,7 @@ public class EventExecutor {
 			dispatchTasks(tasks);
 			if (tasks.size() == EventFetcher.TASK_NUM
 					&& ScheduleServer.getInstance().enableBackFetch()) {// 支持反压的话
-				int lastTaskId = tasks.get(tasks.size() - 1).getId();
+				long lastTaskId = tasks.get(tasks.size() - 1).getId();
 				List<DispatchTaskEntity> backFetchTasks = eventFetcher
 						.getTasksByBackFetch(eventConfig.getHandler(),
 								eventConfig.getNodeList(), lastTaskId);
@@ -163,7 +161,7 @@ public class EventExecutor {
 				EventConsumer consumer = EventFactory.createConsumer(task,
 						eventConfig);
 				// ======统一任务捞取策略下 并行 or 串行=======
-				if (ScheduleServer.getInstance().getTaskStrategy() != DispatchTaskService.TaskFetchStrategy.Multi
+				if (ScheduleServer.getInstance().getTaskStrategy() != ScheduleConstants.TaskFetchStrategy.Multi
 						.getValue()) {
 					if (!ScheduleServer.getInstance().getHandlers()
 							.contains(task.getHandler())) {
@@ -213,7 +211,7 @@ public class EventExecutor {
 		lock.lock();
 		try {
 			this.eventThreadPool.getQueue().clear();
-			if (ScheduleServer.getInstance().getTaskStrategy() != DispatchTaskService.TaskFetchStrategy.Multi
+			if (ScheduleServer.getInstance().getTaskStrategy() != ScheduleConstants.TaskFetchStrategy.Multi
 					.getValue()) {
 				EventQueue.getInstance().clearTaskInQueue();
 			}

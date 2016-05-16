@@ -42,8 +42,8 @@ public class DispatchParam {
 	 * 获取任务id
 	 * @return
 	 */
-	public Integer getTaskId(){
-		return (Integer) this.getProperty("id");
+	public Long getTaskId(){
+		return (Long) this.getProperty("id");
 	}
 
 }
