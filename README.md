@@ -37,7 +37,7 @@ www.12306.cn上购买火车票的例子：
 ```
 <groupId>com.dianping</groupId>
 <artifactId>tiger</artifactId>
-<version>1.2.0</version>
+<version>1.2.1</version>
 ```
 
 ### Step二. 实现任务操作管理接口
