@@ -2,7 +2,7 @@
 
 #### 如果阅读完文档后，还有任何疑问，请mail to zjytk05@163.com
 
-**tiger**是一种分布式异步执行框架，偏重于执行层面，同一种任务可以由多台机器同时执行，并能保证一条任务不被重复执行。
+**tiger**是一种分布式异步调度框架，偏重于执行层面，同一种任务可以由多台机器同时执行，并能保证一条任务不被重复执行。
 
 tiger主要有以下三块组成：
 
@@ -212,7 +212,7 @@ smf.initSchedule(configp);
 
 2) DispatchHandler接口实现类的spring bean配置默认是 **单例**，所以在实现类里最好 **不用成员变量**，而要用局部变量， **成员变量是有状态的，会有线程安全问题;**
 
-##### 为了能快速基于tiger搭建分布式异步执行平台，可以直接下载tiger-demo进行修改部署。
+##### 为了能快速基于tiger搭建分布式异步调度平台，可以直接下载tiger-demo进行修改部署。
 
 ### Step五. 运行中改变
   
@@ -258,7 +258,7 @@ com.dianping.tiger.groovy.IGroovyCodeRepo
 1) groovy代码中service注入方式
 
 ```
-import com.dianping.wed.tiger.annotation.TService;
+import com.dianping.tiger.annotation.TService;
 
 @TService
 private WedSmsSendService wpsWedSmsSendService;
@@ -266,8 +266,8 @@ private WedSmsSendService wpsWedSmsSendService;
 2) groovy代码支持单例和多例两种方式，默认为多例，若需要使用单例，则采用如下注解的形式
 
 ```
-import com.dianping.wed.tiger.annotation.AnnotationConstants;
-import com.dianping.wed.tiger.annotation.GroovyBeanType;
+import com.dianping.tiger.annotation.AnnotationConstants;
+import com.dianping.tiger.annotation.GroovyBeanType;
 
 @GroovyBeanType(AnnotationConstants.BeanType.SINGLE)
 class GroovyTest implements DispatchHandler {
