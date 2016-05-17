@@ -212,7 +212,7 @@ smf.initSchedule(configp);
 
 2) DispatchHandler接口实现类的spring bean配置默认是 **单例**，所以在实现类里最好 **不用成员变量**，而要用局部变量， **成员变量是有状态的，会有线程安全问题;**
 
-##### 为了能快速基于tiger搭建分布式异步执行平台，可以直接下载tiger-demo进行修改部署。
+##### 为了能快速基于tiger搭建分布式异步调度平台，可以直接下载tiger-demo进行修改部署。
 
 ### Step五. 运行中改变
   
