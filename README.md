@@ -258,7 +258,7 @@ com.dianping.tiger.groovy.IGroovyCodeRepo
 1) groovy代码中service注入方式
 
 ```
-import com.dianping.wed.tiger.annotation.TService;
+import com.dianping.tiger.annotation.TService;
 
 @TService
 private WedSmsSendService wpsWedSmsSendService;
@@ -266,8 +266,8 @@ private WedSmsSendService wpsWedSmsSendService;
 2) groovy代码支持单例和多例两种方式，默认为多例，若需要使用单例，则采用如下注解的形式
 
 ```
-import com.dianping.wed.tiger.annotation.AnnotationConstants;
-import com.dianping.wed.tiger.annotation.GroovyBeanType;
+import com.dianping.tiger.annotation.AnnotationConstants;
+import com.dianping.tiger.annotation.GroovyBeanType;
 
 @GroovyBeanType(AnnotationConstants.BeanType.SINGLE)
 class GroovyTest implements DispatchHandler {
