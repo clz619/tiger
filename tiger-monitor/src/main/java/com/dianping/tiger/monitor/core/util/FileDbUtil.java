@@ -325,16 +325,14 @@ public class FileDbUtil {
 		try {
 			ins = new FileInputStream(file);
 			reader = new BufferedReader(new InputStreamReader(ins, "utf-8"));
-			if (reader != null) {
-				String content = null;
-				while ((content = reader.readLine()) != null) {
-					MonitorRecord item = parseLineData(content);
-					if (item != null) {
-						list.add(item);
-					}
+			String content = null;
+			while ((content = reader.readLine()) != null) {
+				MonitorRecord item = parseLineData(content);
+				if (item != null) {
+					list.add(item);
 				}
-				return list;
 			}
+			
 		} catch (FileNotFoundException e) {
 			logger.error("解析文件发生异常,fileName="+file.getName(), e);
 		} catch (UnsupportedEncodingException e) {
@@ -357,7 +355,7 @@ public class FileDbUtil {
 				}
 			}
 		}
-		return null;
+		return list;
 	}
 
 	/**
