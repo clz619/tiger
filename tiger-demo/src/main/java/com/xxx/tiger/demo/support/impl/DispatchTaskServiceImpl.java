@@ -86,11 +86,11 @@ public class DispatchTaskServiceImpl implements DispatchMultiService{
 	@Override
 	public List<DispatchTaskEntity> findDispatchTasksWithLimit(String handler,
 			List<Integer> nodeList, int limit) {
-		if(StringUtils.isBlank(handler) || nodeList == null || nodeList.size() == 0){
+		if(StringUtils.isBlank(handler) || nodeList == null || nodeList.isEmpty()){
 			return null;
 		}
 		List<TigerTaskDo> doList = dispatchTaskDao.findDispatchTasksWithLimit(handler, nodeList, limit);
-		if(doList == null || doList.size() == 0){
+		if(doList == null || doList.isEmpty()){
 			return null;
 		}
 		List<DispatchTaskEntity> taskList = new ArrayList<DispatchTaskEntity>();
@@ -106,11 +106,11 @@ public class DispatchTaskServiceImpl implements DispatchMultiService{
 	public List<DispatchTaskEntity> findDispatchTasksWithLimitByBackFetch(
 			String handler, List<Integer> nodeList, int limit, long taskId) {
 		if(StringUtils.isBlank(handler) || nodeList == null 
-				|| nodeList.size() == 0 || taskId < 1){
+				|| nodeList.isEmpty() || taskId < 1){
 			return null;
 		}
 		List<TigerTaskDo> doList = dispatchTaskDao.findDispatchTasksWithLimitByBackFetch(handler, nodeList, limit, taskId);
-		if(doList == null || doList.size() == 0){
+		if(doList == null || doList.isEmpty()){
 			return null;
 		}
 		List<DispatchTaskEntity> taskList = new ArrayList<DispatchTaskEntity>();

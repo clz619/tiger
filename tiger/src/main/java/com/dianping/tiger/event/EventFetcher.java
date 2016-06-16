@@ -43,7 +43,7 @@ public class EventFetcher {
 		if (ScheduleServer.getInstance().getTaskStrategy() == ScheduleConstants.TaskFetchStrategy.Multi
 				.getValue()) {// 各个执行器捞取策略
 			if (StringUtils.isBlank(handlerName) || nodeList == null
-					|| nodeList.size() == 0) {
+					|| nodeList.isEmpty()) {
 				throw new IllegalArgumentException(
 						"handlerName or nodeList is empty.");
 			}
@@ -56,7 +56,7 @@ public class EventFetcher {
 			return tasks;
 		}
 		//单个执行器统一捞取策略
-		if (nodeList == null || nodeList.size() == 0) {
+		if (nodeList == null || nodeList.isEmpty()) {
 			throw new IllegalArgumentException("nodeList is empty.");
 		}
 		DispatchSingleService dispatchSingleService = (DispatchSingleService) dispatchTaskService;
@@ -81,7 +81,7 @@ public class EventFetcher {
 		if (ScheduleServer.getInstance().getTaskStrategy() == ScheduleConstants.TaskFetchStrategy.Multi
 				.getValue()) {// 各个执行器捞取策略
 			if (StringUtils.isBlank(handlerName) || nodeList == null
-					|| nodeList.size() == 0 || taskId < 1) {
+					|| nodeList.isEmpty() || taskId < 1) {
 				throw new IllegalArgumentException(
 						"backFetch task,handlerName or nodeList is empty,or taskId smaller than 1");
 			}
@@ -95,7 +95,7 @@ public class EventFetcher {
 			return tasks;
 		}
 		//单个执行器统一捞取策略
-		if (nodeList == null || nodeList.size() == 0 || taskId < 1) {
+		if (nodeList == null || nodeList.isEmpty() || taskId < 1) {
 			throw new IllegalArgumentException(
 					"backFetch task, nodeList is empty,or taskId smaller than 1");
 		}
