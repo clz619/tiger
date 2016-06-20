@@ -101,12 +101,14 @@ public class EventExecutor {
 		}
 		// 巡航调度模式，是否可以执行
 		if (ScheduleServer.getInstance().enableNavigate()) {
-			if (!eventNavigator.isAllow()) {
-				if (logger.isInfoEnabled()) {
-					logger.info("the navigator strategy is not allow,"
-							+ eventNavigator);
+			if(eventConfig.enableNavigate()){
+				if (!eventNavigator.isAllow()) {
+					if (logger.isInfoEnabled()) {
+						logger.info("the navigator strategy is not allow,"
+								+ eventNavigator);
+					}
+					return;
 				}
-				return;
 			}
 		}
 		lock.lock();

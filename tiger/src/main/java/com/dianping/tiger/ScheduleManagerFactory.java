@@ -4,13 +4,18 @@
 package com.dianping.tiger;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Properties;
 import java.util.concurrent.atomic.AtomicBoolean;
+
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
+
 import com.dianping.tiger.event.EventConfig;
 import com.dianping.tiger.event.EventExecutorManager;
 import com.dianping.tiger.utils.EventConfigUtil;
@@ -189,6 +194,38 @@ public class ScheduleManagerFactory {
 				.setHandlerIdentifyCode(handlers.hashCode());
 	}
 
+	/**
+	 * 增加一个handler的个性化设置
+	 * @param handler
+	 * @param configMap:
+	 * 	 subkey:switchername, for example {@link ScheduleManagerFactory.ScheduleKeys.enableNavigate.name()}
+	 *   subvalue:boolean
+	 * 
+	 */
+	public void setHandlerConfig(String handler, HashMap<String,Boolean> configMap){
+		if(StringUtils.isBlank(handler) || configMap == null || configMap.isEmpty()){
+			return;
+		}
+		ScheduleServer.getInstance().addHandlerConfig(handler, configMap);
+	}
+	
+	/**
+	 * 批量设置handlers的个性化设置
+	 * @param handlerConfigMap
+	 * key: handler
+	 * value:
+	 *   subkey:switchername, for example {@link ScheduleManagerFactory.ScheduleKeys.enableNavigate.name()}
+	 *   subvalue:boolean
+	 */
+	public void setMultiHandlersConfig(Map<String, HashMap<String,Boolean>> handlerConfigMap){
+		if(handlerConfigMap == null || handlerConfigMap.isEmpty()){
+			return;
+		}
+		for(Entry<String, HashMap<String,Boolean>> e:handlerConfigMap.entrySet()){
+			this.setHandlerConfig(e.getKey(), e.getValue());
+		}
+ 	}
+	
 	/**
 	 * 设置调度总开关
 	 * 
