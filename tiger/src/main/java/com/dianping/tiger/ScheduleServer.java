@@ -3,12 +3,17 @@
  */
 package com.dianping.tiger;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.CopyOnWriteArraySet;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
+
 import com.dianping.tiger.event.EventExecutorManager;
 import com.dianping.tiger.utils.HostUtil;
 import com.dianping.tiger.utils.ScheduleConstants;
@@ -48,6 +53,15 @@ public class ScheduleServer {
 
 	private CopyOnWriteArraySet<String> handlers = new CopyOnWriteArraySet<String>();
 	
+	/**
+	 * 各个执行器的个性化配置
+	 * key: handler
+	 * value:
+	 *   subkey:switchname
+	 *   subvalue:boolean
+	 */
+	private Map<String,ConcurrentMap<String,Boolean>> handlerIndividualConfig = new ConcurrentHashMap<String,ConcurrentMap<String,Boolean>>();
+ 	
 	/**
 	 * 处理器的线程池大小coresize
 	 */
@@ -225,6 +239,35 @@ public class ScheduleServer {
 	public ConcurrentHashMap<String, List<Integer>> getHandlerMap() {
 		return handlerMap;
 	}
+	
+	/**
+	 * 设置某个handler的配置
+	 * @param handler
+	 * @param switcherMap
+	 */
+	public void addHandlerConfig(String handler, HashMap<String,Boolean> switcherMap){
+		ConcurrentMap<String, Boolean> cm = new ConcurrentHashMap<String, Boolean>();
+		cm.putAll(switcherMap);
+		handlerIndividualConfig.put(handler, cm);
+	}
+
+	/**
+	 * 某个handler是否开启巡航模式
+	 * @param handler
+	 * @return
+	 */
+	public boolean enableNavigate(String handler){
+		if(handlerIndividualConfig.containsKey(handler)){
+			ConcurrentMap<String, Boolean> cm = handlerIndividualConfig.get(handler);
+			for(Entry<String, Boolean> en : cm.entrySet()){
+				String switcher = en.getKey();
+				if(ScheduleManagerFactory.ScheduleKeys.enableNavigate.name().equalsIgnoreCase(switcher)){
+					return en.getValue();
+				}
+			}
+		}
+		return enableNavigate();
+ 	}
 
 	public int getHandlerIdentifyCode() {
 		return handlerIdentifyCode.get();
