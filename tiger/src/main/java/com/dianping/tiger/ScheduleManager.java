@@ -51,7 +51,7 @@ public class ScheduleManager {
 						}
 						List<String> serverList = zkClient.getChildren()
 								.forPath(path);
-						if (serverList == null || serverList.size() == 0) {
+						if (serverList == null || serverList.isEmpty()) {
 							logger.warn("scheduleServer init ok, but serverList is empty.path="+path);
 							continue;
 						}
@@ -109,7 +109,7 @@ public class ScheduleManager {
 								List<String> handlers = new ArrayList<String>();
 								Set<String> handlerSet = ScheduleServer
 										.getInstance().getHandlers();
-								if (handlerSet.size() == 0) {
+								if (handlerSet.isEmpty()) {
 									logger.warn("handler config is empty, ignore,"
 											+ serverList);
 									continue;
@@ -120,7 +120,7 @@ public class ScheduleManager {
 												currentRegisterVersion);
 								// 自我分配节点
 								List<Integer> newNodeList = getNodeList(serverList);
-								if (newNodeList.size() == 0) {
+								if (newNodeList.isEmpty()) {
 									logger.warn("registerversion changed, new nodeList is empty,hostName="
 											+ ScheduleServer.getInstance()
 													.getServerName()
