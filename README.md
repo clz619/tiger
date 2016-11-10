@@ -31,10 +31,10 @@ http://www.12306.cn 上购买火车票的例子：
 
 ### Documentation
 **单体式部署请看：**
-[UserGuide_1](http://code.dianpingoa.com/shop-business/wed-tiger/blob/master/UserGuide_1.md)
+[UserGuide_1](https://github.com/tkyuan/tiger/blob/master/UserGuide_1.md)
 
 **微服务部署请看：**
-[UserGuide_2](http://code.dianpingoa.com/shop-business/wed-tiger/blob/master/UserGuide_2.md)
+[UserGuide_2](https://github.com/tkyuan/tiger/blob/master/UserGuide_2.md)
 
 ### Comitters
 #### 袁腾凯  tengkai.yuan@dianping.com
