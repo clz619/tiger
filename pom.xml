@@ -19,9 +19,12 @@
 	</properties>
 	
 	<modules>
-		<module>tiger</module>
+		<module>tiger-api</module>
+		<module>tiger-engine</module>
+		<module>tiger-biz</module>
+		<module>tiger-core</module>
+		<module>tiger-service</module>
 		<module>tiger-monitor</module>
-		<module>tiger-demo</module>
 	</modules>
 
 	<dependencyManagement>

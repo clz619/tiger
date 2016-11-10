@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:beans="http://www.springframework.org/schema/beans"
+	xsi:schemaLocation="
+			http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+			http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd
+			http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.5.xsd
+			http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd"
+			default-autowire="byName">
+			
+	<!-- 单体模式下直接依赖调用，微服务模式下改成rpc调用 -->
+	<bean id="dispatchTaskMultiBizService" 
+		class="com.dianping.tiger.biz.task.service.impl.DispatchTaskMultiServiceImpl"/>
+		
+		<!-- 单体模式下直接依赖调用，微服务模式下改成rpc调用 -->
+	<bean id="dispatchTaskSingleBizService" 
+		class="com.dianping.tiger.biz.task.service.impl.DispatchTaskSingleServiceImpl"/>
+		
+	
+	<!-- tiger内部要用到的beanName,multi策略 -->
+	<bean id="dispatchTaskService" 
+		class="com.dianping.tiger.core.impl.DispatchTaskServiceMultiClientImpl"/>
+	
+		
+	<!-- tiger内部要用到的beanName single策略
+	<bean id="dispatchTaskService" 
+		class="com.dianping.tiger.core.impl.DispatchTaskServiceSingleClientImpl"/>
+	-->
+			
+			
+</beans>

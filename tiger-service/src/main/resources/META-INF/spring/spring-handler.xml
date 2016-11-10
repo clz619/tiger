@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:beans="http://www.springframework.org/schema/beans"
+	xsi:schemaLocation="
+			http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+			http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd
+			http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.5.xsd
+			http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd"
+			default-autowire="byName">
+	
+	<!-- 注册一个handler -->
+	<bean id="demoHandler1" class="com.dianping.tiger.service.handler.DemoHandler"/>
+
+	<!-- 注册一个tigerConfigManager -->
+	<bean id="tigerConfigManager" class="com.dianping.tiger.core.TigerConfigManager">
+		<!-- 必须,设置20s轮询一次任务 -->
+		<property name="interval" value="20"/>
+		<!-- 必须,设置zk集群地址 -->
+		<property name="zkConnectAddress" value="127.0.0.1:2181"/>
+		<!-- 必须,设置任务组名，要保证唯一，最好使用应用名称 -->
+		<property name="handlerGroup" value="TigerDemo"/>
+		<!-- 必须,设置需要执行的任务,支持动态调整 -->
+		<property name="handlers" value="demoHandler1"/>
+		<!-- 设置虚拟节点个数，个数需至少大于集群机器数,默认100 -->
+		<property name="virtualNodeNum" value="20"/>
+		<!-- 设置zk虚拟节点分配策略,0-散列模式,1－分块模式,默认分块模式 -->
+		<property name="divideType" value="1"/>
+		<!-- 设置总调度开关,默认true,支持动态调整 -->
+		<property name="scheduleFlag" value="true"/>
+		<!-- 设置启用巡航模式，默认true,支持动态调整 -->
+		<property name="enableNavigate" value="true"/>
+		<!-- 设置启用反压模式，默认false,支持动态调整 -->
+		<property name="enableBackFetch" value="false"/>
+	</bean>
+	
+</beans>	
