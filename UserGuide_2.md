@@ -2,7 +2,7 @@
 
 微服务部署的jar依赖如下图：
 
-![weifuwu](http://code.dianpingoa.com/shop-business/wed-tiger/blob/master/tiger-service/src/main/resources/img/weifuwu.png)
+![weifuwu](https://github.com/tkyuan/tiger/blob/master/tiger-service/src/main/resources/img/weifuwu.png)
 
 其中，
 
@@ -170,7 +170,7 @@ public class ChainTestHandler implements DispatchHandler {
 #### 3.6 启动应用
 完成如上步骤，启动应用，查看tiger启动日志，看到红线标注部分(start success)，代表启动成功，如图：
 
-![startlog](http://code.dianpingoa.com/shop-business/wed-tiger/blob/master/tiger-service/src/main/resources/img/startlog.png)
+![startlog](https://github.com/tkyuan/tiger/blob/master/tiger-service/src/main/resources/img/startlog.png)
   
 
 ## ======Tiger任务动态加载Groovy======
@@ -226,5 +226,5 @@ tiger监控用的是文件存储方式，需要对/data/appdatas/tiger/目录有
 
 tiger监控截图：
 
-![monitor](http://code.dianpingoa.com/shop-business/wed-tiger/blob/master/tiger-service/src/main/resources/img/monitor.png)
+![monitor](https://github.com/tkyuan/tiger/blob/master/tiger-service/src/main/resources/img/monitor.png)
 
