@@ -20,16 +20,4 @@
 	<bean id="dispatchTaskSingleBizService" 
 		class="com.dianping.tiger.biz.task.service.impl.DispatchTaskSingleServiceImpl"/>
 		
-	
-	<!-- tiger内部要用到的beanName,multi策略 -->
-	<bean id="dispatchTaskService" 
-		class="com.dianping.tiger.core.impl.DispatchTaskServiceMultiClientImpl"/>
-	
-		
-	<!-- tiger内部要用到的beanName single策略
-	<bean id="dispatchTaskService" 
-		class="com.dianping.tiger.core.impl.DispatchTaskServiceSingleClientImpl"/>
-	-->
-			
-			
 </beans>

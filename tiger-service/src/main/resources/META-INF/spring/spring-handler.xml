@@ -12,9 +12,6 @@
 			http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd"
 			default-autowire="byName">
 	
-	<!-- 注册一个handler -->
-	<bean id="demoHandler1" class="com.dianping.tiger.service.handler.DemoHandler"/>
-
 	<!-- 注册一个tigerConfigManager -->
 	<bean id="tigerConfigManager" class="com.dianping.tiger.core.TigerConfigManager">
 		<!-- 必须,设置20s轮询一次任务 -->
@@ -23,7 +20,7 @@
 		<property name="zkConnectAddress" value="127.0.0.1:2181"/>
 		<!-- 必须,设置任务组名，要保证唯一，最好使用应用名称 -->
 		<property name="handlerGroup" value="TigerDemo"/>
-		<!-- 必须,设置需要执行的任务,支持动态调整 -->
+		<!-- 必须,设置需要执行的任务,支持动态调整.任务之间逗号,分割 -->
 		<property name="handlers" value="demoHandler1"/>
 		<!-- 设置虚拟节点个数，个数需至少大于集群机器数,默认100 -->
 		<property name="virtualNodeNum" value="20"/>
@@ -36,5 +33,23 @@
 		<!-- 设置启用反压模式，默认false,支持动态调整 -->
 		<property name="enableBackFetch" value="false"/>
 	</bean>
+	
+	<!-- tiger内部要用到的beanName,multi策略 -->
+	<bean id="dispatchTaskService" 
+		class="com.dianping.tiger.core.impl.DispatchTaskServiceMultiClientImpl"/>
+	
+		
+	<!-- tiger内部要用到的beanName single策略
+	<bean id="dispatchTaskService" 
+		class="com.dianping.tiger.core.impl.DispatchTaskServiceSingleClientImpl"/>
+	-->
+	
+	<!-- 配置任务添加工具类 -->
+	<bean class="com.dianping.tiger.core.TigerTaskUtil">
+		<property name="dispatchTaskService" ref="dispatchTaskService"/>
+	</bean>
+	
+	<!-- 注册一个handler -->
+	<bean id="demoHandler1" class="com.dianping.tiger.service.handler.DemoHandler"/>
 	
 </beans>	
