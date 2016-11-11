@@ -120,13 +120,13 @@ com.dianping.tiger.biz.task.service.impl.DispatchTaskSingleServiceImpl
 其中，zkConnectAddress需要是tiger-service提供的zk地址.
 #### 3.3 在spring xml中配置bean: dispatchTaskService
   
-a) 上述3.1中``<property name="taskStrategy" value="0"/>``如果配置为统一捞取任务策略(multi)，则配置
+a) 上述3.1中``<property name="taskStrategy" value="0"/>``如果配置为统一捞取任务策略(single)，则配置
 
 ```
 <bean id="dispatchTaskService" 
 		class="com.dianping.tiger.core.impl.DispatchTaskServiceSingleClientImpl"/>
 ```
-b) 上述3.1中``<property name="taskStrategy" value="1"/>``如果配置为各个执行器各自捞取任务策略(single)，则配置
+b) 上述3.1中``<property name="taskStrategy" value="1"/>``如果配置为各个执行器各自捞取任务策略(multi)，则配置
 
 ```
 <bean id="dispatchTaskService" 
