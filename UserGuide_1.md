@@ -97,13 +97,13 @@
 
 #### 3.3 配置spring bean: dispatchTaskService
   
-a)上述3.1中``<property name="taskStrategy" value="0"/>``如果配置为统一捞取任务策略(multi)，则在tiger-service中的spring-handler.xml中配置
+a)上述3.1中``<property name="taskStrategy" value="0"/>``如果配置为统一捞取任务策略(single)，则在tiger-service中的spring-handler.xml中配置
 
 ```
 <bean id="dispatchTaskService" 
 		class="com.dianping.tiger.core.impl.DispatchTaskServiceSingleClientImpl"/>
 ```
-b) 上述3.1中``<property name="taskStrategy" value="1"/>``如果配置为各个执行器各自捞取任务策略(single)，则在tiger-service中的spring-handler.xml中配置
+b) 上述3.1中``<property name="taskStrategy" value="1"/>``如果配置为各个执行器各自捞取任务策略(multi)，则在tiger-service中的spring-handler.xml中配置
 
 ```
 <bean id="dispatchTaskService" 
