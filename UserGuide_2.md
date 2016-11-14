@@ -133,14 +133,25 @@ b) 上述3.1中``<property name="taskStrategy" value="1"/>``如果配置为各�
 		class="com.dianping.tiger.core.impl.DispatchTaskServiceMultiClientImpl"/>
 ```
 
-#### 3.4 引入spring-tiger.xml
+#### 3.4 配置spring bean: com.dianping.tiger.core.TigerTaskUtil
+
+在spring xml中配置TigerTaskUtil，此工具类用于添加一个tiger任务:
+
+```
+<bean class="com.dianping.tiger.core.TigerTaskUtil">
+		<property name="dispatchTaskService" ref="dispatchTaskService"/>
+	</bean>
+```
+
+
+#### 3.5 引入spring-tiger.xml
 在appServer的applicationContext.xml中引入spring-tiger.xml
 
 ```
 <import resource="classpath:/META-INF/spring/spring-tiger.xml"/>
 ```
 
-#### 3.5 实现任务分发接口
+#### 3.6 实现任务分发接口
 在appServer中实现如下接口：
 
 ```
@@ -167,7 +178,7 @@ public class ChainTestHandler implements DispatchHandler {
 
 2) DispatchHandler接口实现类的spring bean配置默认是 单例，所以在实现类里最好 **不用成员变量**，而要用局部变量， **成员变量是有状态的，会有线程安全问题**;
 
-#### 3.6 启动应用
+#### 3.7 启动应用
 完成如上步骤，启动应用，查看tiger启动日志，看到红线标注部分(start success)，代表启动成功，如图：
 
 ![startlog](https://github.com/tkyuan/tiger/blob/master/tiger-service/src/main/resources/img/startlog.png)
