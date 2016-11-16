@@ -20,9 +20,17 @@ public class TaskAttribute {
 	 */
 	private String ttid;
 	
+	private long taskId;
+	
+	private String bizUniqueId;
+	
 	public TaskAttribute(String hostName, String ttid){
 		this.hostName = hostName;
 		this.ttid = ttid;
+	}
+	
+	public TaskAttribute(){
+		
 	}
 
 	public String getHostName() {
@@ -31,6 +39,22 @@ public class TaskAttribute {
 
 	public String getTtid() {
 		return ttid;
+	}
+
+	public long getTaskId() {
+		return taskId;
+	}
+
+	public void setTaskId(long taskId) {
+		this.taskId = taskId;
+	}
+
+	public String getBizUniqueId() {
+		return bizUniqueId;
+	}
+
+	public void setBizUniqueId(String bizUniqueId) {
+		this.bizUniqueId = bizUniqueId;
 	}
 	
 

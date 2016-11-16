@@ -41,5 +41,13 @@ public interface DispatchTaskService {
 	 */
 	public boolean addRetryTimesAndExecuteTime(long taskId,
 			Date nextExecuteTime, TaskAttribute attr);
+	
+	/**
+	 * 取消一个任务
+	 * @param handlerGroup
+	 * @param attr
+	 * @return
+	 */
+	public boolean removeDispatchTask(String handlerGroup, TaskAttribute attr);
 
 }

@@ -25,4 +25,8 @@ public interface DispatchTaskDao {
 	public List<TigerTaskDo> findDispatchTasksWithLimit(String handlerGroup, String handler,List<Integer> nodeList, int limit);
 
 	public List<TigerTaskDo> findDispatchTasksWithLimitByBackFetch(String handlerGroup, String handler, List<Integer> nodeList, int limit, long id);
+	
+	public boolean cancelTaskById(String handlerGroup, long id);
+	
+	public boolean cancelTaskByBizUniqueId(String handlerGroup, String bizUniqueId);
 }

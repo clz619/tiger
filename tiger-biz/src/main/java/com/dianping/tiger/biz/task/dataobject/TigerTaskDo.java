@@ -73,6 +73,16 @@ public class TigerTaskDo {
 	 * tigerTraceId
 	 */
 	private String ttid;
+	
+	/**
+	 * 业务定义的唯一标示符,用于取消一个任务
+	 */
+	private String bizUniqueId;
+	
+	/**
+	 * 任务备注
+	 */
+	private String remark;
 
 	public Long getId() {
 		return id;
@@ -168,6 +178,22 @@ public class TigerTaskDo {
 
 	public void setTtid(String ttid) {
 		this.ttid = ttid;
+	}
+
+	public String getBizUniqueId() {
+		return bizUniqueId;
+	}
+
+	public void setBizUniqueId(String bizUniqueId) {
+		this.bizUniqueId = bizUniqueId;
+	}
+
+	public String getRemark() {
+		return remark;
+	}
+
+	public void setRemark(String remark) {
+		this.remark = remark;
 	}
 
 	public String toString() {

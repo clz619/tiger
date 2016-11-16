@@ -125,5 +125,19 @@ public class DispatchTaskSingleServiceImpl implements DispatchSingleService {
 		}
 		return taskList;
 	}
+	
+	@Override
+	public boolean removeDispatchTask(String handlerGroup, TaskAttribute attr) {
+		if(StringUtils.isBlank(handlerGroup) || attr == null){
+			return false;
+		}
+		if(attr.getTaskId() > 0){
+			return dispatchTaskDao.cancelTaskById(handlerGroup, attr.getTaskId());
+		}
+		if(!StringUtils.isBlank(attr.getBizUniqueId())){
+			return dispatchTaskDao.cancelTaskByBizUniqueId(handlerGroup, attr.getBizUniqueId());
+		}
+		return false;
+	}
 
 }

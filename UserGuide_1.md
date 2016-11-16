@@ -111,7 +111,7 @@ b) 上述3.1中``<property name="taskStrategy" value="1"/>``如果配置为各�
 ```
 #### 3.4 配置spring bean: com.dianping.tiger.core.TigerTaskUtil
 
-在tiger-service中的spring-handler.xml中配置TigerTaskUtil，此工具类用于添加一个tiger任务
+在tiger-service中的spring-handler.xml中配置TigerTaskUtil，此工具类提供静态方法，用于添加或取消一个任务
 
 ```
 <bean class="com.dianping.tiger.core.TigerTaskUtil">
