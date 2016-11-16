@@ -17,7 +17,9 @@
 		earliestExecuteTime,
 		parameter,
 		host,
-		ttid
+		ttid,
+		bizUniqueId,
+		remark
 	</sql>
 
     <insert id="tigerTask.insert" parameterClass="tigerTaskDo">
@@ -35,7 +37,9 @@
 		earliestExecuteTime,
 		parameter,
 		host,
-		ttid
+		ttid,
+		bizUniqueId,
+		remark
 		)
 		VALUES(
 		#id#,
@@ -49,7 +53,9 @@
 		#earliestExecuteTime#,
 		#parameter#,
 		#host#,
-		#ttid#
+		#ttid#,
+		#bizUniqueId#,
+		#remark#
 		)
 		]]>
 		<selectKey keyProperty="id" resultClass="java.lang.Long">
@@ -73,6 +79,24 @@
     	      host = #hostName#,
     	      ttid = #ttid#
     	WHERE id = #id# 
+    </update>
+    
+    <update id="tigerTask.cancelTaskById" parameterClass="map">
+    	UPDATE Tiger_Task
+    	SET   updateTime = now(),
+    		  status = #status#,
+    		  remark = CONCAT(remark, #extendRemark#)
+    	WHERE handlerGroup = #handlerGroup#
+    	AND   id = #id# 
+    </update>
+    
+    <update id="tigerTask.cancelTaskByBizUniqueId" parameterClass="map">
+    	UPDATE Tiger_Task
+    	SET   updateTime = now(),
+    		  status = #status#,
+    		  remark = CONCAT(remark, #extendRemark#)
+    	WHERE handlerGroup = #handlerGroup#
+    	AND   bizUniqueId = #bizUniqueId# 
     </update>
     
     <select id="tigerTask.queryTasksWithLimit" parameterClass="map" resultClass="tigerTaskDo">

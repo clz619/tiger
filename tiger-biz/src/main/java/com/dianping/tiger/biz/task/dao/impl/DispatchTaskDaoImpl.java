@@ -86,4 +86,33 @@ public class DispatchTaskDaoImpl extends SqlMapClientDaoSupport implements Dispa
         return getSqlMapClientTemplate().queryForList("tigerTask.queryTasksWithLimitByBackFetch", param);
 	}
 
+	@Override
+	public boolean cancelTaskById(String handlerGroup, long id) {
+		Map<String, Object> params = new HashMap<String, Object>();
+        params.put("handlerGroup", handlerGroup);
+        params.put("id", id);
+        params.put("status", 2);
+        params.put("extendRemark", "#canceledByBiz");
+        int num = getSqlMapClientTemplate().update("tigerTask.cancelTaskById", params);
+        if(num < 1){
+        	return false;
+        }
+		return true;
+	}
+
+	@Override
+	public boolean cancelTaskByBizUniqueId(String handlerGroup,
+			String bizUniqueId) {
+		Map<String, Object> params = new HashMap<String, Object>();
+        params.put("handlerGroup", handlerGroup);
+        params.put("bizUniqueId", bizUniqueId);
+        params.put("status", 2);
+        params.put("extendRemark", "#canceledByBiz");
+        int num = getSqlMapClientTemplate().update("tigerTask.cancelTaskByBizUniqueId", params);
+        if(num < 1){
+        	return false;
+        }
+		return true;
+	}
+
 }

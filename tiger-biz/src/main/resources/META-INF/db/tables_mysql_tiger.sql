@@ -18,6 +18,8 @@ CREATE TABLE Tiger_Task (
 	`parameter` varchar(1024) DEFAULT NULL,
 	`host` varchar(64) DEFAULT NULL,
 	`ttid` varchar(64) DEFAULT NULL,
+	`bizUniqueId` varchar(64) DEFAULT NULL,
+	`remark` varchar(128) DEFAULT NULL,
 	 PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 

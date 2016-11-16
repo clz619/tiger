@@ -15,10 +15,11 @@ import org.apache.commons.lang.builder.ToStringStyle;
  */
 public class DispatchTaskEntity implements Serializable{
 
+
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 8663925261412976809L;
+	private static final long serialVersionUID = 9210838180567319401L;
 
 	/**
 	 * 任务id
@@ -79,6 +80,16 @@ public class DispatchTaskEntity implements Serializable{
 	 * tigerTraceId
 	 */
 	private String ttid;
+	
+	/**
+	 * 业务定义的唯一标示符,用于取消一个任务
+	 */
+	private String bizUniqueId;
+	
+	/**
+	 * 任务备注
+	 */
+	private String remark;
 
 	public Long getId() {
 		return id;
@@ -174,6 +185,22 @@ public class DispatchTaskEntity implements Serializable{
 
 	public void setTtid(String ttid) {
 		this.ttid = ttid;
+	}
+
+	public String getBizUniqueId() {
+		return bizUniqueId;
+	}
+
+	public void setBizUniqueId(String bizUniqueId) {
+		this.bizUniqueId = bizUniqueId;
+	}
+
+	public String getRemark() {
+		return remark;
+	}
+
+	public void setRemark(String remark) {
+		this.remark = remark;
 	}
 
 	public String toString() {

@@ -108,4 +108,12 @@ public class DispatchTaskServiceMultiClientImpl implements DispatchMultiService{
 												nodeList, limit, taskId);
 	}
 
+	@Override
+	public boolean removeDispatchTask(String handlerGroup, TaskAttribute attr) {
+		if(StringUtils.isBlank(handlerGroup) || attr == null){
+			return false;
+		}
+		return dispatchTaskMultiBizService.removeDispatchTask(handlerGroup, attr);
+	}
+
 }

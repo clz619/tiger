@@ -7,10 +7,13 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import javax.annotation.Resource;
+
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import com.alibaba.fastjson.JSON;
 import com.dianping.tiger.api.dispatch.DispatchSingleService;
 import com.dianping.tiger.api.dispatch.DispatchTaskEntity;
@@ -104,4 +107,12 @@ public class DispatchTaskServiceSingleClientImpl implements
 												nodeList, limit, taskId);
 	}
 
+	@Override
+	public boolean removeDispatchTask(String handlerGroup, TaskAttribute attr) {
+		if(StringUtils.isBlank(handlerGroup) || attr == null){
+			return false;
+		}
+		return dispatchTaskSingleBizService.removeDispatchTask(handlerGroup, attr);
+	}
+	
 }
