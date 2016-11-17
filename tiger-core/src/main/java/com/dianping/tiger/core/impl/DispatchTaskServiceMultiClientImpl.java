@@ -45,8 +45,8 @@ public class DispatchTaskServiceMultiClientImpl implements DispatchMultiService{
 		DispatchTaskEntity bizEntity = new DispatchTaskEntity();
 		bizEntity.setHandlerGroup(taskEntity.getHandlerGroup());
 		bizEntity.setHandler(taskEntity.getHandler());
-		int loadbanlance = Math.abs(taskEntity.getLoadbalance());
-		bizEntity.setNode(loadbanlance % ScheduleServer.getInstance().getNumOfVisualNode());
+		int loadbalance = Math.abs(taskEntity.getLoadbalance());
+		bizEntity.setNode(loadbalance % ScheduleServer.getInstance().getNumOfVisualNode());
 		bizEntity.setRetryTimes(0);
 		bizEntity.setStatus(ScheduleConstants.TaskType.NEW.getValue());
 		bizEntity.setTtid(taskEntity.getTtid());
@@ -61,6 +61,7 @@ public class DispatchTaskServiceMultiClientImpl implements DispatchMultiService{
 		}else{
 			bizEntity.setParameter(taskEntity.getParameter());
 		}
+		bizEntity.setBizUniqueId(taskEntity.getBizUniqueId());
 		try {
 			long id = dispatchTaskMultiBizService.addDispatchTask(bizEntity);
 			return id;
@@ -72,7 +73,7 @@ public class DispatchTaskServiceMultiClientImpl implements DispatchMultiService{
 
 	@Override
 	public boolean updateTaskStatus(long taskId, int status, TaskAttribute attr) {
-		if(taskId < 1 || attr == null){
+		if(taskId < 1 || attr == null || attr.getNode() == null){
 			return false;
 		}
 		return dispatchTaskMultiBizService.updateTaskStatus(taskId, status, attr);
@@ -81,7 +82,7 @@ public class DispatchTaskServiceMultiClientImpl implements DispatchMultiService{
 	@Override
 	public boolean addRetryTimesAndExecuteTime(long taskId,
 			Date nextExecuteTime, TaskAttribute attr) {
-		if(taskId < 1 || nextExecuteTime == null || attr == null){
+		if(taskId < 1 || nextExecuteTime == null || attr == null || attr.getNode() == null){
 			return false;
 		}
 		return dispatchTaskMultiBizService.addRetryTimesAndExecuteTime(taskId, nextExecuteTime, attr);
@@ -110,7 +111,7 @@ public class DispatchTaskServiceMultiClientImpl implements DispatchMultiService{
 
 	@Override
 	public boolean removeDispatchTask(String handlerGroup, TaskAttribute attr) {
-		if(StringUtils.isBlank(handlerGroup) || attr == null){
+		if(StringUtils.isBlank(handlerGroup) || attr == null || attr.getNode() == null){
 			return false;
 		}
 		return dispatchTaskMultiBizService.removeDispatchTask(handlerGroup, attr);

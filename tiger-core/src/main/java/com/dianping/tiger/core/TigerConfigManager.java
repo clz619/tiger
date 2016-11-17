@@ -23,7 +23,7 @@ import com.dianping.tiger.engine.utils.ScheduleConstants;
  * 注册TigerConfigManager,等server启动后，启动tiger;配置参考如下:<br/>
  * <!-- 注册一个tigerConfigManager -->
 	<bean id="tigerConfigManager" class="com.dianping.tiger.core.TigerConfigManager">
-		<!-- 必须,设置20s轮询一次任务 -->
+		<!-- 必须,设置轮询任务间隔,20s一次 -->
 		<property name="interval" value="20"/>
 		<!-- 必须,设置zk集群地址 -->
 		<property name="zkConnectAddress" value="127.0.0.1:2181,10.25.13.11:2181"/>
@@ -37,9 +37,9 @@ import com.dianping.tiger.engine.utils.ScheduleConstants;
 		<property name="divideType" value="1"/>
 		<!-- 设置执行器策略，0-统一捞取任务策略；1-各个执行器各自捞取任务策略，默认为1 -->
 		<property name="taskStrategy" value="1"/>
-		<!-- 设置最小核心线程数，默认为2；taskStrategy为0时设置稍微大一点，比如10-->
+		<!-- 设置handler最小核心线程数，默认为2；taskStrategy为0时设置稍微大一点，比如10-->
 		<property name="ThreadCoreSize" value="5"/>
-		<!-- 设置最大核心线程数，默认为5；taskStrategy为0时设置稍微大一点，比如20-->
+		<!-- 设置handler最大核心线程数，默认为5；taskStrategy为0时设置稍微大一点，比如20-->
 		<property name="ThreadMaxSize" value="10"/>
 		<!-- 设置总调度开关,默认true,支持动态调整 -->
 		<property name="scheduleFlag" value="true"/>

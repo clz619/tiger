@@ -55,6 +55,7 @@ public class DispatchResultManager {
 		}
 		TaskAttribute attr = new TaskAttribute(ScheduleServer.getInstance().getServerName(), 
 													task.getTtid());
+		attr.setNode(task.getNode());
 		if (DispatchResult.SUCCESS.equals(result)) {
 			boolean flag = dispatchTaskService.updateTaskStatus(task.getId(),
 					ScheduleConstants.TaskType.SUCCESS.getValue(),attr);

@@ -57,14 +57,16 @@ public class TigerTaskUtil {
 	/**
 	 * 根据任务id取消一个任务
 	 * @param taskId
+	 * @param loadbalance 添加任务时设置的负责均衡参数
 	 * @return
 	 */
-	public static boolean removeTaskById(long taskId){
+	public static boolean removeTaskById(long taskId, int loadbalance){
 		if(taskId < 1){
 			return false;
 		}
 		TaskAttribute attr = new TaskAttribute();
 		attr.setTaskId(taskId);
+		attr.setNode(Math.abs(loadbalance) % ScheduleServer.getInstance().getNumOfVisualNode());
 		return dispatchTaskService.removeDispatchTask(ScheduleServer.getInstance().getHandlerGroup(), 
 														attr);
 	}
@@ -72,14 +74,16 @@ public class TigerTaskUtil {
 	/**
 	 * 根据业务自定义的业务标示符取消一个任务
 	 * @param bizUniqueId
+	 * @param loadbalance 添加任务时设置的负责均衡参数
 	 * @return
 	 */
-	public static boolean removeTaskByBizUniqueId(String bizUniqueId){
+	public static boolean removeTaskByBizUniqueId(String bizUniqueId,int loadbalance){
 		if(StringUtils.isBlank(bizUniqueId)){
 			return false;
 		}
 		TaskAttribute attr = new TaskAttribute();
 		attr.setBizUniqueId(bizUniqueId);
+		attr.setNode(Math.abs(loadbalance) % ScheduleServer.getInstance().getNumOfVisualNode());
 		return dispatchTaskService.removeDispatchTask(ScheduleServer.getInstance().getHandlerGroup(), 
 				attr);
 	}
@@ -88,4 +92,6 @@ public class TigerTaskUtil {
 		TigerTaskUtil.dispatchTaskService = dispatchTaskService;
 	}
 	
+	
+
 }

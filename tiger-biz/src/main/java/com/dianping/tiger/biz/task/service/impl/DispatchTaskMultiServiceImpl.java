@@ -65,6 +65,7 @@ public class DispatchTaskMultiServiceImpl implements DispatchMultiService{
 		}else{
 			entity.setParameter(taskEntity.getParameter());
 		}
+		entity.setBizUniqueId(taskEntity.getBizUniqueId());
 		try {
 			long id = dispatchTaskDao.addDispatchTask(entity);
 			return id;

@@ -90,7 +90,7 @@ com.dianping.tiger.biz.task.service.impl.DispatchTaskSingleServiceImpl
 
 ```
 <bean id="tigerConfigManager" class="com.dianping.tiger.core.TigerConfigManager">
-		<!-- 必须,设置20s轮询一次任务 -->
+		<!-- 必须,设置轮询任务间隔,20s一次 -->
 		<property name="interval" value="20"/>
 		<!-- 必须,设置zk集群地址 -->
 		<property name="zkConnectAddress" value="127.0.0.1:2181,10.25.13.11:2181"/>
@@ -104,9 +104,9 @@ com.dianping.tiger.biz.task.service.impl.DispatchTaskSingleServiceImpl
 		<property name="divideType" value="1"/>
 		<!-- 设置执行器策略，0-统一捞取任务策略；1-各个执行器各自捞取任务策略，默认为1 -->
 		<property name="taskStrategy" value="1"/>
-		<!-- 设置最小核心线程数，默认为2；taskStrategy为0时设置稍微大一点，比如10-->
+		<!-- 设置执行器最小核心线程数，默认为2；taskStrategy为0时设置稍微大一点，比如10-->
 		<property name="ThreadCoreSize" value="5"/>
-		<!-- 设置最大核心线程数，默认为5；taskStrategy为0时设置稍微大一点，比如20-->
+		<!-- 设置执行器最大核心线程数，默认为5；taskStrategy为0时设置稍微大一点，比如20-->
 		<property name="ThreadMaxSize" value="10"/>
 		<!-- 设置总调度开关,默认true,支持动态调整 -->
 		<property name="scheduleFlag" value="true"/>
@@ -118,15 +118,15 @@ com.dianping.tiger.biz.task.service.impl.DispatchTaskSingleServiceImpl
 	
 ```
 其中，zkConnectAddress需要是tiger-service提供的zk地址.
-#### 3.3 在spring xml中配置bean: dispatchTaskService
+#### 3.3 配置spring bean: dispatchTaskService
   
-a) 上述3.1中``<property name="taskStrategy" value="0"/>``如果配置为统一捞取任务策略(single)，则配置
+a) 上述3.1中``<property name="taskStrategy" value="0"/>``如果配置为统一捞取任务策略(single)，则在spring xml中配置:
 
 ```
 <bean id="dispatchTaskService" 
 		class="com.dianping.tiger.core.impl.DispatchTaskServiceSingleClientImpl"/>
 ```
-b) 上述3.1中``<property name="taskStrategy" value="1"/>``如果配置为各个执行器各自捞取任务策略(multi)，则配置
+b) 上述3.1中``<property name="taskStrategy" value="1"/>``如果配置为各个执行器各自捞取任务策略(multi)，则在spring xml中配置:
 
 ```
 <bean id="dispatchTaskService" 
