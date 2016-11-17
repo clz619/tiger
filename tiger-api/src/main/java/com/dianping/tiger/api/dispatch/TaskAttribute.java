@@ -24,6 +24,11 @@ public class TaskAttribute {
 	
 	private String bizUniqueId;
 	
+	/**
+	 * 任务所在节点，分库分表时会用到此字段
+	 */
+	private Integer node;
+	
 	public TaskAttribute(String hostName, String ttid){
 		this.hostName = hostName;
 		this.ttid = ttid;
@@ -55,6 +60,14 @@ public class TaskAttribute {
 
 	public void setBizUniqueId(String bizUniqueId) {
 		this.bizUniqueId = bizUniqueId;
+	}
+
+	public Integer getNode() {
+		return node;
+	}
+
+	public void setNode(Integer node) {
+		this.node = node;
 	}
 	
 

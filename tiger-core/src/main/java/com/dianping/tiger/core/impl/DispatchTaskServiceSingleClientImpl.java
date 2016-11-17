@@ -61,6 +61,7 @@ public class DispatchTaskServiceSingleClientImpl implements
 		}else{
 			bizEntity.setParameter(taskEntity.getParameter());
 		}
+		bizEntity.setBizUniqueId(taskEntity.getBizUniqueId());
 		try {
 			long id = dispatchTaskSingleBizService.addDispatchTask(bizEntity);
 			return id;
@@ -72,7 +73,7 @@ public class DispatchTaskServiceSingleClientImpl implements
 
 	@Override
 	public boolean updateTaskStatus(long taskId, int status, TaskAttribute attr) {
-		if(taskId < 1 || attr == null){
+		if(taskId < 1 || attr == null || attr.getNode() == null){
 			return false;
 		}
 		return dispatchTaskSingleBizService.updateTaskStatus(taskId, status, attr);
@@ -81,7 +82,7 @@ public class DispatchTaskServiceSingleClientImpl implements
 	@Override
 	public boolean addRetryTimesAndExecuteTime(long taskId,
 			Date nextExecuteTime, TaskAttribute attr) {
-		if(taskId < 1 || nextExecuteTime == null || attr == null){
+		if(taskId < 1 || nextExecuteTime == null || attr == null || attr.getNode() == null){
 			return false;
 		}
 		return dispatchTaskSingleBizService.addRetryTimesAndExecuteTime(taskId, nextExecuteTime, attr);
@@ -109,7 +110,7 @@ public class DispatchTaskServiceSingleClientImpl implements
 
 	@Override
 	public boolean removeDispatchTask(String handlerGroup, TaskAttribute attr) {
-		if(StringUtils.isBlank(handlerGroup) || attr == null){
+		if(StringUtils.isBlank(handlerGroup) || attr == null || attr.getNode() == null){
 			return false;
 		}
 		return dispatchTaskSingleBizService.removeDispatchTask(handlerGroup, attr);
