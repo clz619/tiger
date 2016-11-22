@@ -47,6 +47,14 @@ public class DispatchParam {
 	}
 	
 	/**
+	 * 获取任务所在的节点
+	 * @return
+	 */
+	public int getTaskNode(){
+		return (Integer) this.getProperty("node");
+	}
+	
+	/**
 	 * 获取traceId
 	 * @return
 	 */
