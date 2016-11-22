@@ -69,6 +69,7 @@ public class EventConsumer implements Runnable {
 			ThreadContext.put("ttid", ttid);
 			DispatchParam param = new DispatchParam();
 			param.addProperty("id", task.getId());
+			param.addProperty("node", task.getNode());
 			param.addProperty("traceId", ttid);
 			param.addProperty("handlerGroup", task.getHandlerGroup());
 			param.addProperty("retryTimes", task.getRetryTimes());
