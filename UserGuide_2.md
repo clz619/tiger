@@ -105,9 +105,9 @@ com.dianping.tiger.biz.task.service.impl.DispatchTaskSingleServiceImpl
 		<!-- 设置执行器策略，0-统一捞取任务策略；1-各个执行器各自捞取任务策略，默认为1 -->
 		<property name="taskStrategy" value="1"/>
 		<!-- 设置执行器最小核心线程数，默认为2；taskStrategy为0时设置稍微大一点，比如10-->
-		<property name="ThreadCoreSize" value="5"/>
+		<property name="threadCoreSize" value="5"/>
 		<!-- 设置执行器最大核心线程数，默认为5；taskStrategy为0时设置稍微大一点，比如20-->
-		<property name="ThreadMaxSize" value="10"/>
+		<property name="threadMaxSize" value="10"/>
 		<!-- 设置总调度开关,默认true,支持动态调整 -->
 		<property name="scheduleFlag" value="true"/>
 		<!-- 设置启用巡航模式，默认true,支持动态调整 -->
