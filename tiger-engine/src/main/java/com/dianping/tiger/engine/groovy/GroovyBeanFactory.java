@@ -247,7 +247,7 @@ public class GroovyBeanFactory {
 	}
 
 	private boolean isClassTypeHandler(String code) {
-		if (code.indexOf("tiger.dispatch.DispatchHandler") >= 0) {
+		if (code.indexOf("dispatch.DispatchHandler") >= 0) {
 			return true;
 		} else {
 			return false;
