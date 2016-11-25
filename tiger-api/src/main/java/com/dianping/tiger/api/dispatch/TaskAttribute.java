@@ -3,13 +3,20 @@
  */
 package com.dianping.tiger.api.dispatch;
 
+import java.io.Serializable;
+
 
 /**
  * @author yuantengkai
  * 任务执行属性
  */
-public class TaskAttribute {
+public class TaskAttribute implements Serializable{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -6629934288710534259L;
+
 	/**
 	 * 执行机器, handler里参数可以取自ScheduleServer.getInstance().getServerName()
 	 */
