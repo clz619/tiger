@@ -8,7 +8,7 @@
     <modelVersion>4.0.0</modelVersion>
     <artifactId>tiger-biz</artifactId>
     <packaging>jar</packaging>
-    <version>2.0.0-SNAPSHOT</version>
+    <version>2.0.0</version>
     <name>tiger-biz</name>
 
     <properties>
@@ -19,7 +19,7 @@
     	<dependency>
 			<groupId>com.dianping</groupId>
 			<artifactId>tiger-api</artifactId>
-			<version>2.0.0-SNAPSHOT</version>
+			<version>2.0.0</version>
 		</dependency>
 		
     	<dependency>

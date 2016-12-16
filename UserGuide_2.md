@@ -142,7 +142,11 @@ b) 上述3.1中``<property name="taskStrategy" value="1"/>``如果配置为各�
 		<property name="dispatchTaskService" ref="dispatchTaskService"/>
 	</bean>
 ```
+比如，要添加一个任务，使用如下方法（具体的注释及其它方法请看内部实现）：
 
+```
+TigerTaskUtil.addTask(String handler, Date executeTime, int loadbalance,String params, String bizUniqueId);
+```
 
 #### 3.5 引入spring-tiger.xml
 在appServer的applicationContext.xml中引入spring-tiger.xml
