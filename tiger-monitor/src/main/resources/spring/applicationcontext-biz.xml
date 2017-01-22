@@ -15,8 +15,8 @@
      
      <bean id="monitorDetailEsManager" 
      	class="com.dianping.tiger.monitor.es.MonitorDetailEsManager" init-method="init" destroy-method="destroy">
-     	<property name="clusterName" value="wed-es"/>
-     	<property name="esServers" value="192.168.224.132:9300"/>
+     	<property name="clusterName" value="xxx-es"/>
+     	<property name="esServers" value="127.0.0.1:9300"/>
      </bean>
      
      <!-- dao -->
