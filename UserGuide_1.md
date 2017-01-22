@@ -58,7 +58,7 @@
 <dependency>
     <groupId>com.dianping</groupId>
     <artifactId>tiger-core</artifactId>
-    <version>2.1.1</version>
+    <version>2.1.0</version>
 </dependency>
 ```
 
