@@ -23,7 +23,7 @@
 	<!-- 启动MVC注解功能 -->
 	<mvc:annotation-driven /> 
 	<!-- 配置bean作用域 -->
-	<context:component-scan base-package="com.dianping.tiger.monitor.controller" />
+	<context:component-scan base-package="com.dianping.tiger.monitor.web.controller" />
 	
 	<!-- 静态资源映射 （引用 "/resources/**" 的路径引用转到工程的/resources/目录取资源） -->
 	<mvc:resources mapping="/static/**" location="/static/" />
@@ -50,18 +50,18 @@
 		<property name="order" value="0" />
 	</bean>
 	
-	<!-- 拦截器 -->
+	<!-- 拦截器 
 	<mvc:interceptors>
 		<mvc:interceptor>
 			<mvc:mapping path="/**"/>
 			<bean class="com.dianping.tiger.monitor.controller.interceptor.PermissionInterceptor"/>
 		</mvc:interceptor>
-	</mvc:interceptors>
+	</mvc:interceptors>  -->
 	
 	<!-- 异常解析器 -->
- 	<bean id="exceptionResolver" class="com.dianping.tiger.monitor.controller.resolver.WebExceptionResolver"/>
+ 	<bean id="exceptionResolver" class="com.dianping.tiger.monitor.web.WebExceptionResolver"/>
 	
-	<!-- 多部分解析器（文件上传组件) -->
+	<!-- 多部分解析器（文件上传组件) 
 	<bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver"/>
-	
+	-->
 </beans>

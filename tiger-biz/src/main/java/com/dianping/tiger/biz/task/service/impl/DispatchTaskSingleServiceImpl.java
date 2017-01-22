@@ -87,6 +87,14 @@ public class DispatchTaskSingleServiceImpl implements DispatchSingleService {
 		return dispatchTaskDao.addRetryTimesAndExecuteTime(taskId, nextExecuteTime, 
 						attr.getHostName(), attr.getTtid());
 	}
+	
+	@Override
+	public boolean addRetryTimesByFail(long taskId,Date nextExecuteTime, TaskAttribute attr){
+		if(taskId < 1 || nextExecuteTime == null || attr == null){
+			return false;
+		}
+		return dispatchTaskDao.addRetryTimesByFail(taskId, nextExecuteTime, attr.getHostName(), attr.getTtid());
+	}
 
 	@Override
 	public List<DispatchTaskEntity> findDispatchTasksWithLimit(

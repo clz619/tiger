@@ -9,16 +9,27 @@ package com.dianping.tiger.engine.monitor;
  */
 public class MonitorDetail {
 
+private String handlerGroup;
+	
 	private String handler;
 
 	private int success;// 1-成功
 
 	private int costTime;// ms
 	
-	public MonitorDetail(String handler,int success,int costTime){
+	public MonitorDetail(String handlerGroup, String handler,int success,int costTime){
+		this.handlerGroup = handlerGroup;
 		this.handler=handler;
 		this.success=success;
 		this.costTime = costTime;
+	}
+
+	public String getHandlerGroup() {
+		return handlerGroup;
+	}
+
+	public void setHandlerGroup(String handlerGroup) {
+		this.handlerGroup = handlerGroup;
 	}
 
 	public String getHandler() {

@@ -43,6 +43,15 @@ public interface DispatchTaskService {
 			Date nextExecuteTime, TaskAttribute attr);
 	
 	/**
+	 * 失败重试
+	 * @param taskId
+	 * @param nextExecuteTime
+	 * @param attr
+	 * @return
+	 */
+	public boolean addRetryTimesByFail(long taskId,Date nextExecuteTime, TaskAttribute attr);
+	
+	/**
 	 * 取消一个任务
 	 * @param handlerGroup
 	 * @param attr

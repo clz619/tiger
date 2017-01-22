@@ -1,0 +1,77 @@
+##创建索引
+curl -XPUT localhost:9200/tigermonitorv1?pretty -d '
+{
+    "mappings": {
+        "tigerdetail": {
+            "properties": {
+                "taskId": {
+                    "type": "long",
+                    "index": "not_analyzed"
+                },
+                "addTime": {
+                    "type": "long",
+                    "index": "no"
+                },
+                "monitorTime": {
+                    "type": "long",
+                    "index": "not_analyzed"
+                },
+                "handlerGroup": {
+                    "type": "string",
+                    "index": "no"
+                },
+                "handler": {
+                    "type": "string",
+                    "index": "no"
+                },
+                "node": {
+                    "type": "long",
+                    "index": "no"
+                },
+                "retryTimes": {
+                    "type": "long",
+                    "index": "no"
+                },
+                "status": {
+                    "type": "long",
+                    "index": "no"
+                },
+                "earliestExecuteTime": {
+                    "type": "long",
+                    "index": "no"
+                },
+                "parameter": {
+                    "type": "string",
+                    "index": "analyzed"
+                },
+                "host": {
+                    "type": "string",
+                    "index": "no"
+                },
+                "ttid": {
+                    "type": "string",
+                    "index": "not_analyzed"
+                },
+                "bizUniqueId": {
+                    "type": "string",
+                    "index": "not_analyzed"
+                },
+                "remark": {
+                    "type": "string",
+                    "index": "no"
+                },
+                "executeResult": {
+                    "type": "string",
+                    "index": "no"
+                }
+            }
+        }
+    }
+}'
+##别名索引
+curl -XPOST 'http://localhost:9200/_aliases' -d '
+{
+    "actions": [
+        {"add": {"index": "tigermonitorv1", "alias": "tigermonitor"}}
+    ]
+}'

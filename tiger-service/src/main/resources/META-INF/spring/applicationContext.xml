@@ -14,9 +14,11 @@
 	
 	<!-- 声明式注入-->
 	<context:annotation-config/>
+	<aop:config/>
 	
 	<import resource="classpath:/META-INF/spring/spring-db-config.xml"/>
 	<import resource="classpath:/META-INF/spring/spring-biz.xml"/>
+	<import resource="classpath:/META-INF/spring/spring-aop.xml"/>
 	
 	<!-- 单体部署方式下引入此 -->
 	<import resource="classpath:/META-INF/spring/spring-tiger.xml"/>

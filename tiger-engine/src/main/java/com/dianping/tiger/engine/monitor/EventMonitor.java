@@ -33,11 +33,12 @@ public class EventMonitor {
 			.getLogger(EventMonitor.class);
 
 	public static final int SUCCESS = 1;
-
+	
 	private static final EventMonitor instance = new EventMonitor();
 
 	private BlockingQueue<MonitorDetail> monitorQueue;
 
+	//key:handlerGroup_handler
 	private ConcurrentHashMap<String, MonitorStatistics> monitorMap;
 
 	private AtomicBoolean sendThreadInit = new AtomicBoolean(false);
@@ -56,12 +57,13 @@ public class EventMonitor {
 	/**
 	 * 记录监控数据
 	 * 
+	 * @param handlerGroup
 	 * @param handler
 	 * @param success
 	 * @param cost
 	 */
-	public void record(String handler, int success, int cost) {
-		monitorQueue.offer(new MonitorDetail(handler, success, cost));
+	public void record(String handlerGroup, String handler, int success, int cost) {
+		monitorQueue.offer(new MonitorDetail(handlerGroup, handler, success, cost));
 		if (queueThreadInit.compareAndSet(false, true)) {
 			startQueueDeal();
 		}
@@ -78,12 +80,12 @@ public class EventMonitor {
 				while (true) {
 					try {
 						MonitorDetail mDetail = monitorQueue.take();
-						MonitorStatistics mStatistics = monitorMap.get(mDetail
-								.getHandler());
+						String key = mDetail.getHandlerGroup()+"_" + mDetail.getHandler();
+						MonitorStatistics mStatistics = monitorMap.get(key);
 						if (mStatistics == null) {
 							mStatistics = new MonitorStatistics();
 							MonitorStatistics exist = monitorMap.putIfAbsent(
-									mDetail.getHandler(), mStatistics);
+									key, mStatistics);
 							if (exist != null) {
 								mStatistics = exist;
 							}
@@ -120,11 +122,15 @@ public class EventMonitor {
 			public void run() {
 				while (true) {
 					try {
-						Thread.sleep(2 * 60 * 1000);
+						Thread.sleep(2 * 60 * 1000);//2分钟一次采集
 						for (Entry<String, MonitorStatistics> e : monitorMap
 								.entrySet()) {
+							// timestamp | handlerGroup | handlername | hostname | 
+							// totalNum | sucNum | failNum | avgCost | maxCost | minCost
 							long timestamp = new Date().getTime();
-							String handler = e.getKey();
+							String groupHandler = e.getKey();
+							String group = groupHandler.split("_")[0];
+							String handler = groupHandler.split("_")[1];
 							MonitorStatistics ms = e.getValue();
 							int totalCount = ms.getTotalCount();
 							int successCount = ms.getSuccessCount();
@@ -134,6 +140,7 @@ public class EventMonitor {
 							int min = ms.getMinCost();
 							StringBuilder sb = new StringBuilder();
 							sb.append(timestamp).append("|");
+							sb.append(group).append("|");
 							sb.append(handler).append("|");
 							sb.append(
 									ScheduleServer.getInstance()

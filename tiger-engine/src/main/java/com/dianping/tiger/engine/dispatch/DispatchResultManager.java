@@ -70,7 +70,7 @@ public class DispatchResultManager {
 			if (task.getRetryTimes() < MAX_FAIL_TIMES) {
 				Calendar c = Calendar.getInstance();
 				c.add(Calendar.MINUTE, task.getRetryTimes() + 1);// 每多重试一次，就多延迟1分钟后执行
-				boolean flag = dispatchTaskService.addRetryTimesAndExecuteTime(
+				boolean flag = dispatchTaskService.addRetryTimesByFail(
 						task.getId(), c.getTime(), attr);
 				if (!flag) {
 					logger.warn("task execute failed, update retryTimes failed,"

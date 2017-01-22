@@ -8,7 +8,7 @@
     <modelVersion>4.0.0</modelVersion>
     <artifactId>tiger-biz</artifactId>
     <packaging>jar</packaging>
-    <version>2.0.0</version>
+    <version>${tiger.version}</version>
     <name>tiger-biz</name>
 
     <properties>
@@ -19,7 +19,7 @@
     	<dependency>
 			<groupId>com.dianping</groupId>
 			<artifactId>tiger-api</artifactId>
-			<version>2.0.0</version>
+			<version>${tiger.version}</version>
 		</dependency>
 		
     	<dependency>
@@ -50,6 +50,11 @@
 			<artifactId>spring</artifactId>
 			<version>2.5.6</version>
 		</dependency>
+		<dependency>
+		    <groupId>org.aspectj</groupId>
+		    <artifactId>aspectjweaver</artifactId>
+		    <version>1.8.9</version>
+		</dependency>
         <!-- ibatis -->
         <dependency>
 		    <groupId>ibatis</groupId>
@@ -73,6 +78,12 @@
 		    <groupId>com.alibaba</groupId>
 		    <artifactId>fastjson</artifactId>
 		    <version>1.1.39</version>
+		</dependency>
+		<!-- httpclient -->
+		<dependency>
+			<groupId>org.apache.httpcomponents</groupId>
+			<artifactId>httpclient</artifactId>
+			<version>4.3.6</version>
 		</dependency>
     </dependencies>
 

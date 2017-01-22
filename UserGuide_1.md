@@ -50,6 +50,7 @@
       <appender-ref ref="TIGER"/>
 </logger>
 ```
+注：TIGER appender的日志输出级别可以根据需要调整为WARN级别。
 
 ### Step三. 项目启动
 #### 3.1 依赖tiger-core
@@ -57,7 +58,7 @@
 <dependency>
     <groupId>com.dianping</groupId>
     <artifactId>tiger-core</artifactId>
-    <version>2.0.0-SNAPSHOT</version>
+    <version>2.1.1</version>
 </dependency>
 ```
 
@@ -109,6 +110,7 @@ b) 上述3.1中``<property name="taskStrategy" value="1"/>``如果配置为各�
 <bean id="dispatchTaskService" 
 		class="com.dianping.tiger.core.impl.DispatchTaskServiceMultiClientImpl"/>
 ```
+
 #### 3.4 配置spring bean: com.dianping.tiger.core.TigerTaskUtil
 
 在tiger-service中的spring-handler.xml中配置TigerTaskUtil，此工具类提供静态方法，用于添加或取消一个任务
@@ -123,6 +125,7 @@ b) 上述3.1中``<property name="taskStrategy" value="1"/>``如果配置为各�
 ```
 TigerTaskUtil.addTask(String handler, Date executeTime, int loadbalance,String params, String bizUniqueId);
 ```
+
 
 #### 3.5 引入spring-tiger.xml
 在tiger-service中的applicationContext.xml中引入spring-tiger.xml
@@ -158,6 +161,8 @@ public class ChainTestHandler implements DispatchHandler {
 
 2) DispatchHandler接口实现类的spring bean配置默认是 单例，所以在实现类里最好 **不用成员变量**，而要用局部变量， **成员变量是有状态的，会有线程安全问题**;
 
+3) param.getBizParameter()的类型与你之前addTask时候的入参类型保持一致，tiger不会做任何转换;
+
 #### 3.7 启动应用
 完成如上步骤，先启动zookeeper服务，再启动应用，查看tiger启动日志，看到红线标注部分(start success)，代表启动成功，如图：
 
@@ -165,7 +170,7 @@ public class ChainTestHandler implements DispatchHandler {
   
 
 ## ======Tiger任务动态加载Groovy======
-自 ***1.2.0*** 版本起，tiger支持任务代码的动态修改，通过groovy来实现，但不是很建议用
+自 ***1.2.0*** 版本起，tiger支持任务代码的动态修改，通过groovy来实现，**但不是很建议用**
 
 ### groovy动态加载接入说明
 1 配置启用groovy动态加载开关，上述3.1中加入如下配置:
@@ -180,7 +185,7 @@ public class ChainTestHandler implements DispatchHandler {
 com.dianping.tiger.engine.groovy.IGroovyCodeRepo
 ```
 
-3 接下来实现任务分发接口（同step 3.4）
+3 接下来实现任务分发接口（同step 3.6）
 
 **groovy特别说明**
 
@@ -201,21 +206,3 @@ import com.dianping.tiger.engine.annotation.GroovyBeanType;
 class GroovyTest implements DispatchHandler {
 }
 ```
-
-## ======Tiger监控======
-tiger应用运行期间，支持任务监控，部署tiger-monitor;
-并且，在tiger应用中，上述3.1中增加如下两个配置：监控地址和监控开关
-
-```
-<property name="monitorUrl" value="http://127.0.0.1:8080"/>
-
-<property name="enableMonitor" value="true"/>
-
-```
-**注意点:**
-tiger监控用的是文件存储方式，需要对/data/appdatas/tiger/目录有读写权限
-
-tiger监控截图：
-
-![monitor](https://github.com/tkyuan/tiger/blob/master/tiger-service/src/main/resources/img/monitor.png)
-

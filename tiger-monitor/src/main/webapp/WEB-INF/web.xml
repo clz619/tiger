@@ -3,7 +3,7 @@
 	xmlns="http://java.sun.com/xml/ns/javaee" xmlns:web="http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
 	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
 	id="WebApp_ID" version="2.5">
-	<display-name>wed-tiger-monitor-web</display-name>
+	<display-name>tiger-monitor-web</display-name>
 	<context-param>
 		<param-name>webAppRootKey</param-name>
 		<param-value>updown.root</param-value>
@@ -11,12 +11,12 @@
 	<!--spring -->
 	<context-param>
 		<param-name>contextConfigLocation</param-name>
-		<param-value>classpath:spring/applicationcontext-*.xml</param-value>
+		<param-value>classpath:spring/applicationContext.xml</param-value>
 	</context-param>
 	<!--log4j -->
 	<context-param>
 		<param-name>log4jConfigLocation</param-name>
-		<param-value>classpath:log/log4j.properties</param-value>
+		<param-value>classpath:log/log4j.xml</param-value>
 	</context-param>
 	<context-param>
 		<param-name>log4jRefreshInterval</param-name>

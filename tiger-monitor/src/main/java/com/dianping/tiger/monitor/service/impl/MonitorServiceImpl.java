@@ -1,145 +1,212 @@
 package com.dianping.tiger.monitor.service.impl;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentMap;
-
-import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.collections.MapUtils;
+import javax.annotation.Resource;
+import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Service;
+import com.dianping.tiger.monitor.component.PageModel;
+import com.dianping.tiger.monitor.dao.MonitorRecordDao;
+import com.dianping.tiger.monitor.dataobject.TigerMonitorRecordDo;
+import com.dianping.tiger.monitor.es.MonitorDetailEsManager;
+import com.dianping.tiger.monitor.service.MonitorService;
+import com.dianping.tiger.monitor.vo.TigerDetailVo;
 
-import com.dianping.tiger.monitor.core.constant.CommonDic.ReturnCodeEnum;
-import com.dianping.tiger.monitor.core.exception.WebException;
-import com.dianping.tiger.monitor.core.model.MonitorRecord;
-import com.dianping.tiger.monitor.core.thread.MonitorThreadHelper;
-import com.dianping.tiger.monitor.core.util.FileDbUtil;
-import com.dianping.tiger.monitor.service.IMonitorService;
 
 /**
  * monitor record
  * 
- * @author xuxueli
+ * @author yuantengkai
  */
-@Service("monitorService")
-public class MonitorServiceImpl implements IMonitorService {
+public class MonitorServiceImpl implements MonitorService {
 
-	private static Logger logger = LoggerFactory
-			.getLogger(MonitorServiceImpl.class);
+	private static final Logger logger = LoggerFactory.getLogger(MonitorServiceImpl.class);
 
-	private static final SimpleDateFormat FormatDate_yyyyMMdd = new SimpleDateFormat(
-			"yyyyMMdd");
-
-	private static ConcurrentMap<String, Map<String, List<MonitorRecord>>> localDateCache = new ConcurrentHashMap<String, Map<String, List<MonitorRecord>>>(
-			32);
-
-	private static ConcurrentMap<String, Long> localTimeCache = new ConcurrentHashMap<String, Long>(
-			32);
+	@Resource
+	private MonitorRecordDao monitorRecordDao;
 	
-	private static ConcurrentMap<String, Object> localObjCache = new ConcurrentHashMap<String, Object>();
+	@Resource
+	private MonitorDetailEsManager monitorDetailEsManager;
+	
+	
+	
+	@Override
+	public void dealStatisticsData(String originData) {
+		if(StringUtils.isBlank(originData)){
+			return;
+		}
+		TigerMonitorRecordDo record = this.parseOriginData(originData);
+		if (record == null) {
+			logger.warn("parase originData fail:{}", originData);
+			return;
+		}
+		try{
+			monitorRecordDao.addMonitorRecord(record);
+		} catch(Exception e){
+			logger.error("插入监控统计数据db异常,"+record, e);
+		}
+	}
+	
+	/**
+	 * 解析接收到的监控统计数据
+	 * @param originData
+	 * @return
+	 */
+	private TigerMonitorRecordDo parseOriginData(String originData){
+		try {
+			// 解析数据：时间戳 | handlerGroup | handlername | hostname | totalNum | sucNum | failNum
+			// | avgCost | maxCost | minCost
+			String[] strArray = originData.split("\\|");
+			if (strArray.length == 10) {
+				TigerMonitorRecordDo item = new TigerMonitorRecordDo();
+				item.setMonitorTime(new Date(Long.valueOf(strArray[0]
+						.trim())));
+				item.setHandlerGroup(strArray[1].trim());
+				item.setHandlerName(strArray[2].trim());
+				item.setHostName(strArray[3].trim());
+				item.setTotalNum(Integer.valueOf(strArray[4].trim()));
+				item.setSucNum(Integer.valueOf(strArray[5].trim()));
+				item.setFailNum(Integer.valueOf(strArray[6].trim()));
+				item.setAvgCost(Long.valueOf(strArray[7].trim()));
+				item.setMaxCost(Long.valueOf(strArray[8].trim()));
+				item.setMinCost(Long.valueOf(strArray[9].trim()));
+				return item;
+			}
+		} catch (Exception e) {
+			logger.error("parseOriginData exception,data:" + originData, e);
+		}
+		return null;
+	}
+	
+	@Override
+	public void dealDetailData(String detailData){
+		if(StringUtils.isBlank(detailData)){
+			return;
+		}
+		TigerDetailVo detailVo = this.parseDetailData(detailData);
+		if(detailVo == null){
+			logger.warn("parase detailData fail:{}", detailData);
+			return;
+		}
+		try{
+			monitorDetailEsManager.buildIndex(detailVo);
+		}catch(Exception e){
+			logger.error("插入监控详情数据发生异常,"+detailVo, e);
+		}
+		
+	}
+	
+	private TigerDetailVo parseDetailData(String detailData) {
+		try{
+			// id|addTime|moitorTime|handlerGroup|handler|node|retryTimes|status
+			// |earliestExecuteTime|parameter|host|ttid|bizUniqueId|remark|type
+			String[] strArray = detailData.split("\\|");
+			if(strArray.length == 15){
+				TigerDetailVo detailVo = new TigerDetailVo();
+				detailVo.setTaskId(Long.valueOf(strArray[0].trim()));
+				detailVo.setAddTime(Long.valueOf(strArray[1].trim()));
+				detailVo.setMonitorTime(Long.valueOf(strArray[2].trim()));
+				detailVo.setHandlerGroup(strArray[3].trim());
+				detailVo.setHandler(strArray[4].trim());
+				detailVo.setNode(Integer.valueOf(strArray[5].trim()));
+				detailVo.setRetryTimes(Integer.valueOf(strArray[6].trim()));
+				detailVo.setStatus(Integer.valueOf(strArray[7].trim()));
+				detailVo.setEarliestExecuteTime(Long.valueOf(strArray[8].trim()));
+				//parameter json
+				String param = strArray[9].trim();
+				if(StringUtils.isBlank(param)){
+					detailVo.setParameter("");
+				}else{
+//					JSONObject jb = JSON.parseObject(param);
+//					StringBuilder sb = new StringBuilder();
+//					for(Entry<String, Object> e : jb.entrySet()){
+//						sb.append(e.getKey()).append(" ");
+//						sb.append(e.getValue()).append(" ");
+//					}
+//					detailVo.setParameter(sb.substring(0, sb.length()-1));
+					detailVo.setParameter(param);
+				}
+				detailVo.setHost(strArray[10].trim());
+				detailVo.setTtid(strArray[11].trim());
+				detailVo.setBizUniqueId(strArray[12].trim());
+				detailVo.setRemark(strArray[13].trim());
+				detailVo.setExecuteResult(strArray[14].trim());
+				return detailVo;
+			}
+		}catch(Exception e){
+			logger.error("parse detailData exception,data:" + detailData, e);
+		}
+		return null;
+	}
 
 	@Override
-	public Map<String, List<MonitorRecord>> queryMonitorData(
+	public Map<String, List<TigerMonitorRecordDo>> queryMonitorData(String handlerGroup,
 			String handlerName, Date monitorTimeFrom, Date monitorTimeTo) {
-
-		Map<String, List<MonitorRecord>> wholeMap = new HashMap<String, List<MonitorRecord>>();
-
-		// ========cache deal======
-		String cacheKey = FormatDate_yyyyMMdd.format(monitorTimeFrom)
-				.concat("_").concat(handlerName);
-
-		String cacheDateKey = FormatDate_yyyyMMdd.format(new Date());
-
-		Long cacheDate = localTimeCache.get(cacheDateKey);
-		if (cacheDate == null) {// 一天清空一次本地缓存
-			Long exist = localTimeCache.putIfAbsent(cacheDateKey, 1L);
-			if (exist == null) {
-				localDateCache.clear();
-				localTimeCache.clear();
-				localTimeCache.put(cacheDateKey, 1L);
-			}
-		} else {
-			Long cacheTim = localTimeCache.get(cacheKey);
-
-			Map<String, List<MonitorRecord>> cacheData = localDateCache
-					.get(cacheKey);
-
-			if (cacheData != null && cacheTim != null
-					&& System.currentTimeMillis() - cacheTim < 60 * 1000) {// 60s内缓存
-				wholeMap = cacheData;
-			}
-		}
 		// key-hostname
-		Map<String, List<MonitorRecord>> resultMap = new HashMap<String, List<MonitorRecord>>();
-
-		if (MapUtils.isEmpty(wholeMap)) {
-			wholeMap = FileDbUtil
-					.queryMonitorData(handlerName, monitorTimeFrom);
-			if (MapUtils.isNotEmpty(wholeMap)) {
-				localDateCache.put(cacheKey, wholeMap);
-				localTimeCache.put(cacheKey, System.currentTimeMillis());
-			}
+		Map<String, List<TigerMonitorRecordDo>> resultMap = new HashMap<String, List<TigerMonitorRecordDo>>();
+		
+		if(StringUtils.isBlank(handlerGroup) || StringUtils.isBlank(handlerName)
+				|| monitorTimeFrom == null || monitorTimeTo == null){
+			return resultMap;
 		}
-		// =======end========
-		if (MapUtils.isNotEmpty(wholeMap)) {
-			// 过滤出符合条件的时间
-			for (Entry<String, List<MonitorRecord>> item : wholeMap.entrySet()) {
-				List<MonitorRecord> list = new ArrayList<MonitorRecord>();
-				if (CollectionUtils.isNotEmpty(item.getValue())) {
-					for (MonitorRecord record : item.getValue()) {
-						if (record.getMonitorTime().after(monitorTimeFrom)
-								&& record.getMonitorTime()
-										.before(monitorTimeTo)) {
-							list.add(record);
-						}
-					}
-					resultMap.put(item.getKey(), list);
+		
+		List<TigerMonitorRecordDo> recordList = monitorRecordDao.queryMonitorRecords(handlerGroup, handlerName, monitorTimeFrom, monitorTimeTo);
+		if(recordList != null && recordList.size() > 0){
+			for(TigerMonitorRecordDo rd : recordList){
+				List<TigerMonitorRecordDo> hostRecords = resultMap.get(rd.getHostName());
+				if(hostRecords == null){
+					hostRecords = new ArrayList<TigerMonitorRecordDo>();
+					resultMap.put(rd.getHostName(), hostRecords);
 				}
+				hostRecords.add(rd);
 			}
 		}
 		return resultMap;
 	}
 
-	@Override
-	public void receiveData(String originData) {
-		if (logger.isInfoEnabled()) {
-			logger.info("receive data start :{}", originData);
-		}
-		MonitorRecord record = FileDbUtil.parseLineData(originData);
-		if (record == null) {
-			logger.warn("parase receive data fail:{}", originData);
-			throw new WebException(ReturnCodeEnum.FAIL.code(), "数据解析错误.");
-		}
-		MonitorThreadHelper.dealMonitorDataAsync(originData);
-	}
 
-	@SuppressWarnings("unchecked")
 	@Override
-	public HashSet<String> queryMonitorHandler(Date monitorTime) {
-		if (monitorTime == null) {
-			return new HashSet<String>();
+	public List<String> queryMonitorHandlers(String handlerGroup, Date monitorTimeFrom, Date monitorTimeTo) {
+		List<String> handlerList = new ArrayList<String>();
+		if (StringUtils.isBlank(handlerGroup) || monitorTimeFrom == null || monitorTimeTo == null) {
+			return handlerList;
 		}
-		String timKey = "queryMonitorHandler_tim_".concat(FormatDate_yyyyMMdd.format(monitorTime));
-		String dataKey = "queryMonitorHandler_data_".concat(FormatDate_yyyyMMdd.format(monitorTime));
-		Long tim = (Long) (localObjCache.get(timKey)!=null?localObjCache.get(timKey):-1L);
-		HashSet<String> list = (HashSet<String>) (localObjCache.get(dataKey)!=null?localObjCache.get(dataKey):null);
-		if (list == null || System.currentTimeMillis() - tim > 2 * 60 * 1000) {
-			tim = System.currentTimeMillis();
-			list = FileDbUtil.queryMonitorHandler(monitorTime);
-			if(list != null && !list.isEmpty()){
-				localObjCache.put(timKey, tim);
-				localObjCache.put(dataKey, list);
-			}
-		}
-		return list;
+		handlerList = monitorRecordDao.queryMonitorHandlers(handlerGroup, monitorTimeFrom, monitorTimeTo);
+		return handlerList;
 	}
+	
+	@Override
+	public List<String> queryMonitorHandlerGroups(Date monitorTimeFrom,Date monitorTimeTo){
+		List<String> groupList = new ArrayList<String>();
+		if ( monitorTimeFrom == null || monitorTimeTo == null) {
+			return groupList;
+		}
+		groupList = monitorRecordDao.queryMonitorGroups(monitorTimeFrom, monitorTimeTo);
+		return groupList;
+	}
+	
+	@Override
+	public PageModel<TigerDetailVo> pageQueryMonitorDetails(String handlerGroup,long taskId,
+												String bizParam,String ttid, int page,int pageSize){
+		if(StringUtils.isBlank(handlerGroup)){
+			return null;
+		}
+		if(taskId < 1 && StringUtils.isBlank(bizParam) && StringUtils.isBlank(ttid)){
+			return null;
+		}
+		if(page < 1) {
+			page = 1;
+		}
+		if(pageSize > 200) {
+			pageSize = 200;
+		}
+		PageModel<TigerDetailVo> result = monitorDetailEsManager.queryTigerDetails(handlerGroup, taskId, ttid, bizParam, page, pageSize);
+		return result;
+	}
+	
 
 }

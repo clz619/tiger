@@ -87,6 +87,14 @@ public class DispatchTaskServiceMultiClientImpl implements DispatchMultiService{
 		}
 		return dispatchTaskMultiBizService.addRetryTimesAndExecuteTime(taskId, nextExecuteTime, attr);
 	}
+	
+	@Override
+	public boolean addRetryTimesByFail(long taskId,Date nextExecuteTime, TaskAttribute attr){
+		if(taskId < 1 || nextExecuteTime == null || attr == null || attr.getNode() == null){
+			return false;
+		}
+		return dispatchTaskMultiBizService.addRetryTimesByFail(taskId, nextExecuteTime, attr);
+	}
 
 	@Override
 	public List<DispatchTaskEntity> findDispatchTasksWithLimit(String handlerGroup, String handler,
