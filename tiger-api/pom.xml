@@ -8,8 +8,8 @@
 	<modelVersion>4.0.0</modelVersion>
 	<artifactId>tiger-api</artifactId>
 	<packaging>jar</packaging>
-	<version>2.0.0</version>
-	<name>iger-api</name>
+	<version>${tiger.version}</version>
+	<name>tiger-api</name>
 	
 	<dependencies>
 		<dependency>

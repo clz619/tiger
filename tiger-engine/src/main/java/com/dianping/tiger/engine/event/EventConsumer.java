@@ -78,13 +78,13 @@ public class EventConsumer implements Runnable {
 			result = dispatchHandler.invoke(param);
 			int duration = (int) (System.currentTimeMillis() - start);
 			if(ScheduleServer.getInstance().enableMonitor()){
-				EventMonitor.getInstance().record(task.getHandler(), result == DispatchResult.FAIL2RETRY?0:1, duration);
+				EventMonitor.getInstance().record(task.getHandlerGroup(), task.getHandler(), result == DispatchResult.FAIL2RETRY?0:1, duration);
 			}
 		} catch (Throwable t) {
 			logger.error("dispatch invoke exception," + task, t);
 			result = DispatchResult.FAIL2RETRY;
 			if(ScheduleServer.getInstance().enableMonitor()){
-				EventMonitor.getInstance().record(task.getHandler(), 0, 0);
+				EventMonitor.getInstance().record(task.getHandlerGroup(), task.getHandler(), 0, 0);
 			}
 		} finally {
 			eventInConsumerRepository.remove(task.getId());

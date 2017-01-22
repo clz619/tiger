@@ -8,11 +8,11 @@
 	<modelVersion>4.0.0</modelVersion>
 	<artifactId>tiger-monitor</artifactId>
 	<packaging>war</packaging>
-	<version>1.1.0</version>
+	<version>${tiger.version}</version>
 	<name>tiger-monitor</name>
 
 	<properties>
-		<spring.version>3.2.13.RELEASE</spring.version>
+		<spring.version>3.1.2.RELEASE</spring.version>
 		<env>alpha</env>
 	</properties>
 
@@ -22,6 +22,11 @@
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-webmvc</artifactId>
+			<version>${spring.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-orm</artifactId>
 			<version>${spring.version}</version>
 		</dependency>
 		<dependency>
@@ -44,14 +49,21 @@
 			<artifactId>jackson-mapper-asl</artifactId>
 			<version>1.9.13</version>
 		</dependency>
+		
+		<!-- fastjson -->
+		<dependency>
+		    <groupId>com.alibaba</groupId>
+		    <artifactId>fastjson</artifactId>
+		    <version>1.1.39</version>
+		</dependency>
 
-		<!-- json-lib (级联:commons-beanutils/collections/lang/ezmorph) -->
+		<!-- json-lib (级联:commons-beanutils/collections/lang/ezmorph) 
 		<dependency>
 			<groupId>net.sf.json-lib</groupId>
 			<artifactId>json-lib</artifactId>
 			<version>2.4</version>
 			<classifier>jdk15</classifier>
-		</dependency>
+		</dependency> -->
 
 		<!-- slf4j (级联:log4j/slf4j-api) -->
 		<dependency>
@@ -71,6 +83,12 @@
 			<artifactId>freemarker</artifactId>
 			<version>2.3.20</version>
 		</dependency>
+		
+		<dependency>
+            <groupId>commons-lang</groupId>
+            <artifactId>commons-lang</artifactId>
+            <version>2.6</version>
+        </dependency>
 
 		<!-- fileupload -->
 		<dependency>
@@ -97,12 +115,43 @@
 			<version>2.1</version>
 			<scope>provided</scope>
 		</dependency>
-		<!-- zip -->
+		<!-- zip 
         <dependency>
 		    <groupId>org.apache.ant</groupId>
 		    <artifactId>ant</artifactId>
 		    <version>1.9.4</version>
 		</dependency>
+		-->
+		
+		<!-- ibatis -->
+        <dependency>
+		    <groupId>ibatis</groupId>
+		    <artifactId>ibatis</artifactId>
+		    <version>2.3.4.726</version>
+        </dependency>
+        <!-- mysql-connector -->
+        <dependency>
+		    <groupId>mysql</groupId>
+		    <artifactId>mysql-connector-java</artifactId>
+		    <version>5.1.29</version>
+		</dependency>
+        <!-- c3p0 -->
+		<dependency>
+			<groupId>c3p0</groupId>
+			<artifactId>c3p0</artifactId>
+			<version>0.9.1.2</version>
+		</dependency>
+		<!-- elasticsearch -->
+		<dependency>
+            <groupId>org.elasticsearch</groupId>
+            <artifactId>elasticsearch</artifactId>
+            <version>2.2.0</version>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>2.1.4</version>
+        </dependency>
 	</dependencies>
 
 	<build>

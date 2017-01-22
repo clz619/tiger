@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:beans="http://www.springframework.org/schema/beans"
+	xsi:schemaLocation="
+			http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+			http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd
+			http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.5.xsd
+			http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd"
+			default-autowire="byName">
+	
+	<!-- 新增任务aop -->
+	<bean id="testOfdispatchTaskAdvisor" class="org.springframework.aop.aspectj.AspectJExpressionPointcutAdvisor"> 
+    	<property name="advice" ref="monitorDetailIntercepter" /> 
+    	<property name="expression" value="execution(* com.dianping.tiger.biz.task.dao.impl.DispatchTaskDaoImpl.findDispatchTasksWithLimit(..))" /> 
+	</bean> 
+	
+	<!-- 新增任务aop -->
+	<bean id="addOfdispatchTaskAdvisor" class="org.springframework.aop.aspectj.AspectJExpressionPointcutAdvisor"> 
+    	<property name="advice" ref="monitorDetailIntercepter" /> 
+    	<property name="expression" value="execution(* com.dianping.tiger.biz.task.dao.impl.DispatchTaskDaoImpl.addDispatchTask(..))" /> 
+	</bean> 
+	
+	<!-- 更新任务执行状态aop -->
+	<bean id="updateOfdispatchTaskAdvisor" class="org.springframework.aop.aspectj.AspectJExpressionPointcutAdvisor"> 
+    	<property name="advice" ref="monitorDetailIntercepter" /> 
+    	<property name="expression" value="execution(* com.dianping.tiger.biz.task.dao.impl.DispatchTaskDaoImpl.updateTaskStatus(..))" /> 
+	</bean> 
+	
+	
+	<!-- 下次执行任务aop -->
+	<bean id="nextRetryOfdispatchTaskAdvisor" class="org.springframework.aop.aspectj.AspectJExpressionPointcutAdvisor"> 
+    	<property name="advice" ref="monitorDetailIntercepter" /> 
+    	<property name="expression" value="execution(* com.dianping.tiger.biz.task.dao.impl.DispatchTaskDaoImpl.addRetryTimesAndExecuteTime(..))" /> 
+	</bean> 
+	
+	<!-- 下次执行任务aop -->
+	<bean id="failRetryOfdispatchTaskAdvisor" class="org.springframework.aop.aspectj.AspectJExpressionPointcutAdvisor"> 
+    	<property name="advice" ref="monitorDetailIntercepter" /> 
+    	<property name="expression" value="execution(* com.dianping.tiger.biz.task.dao.impl.DispatchTaskDaoImpl.addRetryTimesByFail(..))" /> 
+	</bean>
+	
+	<!-- 删除任务by id aop -->
+	<bean id="cancelIdOfdispatchTaskAdvisor" class="org.springframework.aop.aspectj.AspectJExpressionPointcutAdvisor"> 
+    	<property name="advice" ref="monitorDetailIntercepter" /> 
+    	<property name="expression" value="execution(* com.dianping.tiger.biz.task.dao.impl.DispatchTaskDaoImpl.cancelTaskById(..))" /> 
+	</bean> 
+	
+	<!-- 删除任务by uniqueId aop -->
+	<bean id="cancelUniqueIdOfdispatchTaskAdvisor" class="org.springframework.aop.aspectj.AspectJExpressionPointcutAdvisor"> 
+    	<property name="advice" ref="monitorDetailIntercepter" /> 
+    	<property name="expression" value="execution(* com.dianping.tiger.biz.task.dao.impl.DispatchTaskDaoImpl.cancelTaskByBizUniqueId(..))" /> 
+	</bean> 
+			
+			
+</beans>

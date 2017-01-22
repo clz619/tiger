@@ -137,5 +137,17 @@
         ORDER BY earliestExecuteTime
         LIMIT #limit#
     </select>
+    
+    <select id="tigerTask.loadTaskById" parameterClass="map" resultClass="tigerTaskDo">
+		SELECT <include refid="tigerTask_columns"/>
+    	FROM Tiger_Task
+    	WHERE id = #id#
+	</select>
+	
+	<select id="tigerTask.loadTaskByBizUniqueId" parameterClass="map" resultClass="tigerTaskDo">
+		SELECT <include refid="tigerTask_columns"/>
+    	FROM Tiger_Task
+    	WHERE bizUniqueId = #bizUniqueId#
+	</select>
 
 </sqlMap>

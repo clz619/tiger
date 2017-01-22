@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://www.ibatis.com/dtd/sql-map-2.dtd">
+<sqlMap namespace="tigerMonitorRecord">
+
+	<typeAlias alias="tigerMonitorRecord"
+		type="com.dianping.tiger.monitor.dataobject.TigerMonitorRecordDo" />
+
+	<sql id="tigerMonitorRecord_columns">
+		id,
+		addTime,
+		updateTime,
+		monitorTime,
+		handlerGroup,
+		handlerName,
+		hostName,
+		totalNum,
+		sucNum,
+		failNum,
+		avgCost,
+		maxCost,
+		minCost
+	</sql>
+
+	<insert id="tigerMonitorRecord.insert" parameterClass="tigerMonitorRecord">
+        <![CDATA[
+		INSERT INTO Tiger_MonitorRecord
+		(
+		id,
+		addTime,
+		updateTime,
+		monitorTime,
+		handlerGroup,
+		handlerName,
+		hostName,
+		totalNum,
+		sucNum,
+		failNum,
+		avgCost,
+		maxCost,
+		minCost
+		)
+		VALUES(
+		#id#,
+		now(),
+		now(),
+		#monitorTime#,
+		#handlerGroup#,
+		#handlerName#,
+		#hostName#,
+		#totalNum#,
+		#sucNum#,
+		#failNum#,
+		#avgCost#,
+		#maxCost#,
+		#minCost#
+		)
+		]]>
+		<selectKey keyProperty="id" resultClass="java.lang.Long">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+    </insert>
+    
+    
+    <select id="tigerMonitorRecord.queryMonitorRecords" parameterClass="map" resultClass="tigerMonitorRecord">
+    	SELECT <include refid="tigerMonitorRecord_columns"/>
+    	FROM Tiger_MonitorRecord
+    	WHERE handlerGroup = #handlerGroup# 
+    	AND   handlerName = #handlerName#
+    	<![CDATA[
+    	AND   monitorTime >= #monitorTimeFrom#
+    	AND   monitorTime <= #monitorTimeTo#
+    	]]>
+    </select>
+    
+    <select id="tigerMonitorRecord.queryMonitorHandlers" parameterClass="map" resultClass="java.lang.String">
+    	SELECT distinct handlerName
+    	FROM Tiger_MonitorRecord
+    	WHERE handlerGroup = #handlerGroup# 
+    	<![CDATA[
+    	AND   monitorTime >= #monitorTimeFrom#
+    	AND   monitorTime <= #monitorTimeTo#
+    	]]>
+    </select>
+    
+    <select id="tigerMonitorRecord.queryMonitorGroups" parameterClass="map" resultClass="java.lang.String">
+    	SELECT distinct handlerGroup
+    	FROM Tiger_MonitorRecord
+    	<![CDATA[
+    	WHERE  monitorTime >= #monitorTimeFrom#
+    	AND   monitorTime <= #monitorTimeTo#
+    	]]>
+    </select>
+    
+
+</sqlMap>

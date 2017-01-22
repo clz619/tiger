@@ -1,11 +1,9 @@
 package com.dianping.tiger.biz.task.dao.impl;
 
-import java.sql.SQLException;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import org.apache.commons.lang.StringUtils;
 import org.springframework.orm.ibatis.support.SqlMapClientDaoSupport;
 
@@ -20,12 +18,17 @@ import com.dianping.tiger.biz.task.dataobject.TigerTaskDo;
 public class DispatchTaskDaoImpl extends SqlMapClientDaoSupport implements DispatchTaskDao{
 
 	@Override
-	public long addDispatchTask(TigerTaskDo entity) throws SQLException {
-		Long id = (Long) getSqlMapClient().insert("tigerTask.insert", entity);
-		if(id == null){
-			return 0;
+	public long addDispatchTask(TigerTaskDo entity) {
+		try {
+			Long id = (Long) getSqlMapClient().insert("tigerTask.insert", entity);
+			if(id == null){
+				return 0;
+			}
+			return id;
+		} catch (Throwable e) {
+			throw new RuntimeException("sql insert happens Exception.",e);
 		}
-		return id;
+		
 	}
 
 	@Override
@@ -45,6 +48,21 @@ public class DispatchTaskDaoImpl extends SqlMapClientDaoSupport implements Dispa
 	@Override
 	public boolean addRetryTimesAndExecuteTime(long id, Date nextExecuteTime,
 			String hostName, String ttid) {
+		Map<String, Object> params = new HashMap<String, Object>();
+        params.put("id", id);
+        params.put("nextExecuteTime", nextExecuteTime);
+        params.put("hostName", hostName);
+        params.put("ttid", ttid);
+        int num = getSqlMapClientTemplate().update("tigerTask.updateRetryTimesAndExecuteTime", params);
+        if(num < 1){
+        	return false;
+        }
+		return true;
+	}
+	
+	@Override
+	public boolean addRetryTimesByFail(long id, Date nextExecuteTime,
+			String hostName, String ttid){
 		Map<String, Object> params = new HashMap<String, Object>();
         params.put("id", id);
         params.put("nextExecuteTime", nextExecuteTime);
@@ -84,6 +102,20 @@ public class DispatchTaskDaoImpl extends SqlMapClientDaoSupport implements Dispa
         param.put("limit", limit);
         param.put("id", id);
         return getSqlMapClientTemplate().queryForList("tigerTask.queryTasksWithLimitByBackFetch", param);
+	}
+	
+	@Override
+	public TigerTaskDo loadTaskById(long id){
+		Map<String, Object> param = new HashMap<String, Object>();
+		param.put("id", id);
+        return (TigerTaskDo) getSqlMapClientTemplate().queryForObject("tigerTask.loadTaskById", param);
+	}
+	
+	@Override
+	public TigerTaskDo loadTaskByBizUniqueId(String bizUniqueId){
+		Map<String, Object> param = new HashMap<String, Object>();
+		param.put("bizUniqueId", bizUniqueId);
+        return (TigerTaskDo) getSqlMapClientTemplate().queryForObject("tigerTask.loadTaskByBizUniqueId", param);
 	}
 
 	@Override

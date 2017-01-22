@@ -93,6 +93,14 @@ public class DispatchTaskMultiServiceImpl implements DispatchMultiService{
 	}
 
 	@Override
+	public boolean addRetryTimesByFail(long taskId,Date nextExecuteTime, TaskAttribute attr){
+		if(taskId < 1 || nextExecuteTime == null || attr == null){
+			return false;
+		}
+		return dispatchTaskDao.addRetryTimesByFail(taskId, nextExecuteTime, attr.getHostName(), attr.getTtid());
+	}
+	
+	@Override
 	public List<DispatchTaskEntity> findDispatchTasksWithLimit(String handlerGroup, String handler,
 			List<Integer> nodeList, int limit) {
 		if(StringUtils.isBlank(handlerGroup) || StringUtils.isBlank(handler)

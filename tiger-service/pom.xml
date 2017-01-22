@@ -8,7 +8,7 @@
     <modelVersion>4.0.0</modelVersion>
     <artifactId>tiger-service</artifactId>
     <packaging>war</packaging>
-    <version>2.2.0-SNAPSHOT</version>
+    <version>${tiger.version}</version>
     <name>tiger-service</name>
 
     <properties>
@@ -19,12 +19,12 @@
         <dependency>
             <groupId>com.dianping</groupId>
             <artifactId>tiger-core</artifactId>
-            <version>2.0.0</version>
+            <version>${tiger.version}</version>
         </dependency>
         <dependency>
             <groupId>com.dianping</groupId>
             <artifactId>tiger-biz</artifactId>
-            <version>2.0.0</version>
+            <version>${tiger.version}</version>
         </dependency>
 		<!-- servlet -->
 		<dependency>

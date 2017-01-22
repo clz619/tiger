@@ -87,6 +87,14 @@ public class DispatchTaskServiceSingleClientImpl implements
 		}
 		return dispatchTaskSingleBizService.addRetryTimesAndExecuteTime(taskId, nextExecuteTime, attr);
 	}
+	
+	@Override
+	public boolean addRetryTimesByFail(long taskId,Date nextExecuteTime, TaskAttribute attr){
+		if(taskId < 1 || nextExecuteTime == null || attr == null || attr.getNode() == null){
+			return false;
+		}
+		return dispatchTaskSingleBizService.addRetryTimesByFail(taskId, nextExecuteTime, attr);
+	}
 
 	@Override
 	public List<DispatchTaskEntity> findDispatchTasksWithLimit(

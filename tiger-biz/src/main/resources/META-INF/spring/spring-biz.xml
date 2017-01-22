@@ -16,10 +16,19 @@
 		<property name="fileEncoding" value="utf-8" />
 		<property name="locations">
 			<list>
-				<value>classpath:jdbc.properties</value>
+				<value>classpath:META-INF/jdbc.properties</value>
 			</list>
 		</property>
 	</bean>
+	
+	<bean id="monitorDetailManager" class="com.dianping.tiger.biz.task.monitor.MonitorDetailManager">
+		<!-- 设置监控接收地址 -->
+		<property name="monitorUrl" value="127.0.0.1:8080" />
+		<!-- 设置启用监控，默认false,支持动态调整 -->
+		<property name="enableMonitor" value="true" />
+	</bean>
+	
+	<bean id="monitorDetailIntercepter" class="com.dianping.tiger.biz.task.intercepter.MonitorDetailIntercepter"/>
 	
 	<!-- server端配置,multi策略 -->
 	<bean id="dispatchTaskMultiService" 
