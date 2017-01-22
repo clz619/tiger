@@ -30,7 +30,7 @@ http://www.12306.cn 上购买火车票的例子：
 ###### 总结：tiger适合任何触发式延时任务的业务场景.
 
 ### 一、Tiger总体架构
-![infra](http://code.dianpingoa.com/shop-business/wed-tiger/raw/master/tiger-service/src/main/resources/img/tigerinfra.png)
+![infra](https://github.com/tkyuan/tiger/blob/master/tiger-service/src/main/resources/img/tigerinfra.png)
 
 ### 二、术语说明
 ##### 1. 分配策略divideType
@@ -58,13 +58,16 @@ http://www.12306.cn 上购买火车票的例子：
 
 ### 三、Documentation
 **单体式部署请看：**
-[UserGuide_1](http://code.dianpingoa.com/shop-business/wed-tiger/blob/master/UserGuide_1.md)
+
+[UserGuide_1](https://github.com/tkyuan/tiger/blob/master/UserGuide_1.md)
 
 **微服务部署请看（对业务应用方接入只需看其中的3.1～3.7步骤）：**
-[UserGuide_2](http://code.dianpingoa.com/shop-business/wed-tiger/blob/master/UserGuide_2.md)
+
+[UserGuide_2](https://github.com/tkyuan/tiger/blob/master/UserGuide_2.md)
 
 **监控部署请看（对业务应用方接入只需看其中的第三个步骤）：**
-[MonitorGuide](http://code.dianpingoa.com/shop-business/wed-tiger/blob/master/MonitorGuide.md)
+
+[MonitorGuide](https://github.com/tkyuan/tiger/blob/master/MonitorGuide.md)
 
 
 
