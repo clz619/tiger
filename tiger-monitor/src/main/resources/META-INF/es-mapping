@@ -22,7 +22,7 @@ curl -XPUT localhost:9200/tigermonitorv1?pretty -d '
                 },
                 "handler": {
                     "type": "string",
-                    "index": "no"
+                    "index": "not_analyzed"
                 },
                 "node": {
                     "type": "long",
