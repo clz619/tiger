@@ -126,7 +126,7 @@ public class MonitorDetailEsManager {
 	 * @param bizParam
 	 * @return
 	 */
-	public PageModel<TigerDetailVo> queryTigerDetails(String type,long taskId, String ttid, String bizParam,int page,int pageSize){
+	public PageModel<TigerDetailVo> queryTigerDetails(String type,String handlerName, long taskId, String ttid, String bizParam,int page,int pageSize){
 		if(StringUtils.isBlank(type)){
 			return null;
 		}
@@ -143,6 +143,10 @@ public class MonitorDetailEsManager {
 			TermQueryBuilder tqb = new TermQueryBuilder("taskId", taskId);
 			boolBuilder.filter(tqb);
 		}
+		if(!StringUtils.isBlank(handlerName)){
+			TermQueryBuilder tqb = new TermQueryBuilder("handler", handlerName);
+			boolBuilder.filter(tqb);
+		}
 		if(!StringUtils.isBlank(ttid)){
 			TermQueryBuilder tqb = new TermQueryBuilder("ttid", ttid);
 			boolBuilder.filter(tqb);
@@ -155,7 +159,7 @@ public class MonitorDetailEsManager {
 		
 		//2. sort
 		FieldSortBuilder fsb = SortBuilders.fieldSort("monitorTime");
-		fsb.order(org.elasticsearch.search.sort.SortOrder.ASC);
+		fsb.order(org.elasticsearch.search.sort.SortOrder.DESC);
 		searchRequest.addSort(fsb);
 		
 		//3. search

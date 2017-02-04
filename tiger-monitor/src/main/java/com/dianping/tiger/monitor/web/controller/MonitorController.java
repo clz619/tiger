@@ -152,14 +152,14 @@ public class MonitorController {
 
 	@RequestMapping("/tiger/pageListMonitorDetail")
 	@ResponseBody
-	public Map<String, Object> queryMonitorDetails(String handlerGroup,
+	public Map<String, Object> queryMonitorDetails(String handlerGroup,String handlerName,
 			@RequestParam(required=false,defaultValue="0") Long taskId, 
 			String bizParam, String ttid,
 			int page, int rows){
 		if(StringUtils.isBlank(handlerGroup)){
 			return null;
 		}
-		if(taskId == null && StringUtils.isBlank(bizParam) && StringUtils.isBlank(ttid)){
+		if(taskId == null && StringUtils.isBlank(handlerName) && StringUtils.isBlank(bizParam) && StringUtils.isBlank(ttid)){
 			return null;
 		}
 		if(page < 1){
@@ -177,7 +177,8 @@ public class MonitorController {
 		if(!StringUtils.isBlank(ttid)){
 			ttid = ttid.trim(); 
 		}
-		PageModel<TigerDetailVo> pageResult = monitorService.pageQueryMonitorDetails(handlerGroup, taskId, bizParam, ttid, page, rows);
+		PageModel<TigerDetailVo> pageResult = monitorService.pageQueryMonitorDetails(handlerGroup,
+													handlerName,taskId, bizParam, ttid, page, rows);
 		if(pageResult == null){
 			return null;
 		}
