@@ -40,6 +40,15 @@
 	<div region="center" style="padding:10px;height:900px;">
 		<!-- 刷选条件框 -->
 		<div id="tb" style="padding:5px;height:30px;">
+			<span style="padding:5px;">handler:</span>
+			<select style="padding:5px;" id="J_handlerName">
+				<option value="">未选择</option>
+				<#if handlerNameList?exists && handlerNameList?size gt 0 >
+				<#list handlerNameList as hn>
+				<option value="${hn}">${hn}</option>
+				</#list>
+				</#if>
+			</select>
 			<span style="padding:5px;">业务参数:</span>
 			<input type="text" id="J_bizParam"/>
 			<span style="padding:10px;">任务id:</span>

@@ -58,12 +58,14 @@ public interface MonitorService {
 	/**
 	 * 查询任务执行跟踪情况
 	 * @param handlerGroup
+	 * @param handlerName
 	 * @param bizParam
 	 * @param start
 	 * @param pageSize
 	 * @return
 	 */
-	public PageModel<TigerDetailVo>  pageQueryMonitorDetails(String handlerGroup,long taskId,String bizParam,String ttid, int page,int pageSize);
+	public PageModel<TigerDetailVo>  pageQueryMonitorDetails(String handlerGroup,
+				String handlerName,long taskId,String bizParam,String ttid, int page,int pageSize);
 	
 	
 }

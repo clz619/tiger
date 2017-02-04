@@ -4,6 +4,7 @@ $(function () {
     $('#dg').datagrid({
         url:'/tiger/pageListMonitorDetail',
         queryParams:{
+        	handlerName: $("#J_handlerName").val(),
         	handlerGroup:$("#J_handlerGroup").val(),
 			bizParam: $("#J_bizParam").val(),
 			taskId: $('#J_taskId').numberbox('getValue'),
@@ -74,15 +75,17 @@ $(function () {
 			$.messager.alert('提示','请选择任务组','warning');
 			return;
 		}
+		var handlerName = $("#J_handlerName").val();
 		var bizParam = $("#J_bizParam").val();
 		var taskId = $('#J_taskId').numberbox('getValue');
 		var ttid = $("#J_ttid").val();
-		if((bizParam == null || bizParam =='') && (ttid == null || ttid =='') && (taskId == null || taskId=='')){
+		if((handlerName == null || handlerName =='') && (bizParam == null || bizParam =='') && (ttid == null || ttid =='') && (taskId == null || taskId=='')){
 			$.messager.alert('提示','必须选择其中一个条件','warning');
 			return;
 		}
 		
 		$("#dg").datagrid("load", {
+			handlerName: $("#J_handlerName").val(),
 			handlerGroup:$("#J_handlerGroup").val(),
 			bizParam: $("#J_bizParam").val(),
 			taskId: $('#J_taskId').numberbox('getValue'),

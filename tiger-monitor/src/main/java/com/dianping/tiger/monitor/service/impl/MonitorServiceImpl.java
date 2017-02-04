@@ -190,12 +190,12 @@ public class MonitorServiceImpl implements MonitorService {
 	}
 	
 	@Override
-	public PageModel<TigerDetailVo> pageQueryMonitorDetails(String handlerGroup,long taskId,
-												String bizParam,String ttid, int page,int pageSize){
+	public PageModel<TigerDetailVo> pageQueryMonitorDetails(String handlerGroup,String handlerName, 
+			long taskId, String bizParam,String ttid, int page,int pageSize){
 		if(StringUtils.isBlank(handlerGroup)){
 			return null;
 		}
-		if(taskId < 1 && StringUtils.isBlank(bizParam) && StringUtils.isBlank(ttid)){
+		if(taskId < 1 && StringUtils.isBlank(handlerName) && StringUtils.isBlank(bizParam) && StringUtils.isBlank(ttid)){
 			return null;
 		}
 		if(page < 1) {
@@ -204,7 +204,7 @@ public class MonitorServiceImpl implements MonitorService {
 		if(pageSize > 200) {
 			pageSize = 200;
 		}
-		PageModel<TigerDetailVo> result = monitorDetailEsManager.queryTigerDetails(handlerGroup, taskId, ttid, bizParam, page, pageSize);
+		PageModel<TigerDetailVo> result = monitorDetailEsManager.queryTigerDetails(handlerGroup, handlerName, taskId, ttid, bizParam, page, pageSize);
 		return result;
 	}
 	
