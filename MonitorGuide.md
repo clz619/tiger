@@ -19,7 +19,7 @@ tiger的监控包括任务统计和任务跟踪，任务统计主要用于查看
 		<!-- 设置es集群名 -->
      	<property name="clusterName" value="xxx-es"/>
      	<!-- 设置es集群地址 -->
-     	<property name="esServers" value="192.168.224.139:9300,127.0.0.1:9300"/>
+     	<property name="esServers" value="192.168.224.139:9300;127.0.0.1:9300"/>
  </bean>
 ```
 elasticsearch服务的部署请查看[es入门博客](https://my.oschina.net/tkyuan/blog/733494)
