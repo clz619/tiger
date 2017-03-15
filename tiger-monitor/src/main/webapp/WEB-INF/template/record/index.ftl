@@ -4,7 +4,7 @@
 	<title>Tiger Center</title>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	
+	<#import "/common/common.macro.ftl" as commonMacro>
     <link rel="stylesheet" type="text/css" href="/static/js/easyui/themes/gray/easyui.css">
     <style>
     	.combo-text{width:140px;}
@@ -25,17 +25,9 @@
 			</#if>
 		</select>
 	</div>
-	<!-- menu <a href="/tiger">任务统计</a> -->
-	<div region="west" split="true" title="常用模块" style="width:187px;">
-		<div style="width:180px;height:auto;">
-			<div class="easyui-panel" title="监控统计" collapsible="true" collapsed="false" style="height:auto;padding:5px;">
-				<p><a href="/tiger?handlerGroup=${handlerGroup}">任务统计</a></p>
-			</div>
-			<div class="easyui-panel" title="任务跟踪" collapsible="true" collapsed="true" style="height:auto;padding:5px;">
-				<p><a href="/tiger/trace?handlerGroup=${handlerGroup}">任务跟踪</a></p>
-			</div>
-		</div>
-	</div>
+	<!-- left menu-->
+	<@commonMacro.commonLeft />
+	
 	<!-- 正文 -->
 	<div region="center" style="padding:10px;height:650px;">
 		<!-- 刷选条件框 -->

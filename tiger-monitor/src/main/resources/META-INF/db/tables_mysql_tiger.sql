@@ -22,4 +22,17 @@ CREATE TABLE Tiger_MonitorRecord (
 	 PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+CREATE TABLE Tiger_MonitorAlarm (
+	`id` bigint(12) NOT NULL AUTO_INCREMENT,
+	`addTime` datetime NOT NULL,
+	`updateTime` datetime NOT NULL,
+	`handlerGroup` varchar(64) NOT NULL,
+	`handlerName` varchar(64) NOT NULL,
+	`leastFailNum` tinyint(4) NOT NULL,
+	`intervalFailNum` tinyint(4) NOT NULL,
+	`mailReceives` varchar(256) NOT NULL,
+	`offFlag` tinyint(4) NOT NULL,
+	 PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
 commit;

@@ -8,5 +8,6 @@
     <sqlMap resource="sqlmap/sqlmap-global.xml"/>
 	
     <sqlMap resource="sqlmap/monitor/tigerMonitorRecord.xml"/>
+    <sqlMap resource="sqlmap/monitor/tigerMonitorAlarm.xml"/>
 
 </sqlMapConfig>
