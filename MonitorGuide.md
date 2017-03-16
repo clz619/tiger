@@ -4,7 +4,7 @@ tiger的监控包括任务统计和任务跟踪，任务统计主要用于查看
 任务统计部分用的mysql存储，任务跟踪部分用的elasticsearch，在部署tiger-monitor-web前，需要配置如下环境。
 
 ### 一、db相关配置
-1) 数据源：配置在tiger-monitor-web里的applicationcontext-database，可替换c3p0DataSource；
+1) 数据源：配置在tiger-monitor里的applicationcontext-database，可替换c3p0DataSource；
 
 2) 任务统计表、报警规则表结构：在tiger-monitor里的tables_mysql_tiger.sql，建议做适当索引；
 
