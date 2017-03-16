@@ -82,7 +82,7 @@ com.dianping.tiger.biz.task.service.impl.DispatchTaskSingleServiceImpl
 <dependency>
     <groupId>com.dianping</groupId>
     <artifactId>tiger-core</artifactId>
-    <version>2.1.0</version>
+    <version>2.1.2</version>
 </dependency>
 ```
 

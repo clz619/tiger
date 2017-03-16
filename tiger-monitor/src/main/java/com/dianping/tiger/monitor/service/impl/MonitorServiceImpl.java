@@ -5,12 +5,18 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import javax.annotation.Resource;
+
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.dianping.tiger.monitor.alarm.AlarmManager;
 import com.dianping.tiger.monitor.component.PageModel;
+import com.dianping.tiger.monitor.dao.MonitorAlarmDao;
 import com.dianping.tiger.monitor.dao.MonitorRecordDao;
+import com.dianping.tiger.monitor.dataobject.TigerMonitorAlarmDo;
 import com.dianping.tiger.monitor.dataobject.TigerMonitorRecordDo;
 import com.dianping.tiger.monitor.es.MonitorDetailEsManager;
 import com.dianping.tiger.monitor.service.MonitorService;
@@ -32,7 +38,11 @@ public class MonitorServiceImpl implements MonitorService {
 	@Resource
 	private MonitorDetailEsManager monitorDetailEsManager;
 	
+	@Resource
+	private MonitorAlarmDao monitorAlarmDao;
 	
+	@Resource
+	private AlarmManager alarmManager;
 	
 	@Override
 	public void dealStatisticsData(String originData) {
@@ -92,6 +102,12 @@ public class MonitorServiceImpl implements MonitorService {
 			logger.warn("parase detailData fail:{}", detailData);
 			return;
 		}
+		//报警
+		if(detailVo.getExecuteResult().indexOf("Retry") != -1 ||
+				detailVo.getExecuteResult().indexOf("Fail") != -1){
+			alarmManager.put2AlarmDeal(detailVo);
+		}
+		//建立索引
 		try{
 			monitorDetailEsManager.buildIndex(detailVo);
 		}catch(Exception e){
@@ -208,5 +224,56 @@ public class MonitorServiceImpl implements MonitorService {
 		return result;
 	}
 	
+	
+	@Override
+	public long addTigerMonitorAlarm(TigerMonitorAlarmDo monitorAlarm) {
+		if(monitorAlarm == null){
+			return 0;
+		}
+		try {
+			long id = monitorAlarmDao.addMonitorAlarm(monitorAlarm);
+			return id;
+		} catch (Exception e) {
+			logger.error("monitorAlarmDao.addMonitorAlarm exception," + monitorAlarm, e);
+		}
+		return 0;
+	}
+
+	@Override
+	public int updateMonitorAlarmById(long id, int leastFailNum,
+			int intervalFailNum, String mailReceives, int offFlag) {
+		if(id < 1 || leastFailNum < 1 || intervalFailNum < 1 || StringUtils.isBlank(mailReceives)){
+			return 0;
+		}
+		return monitorAlarmDao.updateAlarmInfo(id, leastFailNum, intervalFailNum, mailReceives,offFlag);
+	}
+	
+	@Override
+	public int deleteAlarmById(long id){
+		if(id < 1){
+			return 0;
+		}
+		return monitorAlarmDao.deleteAlarmById(id);
+	}
+	
+	@Override
+	public TigerMonitorAlarmDo loadAlarmByHandlerGroupAndName(String handlerGroup, String handlerName){
+		if(StringUtils.isBlank(handlerGroup) || StringUtils.isBlank(handlerName)){
+			return null;
+		}
+		return monitorAlarmDao.loadAlarmByHandlerGroupAndName(handlerGroup, handlerName);
+	}
+
+	@Override
+	public PageModel<TigerMonitorAlarmDo> pageQueryMonitorAlarms(
+			String handlerGroup, String handlerName, int page, int pageSize) {
+		if(StringUtils.isBlank(handlerGroup)){
+			return null;
+		}
+		if(page < 1){
+			page = 1;
+		}
+		return monitorAlarmDao.pageQueryAlarms(page, pageSize, handlerGroup, handlerName);
+	}
 
 }

@@ -32,20 +32,19 @@
 </#macro>
 
 <#macro commonLeft>
-	<!-- Left side column. contains the logo and sidebar -->
-	<aside class="main-sidebar">
-		<!-- sidebar: style can be found in sidebar.less -->
-		<section class="sidebar">
-			<!-- sidebar menu: : style can be found in sidebar.less -->
-			<ul class="sidebar-menu">
-				<li class="header">常用模块</li>
-				<li class="nav-click" ><a href="${request.contextPath}/job/"><i class="fa fa-circle-o text-red"></i> <span>调度管理</span></a></li>
-				<li class="nav-click" ><a href="${request.contextPath}/joblog"><i class="fa fa-circle-o text-yellow"></i><span>调度日志</span></a></li>
-				<li class="nav-click" ><a href="${request.contextPath}/help"><i class="fa fa-circle-o text-yellow"></i><span>使用说明</span></a></li>
-			</ul>
-		</section>
-		<!-- /.sidebar -->
-	</aside>
+	<div region="west" split="true" title="常用模块" style="width:187px;">
+		<div style="width:180px;height:auto;">
+			<div class="easyui-panel" title="监控统计" collapsible="true" collapsed="false" style="height:auto;padding:5px;">
+				<p><a href="/tiger?handlerGroup=${handlerGroup}">任务统计</a></p>
+			</div>
+			<div class="easyui-panel" title="任务跟踪" collapsible="true" collapsed="false" style="height:auto;padding:5px;">
+				<p><a href="/tiger/trace?handlerGroup=${handlerGroup}">任务跟踪</a></p>
+			</div>
+			<div class="easyui-panel" title="任务报警" collapsible="true" collapsed="false" style="height:auto;padding:5px;">
+				<p><a href="/tiger/alarm?handlerGroup=${handlerGroup}">任务报警</a></p>
+			</div>
+		</div>
+	</div>
 </#macro>
 
 <#macro commonFooter >

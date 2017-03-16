@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://www.ibatis.com/dtd/sql-map-2.dtd">
+<sqlMap namespace="tigerMonitorAlarm">
+
+	<typeAlias alias="tigerMonitorAlarm"
+		type="com.dianping.tiger.monitor.dataobject.TigerMonitorAlarmDo" />
+
+	<sql id="tigerMonitorAlarm_columns">
+		id,
+		addTime,
+		updateTime,
+		handlerGroup,
+		handlerName,
+		leastFailNum,
+		intervalFailNum,
+		mailReceives,
+		offFlag
+	</sql>
+
+	<insert id="tigerMonitorAlarm.insert" parameterClass="tigerMonitorAlarm">
+        <![CDATA[
+		INSERT INTO Tiger_MonitorAlarm
+		(
+		id,
+		addTime,
+		updateTime,
+		handlerGroup,
+		handlerName,
+		leastFailNum,
+		intervalFailNum,
+		mailReceives,
+		offFlag
+		)
+		VALUES(
+		#id#,
+		now(),
+		now(),
+		#handlerGroup#,
+		#handlerName#,
+		#leastFailNum#,
+		#intervalFailNum#,
+		#mailReceives#,
+		#offFlag#
+		)
+		]]>
+		<selectKey keyProperty="id" resultClass="java.lang.Long">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+    </insert>
+
+	<update id="tigerMonitorAlarm.updateAlarmInfoById" parameterClass="map">
+		UPDATE Tiger_MonitorAlarm
+		SET leastFailNum = #leastFailNum#,
+		    intervalFailNum = #intervalFailNum#,
+		    mailReceives = #mailReceives#,
+		    offFlag = #offFlag#,
+		    updateTime = now()
+		WHERE id = #id#
+	</update>
+
+	<delete id="tigerMonitorAlarm.deleteAlarmById" parameterClass="map">
+		DELETE FROM Tiger_MonitorAlarm
+		WHERE id = #id#
+	</delete>
+
+	<select id="tigerMonitorAlarm.getAlarmCount" parameterClass="map" resultClass ="java.lang.Integer">
+		SELECT count(*)
+		FROM   Tiger_MonitorAlarm
+		WHERE  handlerGroup = #handlerGroup#
+			<isNotEmpty prepend="and" property="handlerName">
+				handlerName = #handlerName#
+			</isNotEmpty>
+	</select>
+
+	<select id="tigerMonitorAlarm.getAlarmPageList" parameterClass="map" resultClass="tigerMonitorAlarm">
+		SELECT <include refid="tigerMonitorAlarm_columns"/>
+		FROM   Tiger_MonitorAlarm
+		WHERE  handlerGroup = #handlerGroup#
+			<isNotEmpty prepend="and" property="handlerName">
+				handlerName = #handlerName#
+			</isNotEmpty>
+		ORDER BY id DESC
+		<include refid="paginationLimit"/>
+	</select>
+	
+	<select id="tigerMonitorAlarm.loadAlarmByHandlerGroupAndName" parameterClass="map" resultClass="tigerMonitorAlarm">
+		SELECT <include refid="tigerMonitorAlarm_columns"/>
+		FROM   Tiger_MonitorAlarm
+		WHERE  handlerGroup = #handlerGroup#
+		AND    handlerName = #handlerName#
+		Limit 1
+	</select>
+
+
+</sqlMap>

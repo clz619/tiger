@@ -10,6 +10,13 @@
            http://www.springframework.org/schema/util/spring-util.xsd" default-autowire="byName">
 
      <!-- service -->
+     <bean id="alarmManager" class="com.dianping.tiger.monitor.alarm.AlarmManager" 
+		init-method="init" />
+		
+	 <bean id="defaultAlarmService" class="com.dianping.tiger.monitor.alarm.DefaultAlarmServiceImpl"/>
+
+	 <bean id="mailSender" class="com.dianping.tiger.monitor.alarm.mail.MailSender"/>
+	
      <bean id="monitorService" 
      	class="com.dianping.tiger.monitor.service.impl.MonitorServiceImpl"/>
      
@@ -23,4 +30,7 @@
      <bean id="monitorRecordDao" 
      	class="com.dianping.tiger.monitor.dao.impl.MonitorRecordDaoImpl" parent="baseDao"/>
      
+     <bean id="monitorAlarmDao" 
+     	class="com.dianping.tiger.monitor.dao.impl.MonitorAlarmDaoImpl" parent="baseDao"/>
+     	
 </beans>

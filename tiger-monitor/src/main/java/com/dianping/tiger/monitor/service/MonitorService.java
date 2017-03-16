@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.dianping.tiger.monitor.component.PageModel;
+import com.dianping.tiger.monitor.dataobject.TigerMonitorAlarmDo;
 import com.dianping.tiger.monitor.dataobject.TigerMonitorRecordDo;
 import com.dianping.tiger.monitor.vo.TigerDetailVo;
 
@@ -66,6 +67,52 @@ public interface MonitorService {
 	 */
 	public PageModel<TigerDetailVo>  pageQueryMonitorDetails(String handlerGroup,
 				String handlerName,long taskId,String bizParam,String ttid, int page,int pageSize);
+	
+	//=================以下为报警相关=====================
+	
+		/**
+		 * 新增一条报警配置
+		 * @param monitorAlarm
+		 * @return
+		 */
+		public long addTigerMonitorAlarm(TigerMonitorAlarmDo monitorAlarm);
+		
+		/**
+		 * 更新一条报警配置
+		 * @param id
+		 * @param leastFailNum
+		 * @param intervalFailNum
+		 * @param mailReceives
+		 * @return
+		 */
+		public int updateMonitorAlarmById(long id, int leastFailNum, int intervalFailNum,
+								String mailReceives, int offFlag);
+		
+		/**
+		 * 删除一条报警配置
+		 * @param id
+		 * @return
+		 */
+		public int deleteAlarmById(long id);
+		
+		/**
+		 * 查找一条配置记录
+		 * @param handlerGroup
+		 * @param handlerName
+		 * @return
+		 */
+		public TigerMonitorAlarmDo loadAlarmByHandlerGroupAndName(String handlerGroup, String handlerName);
+		
+		/**
+		 * 分页查找报警配置记录
+		 * @param handlerGroup
+		 * @param handlerName
+		 * @param page
+		 * @param pageSize
+		 * @return
+		 */
+		public PageModel<TigerMonitorAlarmDo> pageQueryMonitorAlarms(String handlerGroup, 
+						String handlerName, int page,int pageSize);
 	
 	
 }

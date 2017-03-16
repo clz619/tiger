@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.dianping.tiger.monitor.component.PageModel;
+import com.dianping.tiger.monitor.dataobject.TigerMonitorAlarmDo;
 import com.dianping.tiger.monitor.dataobject.TigerMonitorRecordDo;
 import com.dianping.tiger.monitor.service.MonitorService;
 import com.dianping.tiger.monitor.vo.TigerDetailVo;
@@ -220,5 +221,120 @@ public class MonitorController {
 		return ReturnT.SUCCESS;
 	}
 	
+	
+	//================以下是报警相关=====================
+	
+	@RequestMapping("/tiger/alarm")
+	public String tigerAlarmIndex(
+			Model model,
+			String handlerGroup){
+		Date now = new Date();
+		Calendar calendarTo = Calendar.getInstance();
+		calendarTo.setTime(now);
+		calendarTo.add(Calendar.DAY_OF_MONTH, -7);
+		Date startDate = calendarTo.getTime();
+		List<String> handlerGroupList = monitorService.queryMonitorHandlerGroups(startDate, now);
+		
+		model.addAttribute("handlerGroupList", handlerGroupList);
+		if(StringUtils.isBlank(handlerGroup)){
+			return "alarm/index";
+		}
+		
+		List<String> handlerNameList = monitorService.queryMonitorHandlers(handlerGroup, startDate, now);
+		Collections.sort(handlerNameList);
+		model.addAttribute("handlerGroup", handlerGroup);
+		model.addAttribute("handlerNameList", handlerNameList);
+		return "alarm/index";
+	}
+	
+	
+	@RequestMapping("/tiger/pageListMonitorAlarm")
+	@ResponseBody
+	public Map<String, Object> queryMonitorAlarms(String handlerGroup,String handlerName,
+			int page, int rows){
+		if(StringUtils.isBlank(handlerGroup)){
+			return null;
+		}
+		PageModel<TigerMonitorAlarmDo> pageResult = monitorService.pageQueryMonitorAlarms(handlerGroup, handlerName, page, rows);
+		
+		if(pageResult == null){
+			return null;
+		}
+		// result
+        Map<String, Object> resultMap = new HashMap<String, Object>();
+        resultMap.put("total", pageResult.getRecordCount());
+        resultMap.put("rows", pageResult.getRecords());
+        
+		return resultMap;
+	}
+
+	@RequestMapping("/tiger/addMonitorAlarm")
+	@ResponseBody
+	public ReturnT<String> addMonitorAlarm(String handlerGroup, String handlerName,
+			Integer leastFailNum, Integer intervalFailNum, String mailReceives,Integer offFlag) {
+		if(StringUtils.isBlank(handlerGroup) || StringUtils.isBlank(handlerName)){
+			return new ReturnT<String>(500, "请输入handlerName");
+		}
+		if(leastFailNum == null || intervalFailNum == null || offFlag == null){
+			return new ReturnT<String>(500, "请输入报警触发失败次数及间隔报警失败次数");
+		}
+		if(StringUtils.isBlank(mailReceives)){
+			return new ReturnT<String>(500, "请输入报警联系人邮箱");
+		}
+		TigerMonitorAlarmDo existDo = monitorService.loadAlarmByHandlerGroupAndName(handlerGroup, handlerName);
+		if(existDo != null){
+			return new ReturnT<String>(500, "该配置已存在，请走修改流程.");
+		}
+		TigerMonitorAlarmDo alarmDo = new TigerMonitorAlarmDo();
+		alarmDo.setHandlerGroup(handlerGroup);
+		alarmDo.setHandlerName(handlerName);
+		alarmDo.setIntervalFailNum(intervalFailNum);
+		alarmDo.setLeastFailNum(leastFailNum);
+		alarmDo.setMailReceives(mailReceives);
+		if(offFlag == 0){
+			alarmDo.setOffFlag(0);
+		}else{
+			alarmDo.setOffFlag(1);
+		}
+		
+		long id = monitorService.addTigerMonitorAlarm(alarmDo);
+		if(id > 0){
+			return ReturnT.SUCCESS;
+		}
+		return new ReturnT<String>(500, "系统繁忙，添加报警规则失败，请稍后再试");
+	}
+	
+	@RequestMapping("/tiger/updateMonitorAlarm")
+	@ResponseBody
+	public ReturnT<String> updateMonitorAlarm(Long id,
+			Integer leastFailNum, Integer intervalFailNum, String mailReceives, int offFlag) {
+		if(id == null || id < 1){
+			return new ReturnT<String>(500, "报警配置不存在");
+		}
+		if(leastFailNum == null || intervalFailNum == null){
+			return new ReturnT<String>(500, "请输入报警失败次数及间隔报警失败次数");
+		}
+		if(StringUtils.isBlank(mailReceives)){
+			return new ReturnT<String>(500, "请输入报警联系人邮箱");
+		}
+		int num = monitorService.updateMonitorAlarmById(id, leastFailNum, intervalFailNum, mailReceives, offFlag);
+		
+		if(num > 0){
+			return ReturnT.SUCCESS;
+		}
+		return new ReturnT<String>(500, "系统繁忙，添加报警规则失败，请稍后再试");
+	}
+	
+	@RequestMapping("/tiger/deleteMonitorAlarm")
+	@ResponseBody
+	public ReturnT<String> deleteMonitorAlarm(Long id) {
+		if(id == null || id < 1){
+			return new ReturnT<String>(500, "报警配置不存在");
+		}
+		
+		monitorService.deleteAlarmById(id);
+		return ReturnT.SUCCESS;
+		
+	}
 
 }
