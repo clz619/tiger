@@ -4,7 +4,7 @@ tiger的监控包括任务统计和任务跟踪，任务统计主要用于查看
 任务统计部分用的mysql存储，任务跟踪部分用的elasticsearch，在部署tiger-monitor-web前，需要配置如下环境。
 
 ### 一、db相关配置
-1) 数据源：配置在tiger-monitor-web里的applicationcontext-database，可替换c3p0DataSource；
+1) 数据源：配置在tiger-monitor里的applicationcontext-database，可替换c3p0DataSource；
 
 2) 任务统计表、报警规则表结构：在tiger-monitor里的tables_mysql_tiger.sql，建议做适当索引；
 
@@ -67,3 +67,8 @@ elasticsearch服务的部署请查看[es入门博客](https://my.oschina.net/tky
 任务跟踪监控截图：
 
 ![monitordetail](https://github.com/tkyuan/tiger/blob/master/tiger-service/src/main/resources/img/monitordetail.png)
+
+### 五、tiger任务报警
+
+除了对运行任务进行统计监控和任务跟踪外，还支持任务报警，对某些执行失败的任务可以配置报警规则。tiger任务执行失败重试，最多重试60次，可以根据这个约束配置报警规则，如图所示：
+![monitoralarm](https://github.com/tkyuan/tiger/blob/master/tiger-service/src/main/resources/img/monitoralarm.png)
