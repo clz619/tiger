@@ -78,7 +78,7 @@ public class ScheduleServer {
 	private int taskStrategy = ScheduleConstants.TaskFetchStrategy.Multi.getValue();
 
 	/**
-	 * handler配置识别码
+	 * handler配置识别码：用于动态感知配置handler是否有变化
 	 */
 	private AtomicInteger handlerIdentifyCode = new AtomicInteger(0);
 
@@ -86,6 +86,11 @@ public class ScheduleServer {
 	 * zk中server集群版本,md5(servername0_servername1)
 	 */
 	private volatile String registerVersion = "0";
+	
+	/**
+	 * zk集群注册时的注册时间
+	 */
+	private volatile long registerTime = 100;
 
 	/**
 	 * 是否可以调度
@@ -208,6 +213,7 @@ public class ScheduleServer {
 	public void reset() {
 		this.stopScheduler();
 		this.registerVersion = "0";
+		this.registerTime = 100;
 		EventExecutorManager.getInstance().clearInReadyRunningQueue();
 		EventExecutorManager.getInstance().resetExecutorVersion();
 		this.clearAllHandler();
@@ -228,12 +234,22 @@ public class ScheduleServer {
 	}
 
 	/**
-	 * 设置当前的集群注册版本
+	 * 设置当前的集群注册信息
 	 * 
 	 * @param registerVersion
+	 * @param registerTime
 	 */
-	public void setRegisterVersion(String registerVersion) {
+	public void setRegister(String registerVersion, long registerTime) {
 		this.registerVersion = registerVersion;
+		this.registerTime = registerTime;
+	}
+	
+	/**
+	 * 当前注册版本对应的注册时间
+	 * @return
+	 */
+	public long getRegisterTime() {
+		return registerTime;
 	}
 
 	public void addHandler(String handlerName, List<Integer> nodes) {
@@ -361,7 +377,7 @@ public class ScheduleServer {
 	}
 
 	/**
-	 * Deprecated since 1.2.6<br/>
+	 * Deprecated since 2.0.0<br/>
 	 * see setHandlerGroup
 	 * @param rootPath
 	 */

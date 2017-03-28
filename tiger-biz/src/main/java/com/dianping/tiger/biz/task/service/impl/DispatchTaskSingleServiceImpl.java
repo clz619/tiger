@@ -17,6 +17,8 @@ import com.alibaba.fastjson.JSON;
 import com.dianping.tiger.api.dispatch.DispatchSingleService;
 import com.dianping.tiger.api.dispatch.DispatchTaskEntity;
 import com.dianping.tiger.api.dispatch.TaskAttribute;
+import com.dianping.tiger.api.register.TigerContext;
+import com.dianping.tiger.biz.register.TigerRegisterManager;
 import com.dianping.tiger.biz.task.dao.DispatchTaskDao;
 import com.dianping.tiger.biz.task.dataobject.TigerTaskDo;
 
@@ -31,6 +33,9 @@ public class DispatchTaskSingleServiceImpl implements DispatchSingleService {
 	
 	@Resource
 	private DispatchTaskDao dispatchTaskDao;
+	
+	@Resource
+	private TigerRegisterManager tigerRegisterManager;
 
 	@Override
 	public long addDispatchTask(DispatchTaskEntity taskEntity) {
@@ -136,6 +141,67 @@ public class DispatchTaskSingleServiceImpl implements DispatchSingleService {
 	}
 	
 	@Override
+	public List<DispatchTaskEntity> findDispatchTasksWithLimit(
+			String handlerGroup, List<Integer> nodeList, int limit,
+			TigerContext tigerContext) {
+		if(StringUtils.isBlank(handlerGroup) || nodeList == null || nodeList.size() == 0){
+			return null;
+		}
+		if(tigerContext == null || StringUtils.isBlank(tigerContext.getHandlerGroup())
+				|| StringUtils.isBlank(tigerContext.getRegisterVersion())
+				|| tigerContext.getRegisterTime() < 1000){
+			return null;
+		}
+		boolean inValid = tigerRegisterManager.isValid(tigerContext);
+		if(!inValid){
+			logger.warn("request registerVersion is inValid,"+tigerContext);
+			return null;
+		}
+		List<TigerTaskDo> doList = dispatchTaskDao.findDispatchTasksWithLimit(handlerGroup, null, nodeList, limit);
+		if(doList == null || doList.size() == 0){
+			return null;
+		}
+		List<DispatchTaskEntity> taskList = new ArrayList<DispatchTaskEntity>();
+		for(TigerTaskDo tt:doList){
+			DispatchTaskEntity task = new DispatchTaskEntity();
+			BeanUtils.copyProperties(tt, task);
+			taskList.add(task);
+		}
+		return taskList;
+	}
+
+	@Override
+	public List<DispatchTaskEntity> findDispatchTasksWithLimitByBackFetch(
+			String handlerGroup, List<Integer> nodeList, int limit,
+			long taskId, TigerContext tigerContext) {
+		if(StringUtils.isBlank(handlerGroup) || nodeList == null 
+				|| nodeList.size() == 0 || taskId < 1){
+			return null;
+		}
+		if(tigerContext == null || StringUtils.isBlank(tigerContext.getHandlerGroup())
+				|| StringUtils.isBlank(tigerContext.getRegisterVersion())
+				|| tigerContext.getRegisterTime() < 1000){
+			return null;
+		}
+		boolean inValid = tigerRegisterManager.isValid(tigerContext);
+		if(!inValid){
+			logger.warn("request registerVersion is inValid,"+tigerContext);
+			return null;
+		}
+		List<TigerTaskDo> doList = dispatchTaskDao.findDispatchTasksWithLimitByBackFetch(handlerGroup, null, nodeList, limit, taskId);
+		if(doList == null || doList.size() == 0){
+			return null;
+		}
+		List<DispatchTaskEntity> taskList = new ArrayList<DispatchTaskEntity>();
+		for(TigerTaskDo tt:doList){
+			DispatchTaskEntity task = new DispatchTaskEntity();
+			BeanUtils.copyProperties(tt, task);
+			taskList.add(task);
+		}
+		return taskList;
+	}
+	
+	@Override
 	public boolean removeDispatchTask(String handlerGroup, TaskAttribute attr) {
 		if(StringUtils.isBlank(handlerGroup) || attr == null){
 			return false;
@@ -147,6 +213,17 @@ public class DispatchTaskSingleServiceImpl implements DispatchSingleService {
 			return dispatchTaskDao.cancelTaskByBizUniqueId(handlerGroup, attr.getBizUniqueId());
 		}
 		return false;
+	}
+	
+	@Override
+	public boolean registerTiger(TigerContext tigerContext) {
+		if(tigerContext == null || StringUtils.isBlank(tigerContext.getHandlerGroup())
+				|| StringUtils.isBlank(tigerContext.getRegisterVersion())
+				|| StringUtils.isBlank(tigerContext.getHostName()) 
+				|| tigerContext.getRegisterTime() < 1000){
+			return false;
+		}
+		return tigerRegisterManager.register(tigerContext);
 	}
 
 }

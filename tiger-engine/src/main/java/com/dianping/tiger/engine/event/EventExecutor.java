@@ -116,11 +116,13 @@ public class EventExecutor {
 					eventConfig.getHandler(), eventConfig.getNodeList());
 			if (tasks.isEmpty()) {
 				eventNavigator.setUnAllowed();
-				if (logger.isInfoEnabled()) {
-					logger.info("there is no tasks for handler="
+				if (logger.isWarnEnabled()) {
+					logger.warn("there is no tasks for handler="
 							+ eventConfig.getHandler() + ",nodes="
 							+ eventConfig.getNodeList() + ",taskStrategy="
-							+ ScheduleServer.getInstance().getTaskStrategy());
+							+ ScheduleServer.getInstance().getTaskStrategy()
+							+ ",registerVersion=" + ScheduleServer.getInstance().getRegisterVersion()
+							+ ",registerTime=" + ScheduleServer.getInstance().getRegisterTime());
 				}
 				return;
 			}

@@ -12,6 +12,7 @@ import com.dianping.tiger.api.dispatch.DispatchMultiService;
 import com.dianping.tiger.api.dispatch.DispatchSingleService;
 import com.dianping.tiger.api.dispatch.DispatchTaskEntity;
 import com.dianping.tiger.api.dispatch.DispatchTaskService;
+import com.dianping.tiger.api.register.TigerContext;
 import com.dianping.tiger.engine.ScheduleServer;
 import com.dianping.tiger.engine.utils.ScheduleConstants;
 
@@ -39,6 +40,11 @@ public class EventFetcher {
 	 */
 	public List<DispatchTaskEntity> getTasks(String handlerName,
 			List<Integer> nodeList) {
+		TigerContext tigerContext = new TigerContext();
+		tigerContext.setHandlerGroup(ScheduleServer.getInstance().getHandlerGroup());
+		tigerContext.setHostName(ScheduleServer.getInstance().getServerName());
+		tigerContext.setRegisterVersion(ScheduleServer.getInstance().getRegisterVersion());
+		tigerContext.setRegisterTime(ScheduleServer.getInstance().getRegisterTime());
 		if (ScheduleServer.getInstance().getTaskStrategy() == ScheduleConstants.TaskFetchStrategy.Multi
 				.getValue()) {// 各个执行器捞取策略
 			if (StringUtils.isBlank(handlerName) || nodeList == null
@@ -49,7 +55,7 @@ public class EventFetcher {
 			DispatchMultiService dispatchMultiService = (DispatchMultiService) dispatchTaskService;
 			List<DispatchTaskEntity> tasks = dispatchMultiService
 					.findDispatchTasksWithLimit(ScheduleServer.getInstance().getHandlerGroup(), 
-												handlerName, nodeList, TASK_NUM);
+												handlerName, nodeList, TASK_NUM,tigerContext);
 			if (tasks == null) {
 				return Collections.emptyList();
 			}
@@ -61,7 +67,7 @@ public class EventFetcher {
 		}
 		DispatchSingleService dispatchSingleService = (DispatchSingleService) dispatchTaskService;
 		List<DispatchTaskEntity> tasks = dispatchSingleService
-				.findDispatchTasksWithLimit(ScheduleServer.getInstance().getHandlerGroup(),nodeList, TASK_NUM);
+				.findDispatchTasksWithLimit(ScheduleServer.getInstance().getHandlerGroup(),nodeList, TASK_NUM,tigerContext);
 		if (tasks == null) {
 			return Collections.emptyList();
 		}
@@ -78,6 +84,11 @@ public class EventFetcher {
 	 */
 	public List<DispatchTaskEntity> getTasksByBackFetch(String handlerName,
 			List<Integer> nodeList, long taskId) {
+		TigerContext tigerContext = new TigerContext();
+		tigerContext.setHandlerGroup(ScheduleServer.getInstance().getHandlerGroup());
+		tigerContext.setHostName(ScheduleServer.getInstance().getServerName());
+		tigerContext.setRegisterVersion(ScheduleServer.getInstance().getRegisterVersion());
+		tigerContext.setRegisterTime(ScheduleServer.getInstance().getRegisterTime());
 		if (ScheduleServer.getInstance().getTaskStrategy() == ScheduleConstants.TaskFetchStrategy.Multi
 				.getValue()) {// 各个执行器捞取策略
 			if (StringUtils.isBlank(handlerName) || nodeList == null
@@ -88,7 +99,7 @@ public class EventFetcher {
 			DispatchMultiService dispatchMultiService = (DispatchMultiService) dispatchTaskService;
 			List<DispatchTaskEntity> tasks = dispatchMultiService
 					.findDispatchTasksWithLimitByBackFetch(ScheduleServer.getInstance().getHandlerGroup(),
-							handlerName, nodeList, TASK_NUM / 2, taskId);
+							handlerName, nodeList, TASK_NUM / 2, taskId,tigerContext);
 			if (tasks == null) {
 				return Collections.emptyList();
 			}
@@ -102,7 +113,7 @@ public class EventFetcher {
 		DispatchSingleService dispatchSingleService = (DispatchSingleService) dispatchTaskService;
 		List<DispatchTaskEntity> tasks = dispatchSingleService
 				.findDispatchTasksWithLimitByBackFetch(ScheduleServer.getInstance().getHandlerGroup(),
-						nodeList, TASK_NUM / 2, taskId);
+						nodeList, TASK_NUM / 2, taskId,tigerContext);
 		if (tasks == null) {
 			return Collections.emptyList();
 		}

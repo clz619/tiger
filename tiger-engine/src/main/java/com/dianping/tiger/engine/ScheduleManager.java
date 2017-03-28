@@ -14,6 +14,8 @@ import org.apache.curator.framework.CuratorFramework;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.dianping.tiger.api.dispatch.DispatchTaskService;
+import com.dianping.tiger.api.register.TigerContext;
 import com.dianping.tiger.engine.utils.ScheduleConstants;
 
 /**
@@ -54,6 +56,7 @@ public class ScheduleManager {
 							logger.warn("scheduleServer init ok, but serverList is empty.path="+path);
 							continue;
 						}
+						Collections.sort(serverList);//将机器名进行排序
 						StringBuilder sb = new StringBuilder();
 						for (String s : serverList) {
 							sb.append(s).append("_");
@@ -82,10 +85,11 @@ public class ScheduleManager {
 									+ currentRegisterVersion
 									+ ",serverList:"
 									+ serverList);
+							//向zk发起最新的集群注册版本
 							String registerDate = currentRegisterVersion;
 							zkClient.setData().forPath(selfNodePath,
 									registerDate.getBytes("utf-8"));
-							// 检查集群机器的注册版本是否更新完，已完成的话，更新本机注册版本
+							// 检查集群机器的注册版本是否更新完
 							boolean hasReady = true;
 							for (String s : serverList) {
 								String remoteNodePath = path + "/" + s;
@@ -102,6 +106,7 @@ public class ScheduleManager {
 									break;
 								}
 							}
+							//已完成的话，更新本机注册版本
 							if (hasReady) {
 								logger.warn("registerversion changed, all server register ok,serverList:"
 										+ serverList);
@@ -114,9 +119,9 @@ public class ScheduleManager {
 									continue;
 								}
 								handlers.addAll(handlerSet);
-								ScheduleServer.getInstance()
-										.setRegisterVersion(
-												currentRegisterVersion);
+								//更新本机的注册版本
+								selfRegisterAndRemoteDbRegister(currentRegisterVersion);
+								
 								// 自我分配节点
 								List<Integer> newNodeList = getNodeList(serverList);
 								if (newNodeList.size() == 0) {
@@ -141,7 +146,10 @@ public class ScheduleManager {
 												handlers.hashCode());
 								logger.warn("########registerversion changed,"
 										+ "handler constructed with new nodelist:"
-										+ newNodeList);
+										+ newNodeList + ",registerVersion=" 
+										+ ScheduleServer.getInstance().getRegisterVersion()
+										+ ",registerTime=" + ScheduleServer.getInstance().getRegisterTime());
+								
 								ScheduleServer.getInstance().startScheduler();
 							}
 						}
@@ -156,11 +164,51 @@ public class ScheduleManager {
 					}
 				}// end while
 			}
+
 		});
 		t.setName("ScheduleManager-Thread");
 		t.setPriority(Thread.MAX_PRIORITY);
 		t.start();
 		logger.warn("scheduleManager start...");
+	}
+	
+	/**
+	 * 更新本机的注册版本，并向远程tiger任务中心注册
+	 * @param currentRegisterVersion
+	 */
+	private void selfRegisterAndRemoteDbRegister(
+			String currentRegisterVersion) {
+		long registerTime = System.currentTimeMillis()/1000;
+		ScheduleServer.getInstance().setRegister(currentRegisterVersion,registerTime);
+		try {
+			Thread.sleep(100);
+		} catch (InterruptedException e) {
+			logger.error("befor send currentRegisterVersion to db, sleep exception", e);
+		}
+		//待观察，是否可行
+		DispatchTaskService dispatchService = (DispatchTaskService) ScheduleManagerFactory
+				.getBean("dispatchTaskService");
+		
+		try {
+			TigerContext context = new TigerContext();
+			context.setHandlerGroup(ScheduleServer.getInstance().getHandlerGroup());
+			context.setHostName(ScheduleServer.getInstance().getServerName());
+			context.setRegisterVersion(currentRegisterVersion);
+			context.setRegisterTime(registerTime);
+			boolean flag = dispatchService.registerTiger(context); 
+			if(!flag){
+				Thread.sleep(100);
+				boolean flag2 = dispatchService.registerTiger(context); 
+				if(!flag2){
+					logger.warn("send currentRegisterVersion to db failed,"+context);
+				}
+			}
+			Thread.sleep(20);
+		} catch (InterruptedException e) {
+			logger.error("after send currentRegisterVersion to db, sleep exception", e);
+		} catch (Exception e){
+			logger.error("send currentRegisterVersion to db exception", e);
+		}
 	}
 
 	/**
@@ -170,7 +218,7 @@ public class ScheduleManager {
 	 * @return
 	 */
 	private List<Integer> getNodeList(List<String> serverList) {
-		Collections.sort(serverList);
+//		Collections.sort(serverList);
 		List<Integer> nodelist = new ArrayList<Integer>();
 		int index = serverList.indexOf(ScheduleServer.getInstance()
 				.getServerName());

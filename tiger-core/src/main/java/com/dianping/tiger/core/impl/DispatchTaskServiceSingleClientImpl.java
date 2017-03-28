@@ -18,6 +18,7 @@ import com.alibaba.fastjson.JSON;
 import com.dianping.tiger.api.dispatch.DispatchSingleService;
 import com.dianping.tiger.api.dispatch.DispatchTaskEntity;
 import com.dianping.tiger.api.dispatch.TaskAttribute;
+import com.dianping.tiger.api.register.TigerContext;
 import com.dianping.tiger.engine.ScheduleServer;
 import com.dianping.tiger.engine.utils.ScheduleConstants;
 
@@ -96,6 +97,7 @@ public class DispatchTaskServiceSingleClientImpl implements
 		return dispatchTaskSingleBizService.addRetryTimesByFail(taskId, nextExecuteTime, attr);
 	}
 
+	@SuppressWarnings("deprecation")
 	@Override
 	public List<DispatchTaskEntity> findDispatchTasksWithLimit(
 			String handlerGroup, List<Integer> nodeList, int limit) {
@@ -105,6 +107,7 @@ public class DispatchTaskServiceSingleClientImpl implements
 		return dispatchTaskSingleBizService.findDispatchTasksWithLimit(handlerGroup,nodeList,limit);
 	}
 
+	@SuppressWarnings("deprecation")
 	@Override
 	public List<DispatchTaskEntity> findDispatchTasksWithLimitByBackFetch(
 			String handlerGroup, List<Integer> nodeList, int limit, long taskId) {
@@ -117,6 +120,37 @@ public class DispatchTaskServiceSingleClientImpl implements
 	}
 
 	@Override
+	public List<DispatchTaskEntity> findDispatchTasksWithLimit(
+			String handlerGroup, List<Integer> nodeList, int limit,
+			TigerContext tigerContext) {
+		if(StringUtils.isBlank(handlerGroup) || nodeList == null || nodeList.size() == 0){
+			return null;
+		}
+		if(tigerContext == null || StringUtils.isBlank(tigerContext.getHandlerGroup())
+				||StringUtils.isBlank(tigerContext.getRegisterVersion())){
+			return null;
+		}
+		return dispatchTaskSingleBizService.findDispatchTasksWithLimit(handlerGroup,
+				nodeList, limit, tigerContext);
+	}
+
+	@Override
+	public List<DispatchTaskEntity> findDispatchTasksWithLimitByBackFetch(
+			String handlerGroup, List<Integer> nodeList, int limit,
+			long taskId, TigerContext tigerContext) {
+		if(StringUtils.isBlank(handlerGroup) || nodeList == null 
+				|| nodeList.size() == 0 || taskId < 1){
+			return null;
+		}
+		if(tigerContext == null || StringUtils.isBlank(tigerContext.getHandlerGroup())
+				||StringUtils.isBlank(tigerContext.getRegisterVersion())){
+			return null;
+		}
+		return dispatchTaskSingleBizService.findDispatchTasksWithLimitByBackFetch(handlerGroup,
+				nodeList, limit, taskId, tigerContext);
+	}
+	
+	@Override
 	public boolean removeDispatchTask(String handlerGroup, TaskAttribute attr) {
 		if(StringUtils.isBlank(handlerGroup) || attr == null || attr.getNode() == null){
 			return false;
@@ -124,4 +158,14 @@ public class DispatchTaskServiceSingleClientImpl implements
 		return dispatchTaskSingleBizService.removeDispatchTask(handlerGroup, attr);
 	}
 	
+	@Override
+	public boolean registerTiger(TigerContext tigerContext) {
+		if(tigerContext == null || StringUtils.isBlank(tigerContext.getHandlerGroup())
+				|| StringUtils.isBlank(tigerContext.getRegisterVersion())
+				|| StringUtils.isBlank(tigerContext.getHostName()) 
+				|| tigerContext.getRegisterTime() < 1000){
+			return false;
+		}
+		return dispatchTaskSingleBizService.registerTiger(tigerContext);
+	}
 }

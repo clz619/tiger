@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://www.ibatis.com/dtd/sql-map-2.dtd">
+<sqlMap namespace="tigerRegister">
+
+	<typeAlias alias="tigerRegisterDo"
+		type="com.dianping.tiger.biz.register.dataobject.TigerRegisterDo" />
+		
+		
+	<sql id="tigerRegister_columns">
+		id,
+		addTime,
+		updateTime,
+		handlerGroup,
+		registerVersion,
+		registerTime,
+		hostName,
+		version
+	</sql>
+	
+	<insert id="tigerRegister.insert" parameterClass="tigerRegisterDo">
+        <![CDATA[
+		INSERT INTO Tiger_Register
+		(
+		id,
+		addTime,
+		updateTime,
+		handlerGroup,
+		registerVersion,
+		registerTime,
+		hostName,
+		version
+		)
+		VALUES(
+		#id#,
+		now(),
+		now(),
+		#handlerGroup#,
+		#registerVersion#,
+		#registerTime#,
+		#hostName#,
+		#version#
+		)
+		]]>
+		<selectKey keyProperty="id" resultClass="java.lang.Long">
+                SELECT LAST_INSERT_ID()
+        </selectKey>
+    </insert>
+    
+	<update id="tigerRegister.updateRegisterVersion" parameterClass="map">
+    	UPDATE Tiger_Register
+    	SET   updateTime = now(),
+    	      registerVersion = #registerVersion#,
+    	      registerTime = #registerTime#,
+    	      version = version + 1
+    	WHERE handlerGroup = #handlerGroup# 
+    	AND   hostName = #hostName#
+    	AND   version = #expectVersion#
+    </update>
+    
+    
+	<select id="tigerRegister.loadRecentlyRegisterByHandlerGroup" parameterClass="map" resultClass="tigerRegisterDo">
+		SELECT <include refid="tigerRegister_columns"/>
+    	FROM Tiger_Register
+    	WHERE handlerGroup = #handlerGroup#
+    	ORDER BY registerTime desc
+    	LIMIT 1
+	</select>
+	
+	<select id="tigerRegister.loadRegisterByHandlerGroupAndName" parameterClass="map" resultClass="tigerRegisterDo">
+		SELECT <include refid="tigerRegister_columns"/>
+    	FROM Tiger_Register
+    	WHERE handlerGroup = #handlerGroup#
+    	AND   hostName = #hostName#
+	</select>
+
+
+</sqlMap>

@@ -156,6 +156,8 @@ public class ScheduleZkManager {
 
 	/**
 	 * 注册本机可以提供服务的一个临时节点
+	 * path: /handlerGroup/hostName
+	 * value: md5(hostnamelist) init 0
 	 */
 	private void register() {
 		try {
