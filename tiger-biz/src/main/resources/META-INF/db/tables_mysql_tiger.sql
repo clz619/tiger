@@ -23,4 +23,16 @@ CREATE TABLE Tiger_Task (
 	 PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+CREATE TABLE Tiger_Register (
+	`id` bigint(12) NOT NULL AUTO_INCREMENT,
+	`addTime` datetime NOT NULL,
+	`updateTime` datetime NOT NULL,
+	`handlerGroup` varchar(64) NOT NULL,
+	`registerVersion` varchar(64) NOT NULL,
+	`registerTime` bigint(12) NOT NULL,
+	`hostName` varchar(64) NOT NULL,
+	`version` int(11) NOT NULL,
+	 PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
 commit;

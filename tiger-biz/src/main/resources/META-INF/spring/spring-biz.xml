@@ -40,5 +40,11 @@
 		
 	<bean id="dispatchTaskDao" 
 		class="com.dianping.tiger.biz.task.dao.impl.DispatchTaskDaoImpl" parent="baseDao" />
+		
+	<bean id="tigerRegisterManager" 
+		class="com.dianping.tiger.biz.register.TigerRegisterManager" init-method="init"/>
+		
+	<bean id="tigerRegisterDao" 
+		class="com.dianping.tiger.biz.register.dao.impl.TigerRegisterDaoImpl" parent="baseDao"/>
 	
 </beans>

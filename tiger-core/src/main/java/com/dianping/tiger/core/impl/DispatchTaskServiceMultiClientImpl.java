@@ -18,6 +18,7 @@ import com.alibaba.fastjson.JSON;
 import com.dianping.tiger.api.dispatch.DispatchMultiService;
 import com.dianping.tiger.api.dispatch.DispatchTaskEntity;
 import com.dianping.tiger.api.dispatch.TaskAttribute;
+import com.dianping.tiger.api.register.TigerContext;
 import com.dianping.tiger.engine.ScheduleServer;
 import com.dianping.tiger.engine.utils.ScheduleConstants;
 
@@ -96,6 +97,7 @@ public class DispatchTaskServiceMultiClientImpl implements DispatchMultiService{
 		return dispatchTaskMultiBizService.addRetryTimesByFail(taskId, nextExecuteTime, attr);
 	}
 
+	@SuppressWarnings("deprecation")
 	@Override
 	public List<DispatchTaskEntity> findDispatchTasksWithLimit(String handlerGroup, String handler,
 			List<Integer> nodeList, int limit) {
@@ -106,6 +108,7 @@ public class DispatchTaskServiceMultiClientImpl implements DispatchMultiService{
 				handler,nodeList,limit);
 	}
 
+	@SuppressWarnings("deprecation")
 	@Override
 	public List<DispatchTaskEntity> findDispatchTasksWithLimitByBackFetch(String handlerGroup,
 			String handler, List<Integer> nodeList, int limit, long taskId) {
@@ -116,6 +119,37 @@ public class DispatchTaskServiceMultiClientImpl implements DispatchMultiService{
 		return dispatchTaskMultiBizService.findDispatchTasksWithLimitByBackFetch(handlerGroup, handler, 
 												nodeList, limit, taskId);
 	}
+	
+	@Override
+	public List<DispatchTaskEntity> findDispatchTasksWithLimit(
+			String handlerGroup, String handler, List<Integer> nodeList,
+			int limit, TigerContext tigerContext) {
+		if(StringUtils.isBlank(handler) || nodeList == null || nodeList.size() == 0){
+			return null;
+		}
+		if(tigerContext == null || StringUtils.isBlank(tigerContext.getHandlerGroup())
+				||StringUtils.isBlank(tigerContext.getRegisterVersion())){
+			return null;
+		}
+		return dispatchTaskMultiBizService.findDispatchTasksWithLimit(handlerGroup, 
+				handler, nodeList, limit, tigerContext);
+	}
+
+	@Override
+	public List<DispatchTaskEntity> findDispatchTasksWithLimitByBackFetch(
+			String handlerGroup, String handler, List<Integer> nodeList,
+			int limit, long taskId, TigerContext tigerContext) {
+		if(StringUtils.isBlank(handler) || nodeList == null 
+				|| nodeList.size() == 0 || taskId < 1){
+			return null;
+		}
+		if(tigerContext == null || StringUtils.isBlank(tigerContext.getHandlerGroup())
+				||StringUtils.isBlank(tigerContext.getRegisterVersion())){
+			return null;
+		}
+		return dispatchTaskMultiBizService.findDispatchTasksWithLimitByBackFetch(handlerGroup, 
+				handler, nodeList, limit, taskId, tigerContext);
+	}
 
 	@Override
 	public boolean removeDispatchTask(String handlerGroup, TaskAttribute attr) {
@@ -123,6 +157,17 @@ public class DispatchTaskServiceMultiClientImpl implements DispatchMultiService{
 			return false;
 		}
 		return dispatchTaskMultiBizService.removeDispatchTask(handlerGroup, attr);
+	}
+	
+	@Override
+	public boolean registerTiger(TigerContext tigerContext) {
+		if(tigerContext == null || StringUtils.isBlank(tigerContext.getHandlerGroup())
+				|| StringUtils.isBlank(tigerContext.getRegisterVersion())
+				|| StringUtils.isBlank(tigerContext.getHostName()) 
+				|| tigerContext.getRegisterTime() < 1000){
+			return false;
+		}
+		return dispatchTaskMultiBizService.registerTiger(tigerContext);
 	}
 
 }

@@ -6,7 +6,7 @@ tiger的监控包括任务统计和任务跟踪，任务统计主要用于查看
 ### 一、db相关配置
 1) 数据源：配置在tiger-monitor里的applicationcontext-database，可替换c3p0DataSource；
 
-2) 任务统计表、报警规则表结构：在tiger-monitor里的tables_mysql_tiger.sql，建议做适当索引；
+2) 任务统计表、报警规则表结构：在tiger-monitor里的tables_mysql_tiger_monitor.sql，建议做适当索引；
 
 ### 二、es相关配置
 1) es属性设置

@@ -6,6 +6,7 @@ package com.dianping.tiger.api.dispatch;
 import java.util.Date;
 
 import com.dianping.tiger.api.dispatch.DispatchTaskEntity;
+import com.dianping.tiger.api.register.TigerContext;
 
 /**
  * @author yuantengkai 任务操作接口,对外暴露
@@ -58,5 +59,13 @@ public interface DispatchTaskService {
 	 * @return
 	 */
 	public boolean removeDispatchTask(String handlerGroup, TaskAttribute attr);
+	
+	//================以下是注册相关========================
+	/**
+	 * 发起一个注册
+	 * @param tigerContext
+	 * @return
+	 */
+	public boolean registerTiger(TigerContext tigerContext);
 
 }
