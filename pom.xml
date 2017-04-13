@@ -16,12 +16,14 @@
 	
 	<properties>
 		<env>alpha</env>
-		<tiger.version>2.2.0</tiger.version>
+		<tiger.version>2.2.1</tiger.version>
+		<spring.version>3.1.2.RELEASE</spring.version>
 	</properties>
 	
 	<modules>
 		<module>tiger-api</module>
 		<module>tiger-engine</module>
+		<module>tiger-register</module>
 		<module>tiger-biz</module>
 		<module>tiger-core</module>
 		<module>tiger-service</module>
@@ -30,11 +32,60 @@
 
 	<dependencyManagement>
 		<dependencies>
+			<!-- spring -->
+			<dependency>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring-webmvc</artifactId>
+				<version>${spring.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring-context</artifactId>
+				<version>${spring.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring-context-support</artifactId>
+				<version>${spring.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring-orm</artifactId>
+				<version>${spring.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring-aop</artifactId>
+				<version>${spring.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring-web</artifactId>
+				<version>${spring.version}</version>
+			</dependency>
+			<!-- fastjson -->
 			<dependency>
 			    <groupId>com.alibaba</groupId>
 			    <artifactId>fastjson</artifactId>
 			    <version>1.2.28</version>
 			</dependency>
+			<!-- slf4j (级联:log4j/slf4j-api) -->
+			<dependency>
+				<groupId>org.slf4j</groupId>
+				<artifactId>slf4j-log4j12</artifactId>
+				<version>1.5.11</version>
+			</dependency>
+			<dependency>
+				<groupId>commons-logging</groupId>
+				<artifactId>commons-logging</artifactId>
+				<version>1.1.1</version>
+			</dependency>
+			<!-- ibatis -->
+	        <dependency>
+			    <groupId>ibatis</groupId>
+			    <artifactId>ibatis</artifactId>
+			    <version>2.3.4.726</version>
+	        </dependency>
 		</dependencies>
 	</dependencyManagement>
 	<build>

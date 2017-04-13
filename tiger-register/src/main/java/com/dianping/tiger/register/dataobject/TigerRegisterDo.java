@@ -1,4 +1,4 @@
-package com.dianping.tiger.biz.register.dataobject;
+package com.dianping.tiger.register.dataobject;
 
 import java.util.Date;
 
@@ -27,6 +27,9 @@ public class TigerRegisterDo{
 	
 	//时间搓
 	private long registerTime;
+	
+	//负责的虚拟节点
+	private String nodes;
 	
 	private String hostName;
 	
@@ -79,6 +82,14 @@ public class TigerRegisterDo{
 
 	public void setRegisterTime(long registerTime) {
 		this.registerTime = registerTime;
+	}
+
+	public String getNodes() {
+		return nodes;
+	}
+
+	public void setNodes(String nodes) {
+		this.nodes = nodes;
 	}
 
 	public String getHostName() {

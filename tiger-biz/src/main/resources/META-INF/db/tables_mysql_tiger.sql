@@ -30,6 +30,7 @@ CREATE TABLE Tiger_Register (
 	`handlerGroup` varchar(64) NOT NULL,
 	`registerVersion` varchar(64) NOT NULL,
 	`registerTime` bigint(12) NOT NULL,
+	`nodes` varchar(512) DEFAULT NULL,
 	`hostName` varchar(64) NOT NULL,
 	`version` int(11) NOT NULL,
 	 PRIMARY KEY (`id`)

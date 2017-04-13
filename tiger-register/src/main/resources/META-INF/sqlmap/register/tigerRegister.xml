@@ -3,7 +3,7 @@
 <sqlMap namespace="tigerRegister">
 
 	<typeAlias alias="tigerRegisterDo"
-		type="com.dianping.tiger.biz.register.dataobject.TigerRegisterDo" />
+		type="com.dianping.tiger.register.dataobject.TigerRegisterDo" />
 		
 		
 	<sql id="tigerRegister_columns">
@@ -13,6 +13,7 @@
 		handlerGroup,
 		registerVersion,
 		registerTime,
+		nodes,
 		hostName,
 		version
 	</sql>
@@ -27,6 +28,7 @@
 		handlerGroup,
 		registerVersion,
 		registerTime,
+		nodes,
 		hostName,
 		version
 		)
@@ -37,6 +39,7 @@
 		#handlerGroup#,
 		#registerVersion#,
 		#registerTime#,
+		#nodes#,
 		#hostName#,
 		#version#
 		)
@@ -51,6 +54,7 @@
     	SET   updateTime = now(),
     	      registerVersion = #registerVersion#,
     	      registerTime = #registerTime#,
+    	      nodes = #nodes#,
     	      version = version + 1
     	WHERE handlerGroup = #handlerGroup# 
     	AND   hostName = #hostName#
@@ -71,6 +75,12 @@
     	FROM Tiger_Register
     	WHERE handlerGroup = #handlerGroup#
     	AND   hostName = #hostName#
+	</select>
+	
+	<select id="tigerRegister.queryRegistersByHandlerGroup" parameterClass="map" resultClass="tigerRegisterDo">
+		SELECT <include refid="tigerRegister_columns"/>
+    	FROM Tiger_Register
+    	WHERE handlerGroup = #handlerGroup#	
 	</select>
 
 

@@ -1,15 +1,16 @@
 /**
  * 
  */
-package com.dianping.tiger.biz.register.dao.impl;
+package com.dianping.tiger.register.dao.impl;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.orm.ibatis.support.SqlMapClientDaoSupport;
 
-import com.dianping.tiger.biz.register.dao.TigerRegisterDao;
-import com.dianping.tiger.biz.register.dataobject.TigerRegisterDo;
+import com.dianping.tiger.register.dataobject.TigerRegisterDo;
+import com.dianping.tiger.register.dao.TigerRegisterDao;
 
 /**
  * @author yuantengkai
@@ -32,11 +33,12 @@ public class TigerRegisterDaoImpl extends SqlMapClientDaoSupport implements Tige
 
 	@Override
 	public int updateRegisterWithVersion(String destRegisterVersion,
-			long registerTime, String handlerGroup, String hostName,
+			long registerTime, String nodes, String handlerGroup, String hostName,
 			long expectVersion) {
 		Map<String, Object> params = new HashMap<String, Object>();
         params.put("registerVersion", destRegisterVersion);
         params.put("registerTime", registerTime);
+        params.put("nodes", nodes);
         params.put("handlerGroup", handlerGroup);
         params.put("hostName", hostName);
         params.put("expectVersion", expectVersion);
@@ -59,6 +61,15 @@ public class TigerRegisterDaoImpl extends SqlMapClientDaoSupport implements Tige
         params.put("hostName", hostName);
         return (TigerRegisterDo) getSqlMapClientTemplate().queryForObject(
         			"tigerRegister.loadRegisterByHandlerGroupAndName", params);
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<TigerRegisterDo> queryRegisterInfos(String handlerGroup){
+		Map<String, Object> params = new HashMap<String, Object>();
+        params.put("handlerGroup", handlerGroup);
+        return getSqlMapClientTemplate().queryForList(
+        			"tigerRegister.queryRegistersByHandlerGroup", params);
 	}
 
 }

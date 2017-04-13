@@ -1,8 +1,9 @@
 /**
  * 
  */
-package com.dianping.tiger.biz.register;
+package com.dianping.tiger.register;
 
+import java.util.List;
 import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
@@ -15,8 +16,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.dianping.tiger.api.register.TigerContext;
-import com.dianping.tiger.biz.register.dao.TigerRegisterDao;
-import com.dianping.tiger.biz.register.dataobject.TigerRegisterDo;
+import com.dianping.tiger.register.dao.TigerRegisterDao;
+import com.dianping.tiger.register.dataobject.TigerRegisterDo;
 
 /**
  * @author yuantengkai
@@ -100,6 +101,13 @@ public class TigerRegisterManager {
 			registerDo.setHostName(hostName);
 			registerDo.setRegisterVersion(context.getRegisterVersion());
 			registerDo.setRegisterTime(context.getRegisterTime());
+			if(context.getNodeList().size() > 0){
+				StringBuilder sb = new StringBuilder();
+				for(int node : context.getNodeList()){
+					sb.append(node).append(",");
+				}
+				registerDo.setNodes(sb.substring(0, sb.length()-1));
+			}
 			registerDo.setVersion(0);
 			try{
 				long id = tigerRegisterDao.addTigerRegister(registerDo);
@@ -110,8 +118,16 @@ public class TigerRegisterManager {
 				logger.error("tigerRegisterDao.addTigerRegister db exception,"+context, e);
 			}
 		} else {
+			String nodes = "";
+			if(context.getNodeList().size() > 0){
+				StringBuilder sb = new StringBuilder();
+				for(int node : context.getNodeList()){
+					sb.append(node).append(",");
+				}
+				nodes = sb.substring(0, sb.length()-1);
+			}
 			int num = tigerRegisterDao.updateRegisterWithVersion(context.getRegisterVersion(), 
-					context.getRegisterTime(), handlerGroup,hostName, registerDo.getVersion());
+					context.getRegisterTime(), nodes, handlerGroup,hostName, registerDo.getVersion());
 			if(num > 0){
 				return true;
 			}
@@ -159,6 +175,13 @@ public class TigerRegisterManager {
 			}
 		}
 		return false;
+	}
+	
+	public List<TigerRegisterDo> queryRegisters(String handlerGroup){
+		if(StringUtils.isBlank(handlerGroup)){
+			return null;
+		}
+		return tigerRegisterDao.queryRegisterInfos(handlerGroup);
 	}
 	
 	public static void main(String[] args) {

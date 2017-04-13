@@ -18,7 +18,7 @@ import com.dianping.tiger.api.dispatch.DispatchSingleService;
 import com.dianping.tiger.api.dispatch.DispatchTaskEntity;
 import com.dianping.tiger.api.dispatch.TaskAttribute;
 import com.dianping.tiger.api.register.TigerContext;
-import com.dianping.tiger.biz.register.TigerRegisterManager;
+import com.dianping.tiger.register.TigerRegisterManager;
 import com.dianping.tiger.biz.task.dao.DispatchTaskDao;
 import com.dianping.tiger.biz.task.dataobject.TigerTaskDo;
 

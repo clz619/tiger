@@ -1,6 +1,7 @@
 package com.dianping.tiger.api.register;
 
 import java.io.Serializable;
+import java.util.List;
 
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
@@ -22,6 +23,8 @@ public class TigerContext implements Serializable{
 	
 	private String registerVersion;
 	
+	private List<Integer> nodeList;
+	
 	//时间搓，单位s
 	private long registerTime;
 	
@@ -41,6 +44,14 @@ public class TigerContext implements Serializable{
 
 	public void setRegisterVersion(String registerVersion) {
 		this.registerVersion = registerVersion;
+	}
+	
+	public List<Integer> getNodeList() {
+		return nodeList;
+	}
+
+	public void setNodeList(List<Integer> nodeList) {
+		this.nodeList = nodeList;
 	}
 
 	public long getRegisterTime() {
