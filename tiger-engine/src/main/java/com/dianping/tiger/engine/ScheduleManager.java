@@ -119,11 +119,13 @@ public class ScheduleManager {
 									continue;
 								}
 								handlers.addAll(handlerSet);
-								//更新本机的注册版本
-								selfRegisterAndRemoteDbRegister(currentRegisterVersion);
 								
 								// 自我分配节点
 								List<Integer> newNodeList = getNodeList(serverList);
+								
+								//更新本机的注册版本
+								selfRegisterAndRemoteDbRegister(currentRegisterVersion, newNodeList);
+								
 								if (newNodeList.size() == 0) {
 									logger.warn("registerversion changed, new nodeList is empty,hostName="
 											+ ScheduleServer.getInstance()
@@ -172,12 +174,8 @@ public class ScheduleManager {
 		logger.warn("scheduleManager start...");
 	}
 	
-	/**
-	 * 更新本机的注册版本，并向远程tiger任务中心注册
-	 * @param currentRegisterVersion
-	 */
 	private void selfRegisterAndRemoteDbRegister(
-			String currentRegisterVersion) {
+			String currentRegisterVersion, List<Integer> nodeList) {
 		long registerTime = System.currentTimeMillis()/1000;
 		ScheduleServer.getInstance().setRegister(currentRegisterVersion,registerTime);
 		try {
@@ -195,6 +193,7 @@ public class ScheduleManager {
 			context.setHostName(ScheduleServer.getInstance().getServerName());
 			context.setRegisterVersion(currentRegisterVersion);
 			context.setRegisterTime(registerTime);
+			context.setNodeList(nodeList);
 			boolean flag = dispatchService.registerTiger(context); 
 			if(!flag){
 				Thread.sleep(100);

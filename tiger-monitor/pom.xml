@@ -12,27 +12,29 @@
 	<name>tiger-monitor</name>
 
 	<properties>
-		<spring.version>3.1.2.RELEASE</spring.version>
 		<env>alpha</env>
 	</properties>
 
 	<dependencies>
+		<dependency>
+			<groupId>com.dianping</groupId>
+			<artifactId>tiger-register</artifactId>
+			<version>${tiger.version}</version>
+		</dependency>
+		
 		<!-- springframe start -->
 		<!-- (级联spring:aopalliance + commons-logging + spring-aop/beans/context/core/expression/web/webmvc) -->
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-webmvc</artifactId>
-			<version>${spring.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-orm</artifactId>
-			<version>${spring.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-context-support</artifactId>
-			<version>${spring.version}</version>
 		</dependency>
 		<!-- springframe end -->
 
@@ -54,7 +56,6 @@
 		<dependency>
 		    <groupId>com.alibaba</groupId>
 		    <artifactId>fastjson</artifactId>
-		    <version>1.2.28</version>
 		</dependency>
 
 		<!-- json-lib (级联:commons-beanutils/collections/lang/ezmorph) 
@@ -69,12 +70,10 @@
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-log4j12</artifactId>
-			<version>1.5.11</version>
 		</dependency>
 		<dependency>
 			<groupId>commons-logging</groupId>
 			<artifactId>commons-logging</artifactId>
-			<version>1.1.1</version>
 		</dependency>
 		
 		<!-- freemarker -->
@@ -134,7 +133,6 @@
         <dependency>
 		    <groupId>ibatis</groupId>
 		    <artifactId>ibatis</artifactId>
-		    <version>2.3.4.726</version>
         </dependency>
         <!-- mysql-connector -->
         <dependency>

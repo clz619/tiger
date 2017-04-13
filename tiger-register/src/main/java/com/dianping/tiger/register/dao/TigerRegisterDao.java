@@ -1,9 +1,11 @@
 /**
  * 
  */
-package com.dianping.tiger.biz.register.dao;
+package com.dianping.tiger.register.dao;
 
-import com.dianping.tiger.biz.register.dataobject.TigerRegisterDo;
+import java.util.List;
+
+import com.dianping.tiger.register.dataobject.TigerRegisterDo;
 
 /**
  * @author yuantengkai
@@ -14,10 +16,12 @@ public interface TigerRegisterDao {
 	public long addTigerRegister(TigerRegisterDo entity);
 	
 	public int updateRegisterWithVersion(String destRegisterVersion, long registerTime,
-					String handlerGroup, String hostName,long expectVersion);
+					String nodes, String handlerGroup, String hostName,long expectVersion);
 	
 	public TigerRegisterDo loadRecentlyRegister(String handlerGroup);
 	
 	public TigerRegisterDo loadRegister(String handlerGroup, String hostName);
+	
+	public List<TigerRegisterDo> queryRegisterInfos(String handlerGroup);
 
 }
