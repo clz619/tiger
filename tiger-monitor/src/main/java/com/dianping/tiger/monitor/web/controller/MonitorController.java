@@ -27,6 +27,8 @@ import com.dianping.tiger.monitor.dataobject.TigerMonitorRecordDo;
 import com.dianping.tiger.monitor.service.MonitorService;
 import com.dianping.tiger.monitor.vo.TigerDetailVo;
 import com.dianping.tiger.monitor.web.model.ReturnT;
+import com.dianping.tiger.register.TigerRegisterManager;
+import com.dianping.tiger.register.dataobject.TigerRegisterDo;
 
 /**
  * monitor 
@@ -43,6 +45,9 @@ public class MonitorController {
 
 	@Resource
 	private MonitorService monitorService;
+	
+	@Resource
+	private TigerRegisterManager tigerRegisterManager;
 	
 	@RequestMapping("")
 	public String index(){
@@ -336,5 +341,44 @@ public class MonitorController {
 		return ReturnT.SUCCESS;
 		
 	}
+	
+	//==================以下是注册相关================
+		@RequestMapping("/tiger/register")
+		public String tigerRegisterIndex(
+				Model model,
+				String handlerGroup){
+			Date now = new Date();
+			Calendar calendarTo = Calendar.getInstance();
+			calendarTo.setTime(now);
+			calendarTo.add(Calendar.DAY_OF_MONTH, -7);
+			Date startDate = calendarTo.getTime();
+			List<String> handlerGroupList = monitorService.queryMonitorHandlerGroups(startDate, now);
+			
+			model.addAttribute("handlerGroupList", handlerGroupList);
+			if(!StringUtils.isBlank(handlerGroup)){
+				model.addAttribute("handlerGroup", handlerGroup);
+			}
+			
+			return "register/index";
+		}
+		
+		@RequestMapping("/tiger/pageListRegister")
+		@ResponseBody
+		public Map<String, Object> queryRegisters(String handlerGroup,
+				Integer page, Integer rows){
+			if(StringUtils.isBlank(handlerGroup)){
+				return null;
+			}
+			List<TigerRegisterDo> registerList = tigerRegisterManager.queryRegisters(handlerGroup);
+			if(registerList == null){
+				return null;
+			}
+			// result
+	        Map<String, Object> resultMap = new HashMap<String, Object>();
+	        resultMap.put("total", registerList.size());
+	        resultMap.put("rows", registerList);
+	        
+			return resultMap;
+		}
 
 }

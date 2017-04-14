@@ -43,6 +43,9 @@
 			<div class="easyui-panel" title="任务报警" collapsible="true" collapsed="false" style="height:auto;padding:5px;">
 				<p><a href="/tiger/alarm?handlerGroup=${handlerGroup}">任务报警</a></p>
 			</div>
+			<div class="easyui-panel" title="集群注册" collapsible="true" collapsed="false" style="height:auto;padding:5px;">
+				<p><a href="/tiger/register?handlerGroup=${handlerGroup}">集群注册</a></p>
+			</div>
 		</div>
 	</div>
 </#macro>
