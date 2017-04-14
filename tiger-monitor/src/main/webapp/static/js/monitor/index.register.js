@@ -15,8 +15,8 @@ $(function () {
         nowrap:false,
         columns:[[
             {field:'id', title:'集群注册id', width:15,hidden:true},
-            {field:'hostName', title:'任务机器', width:45},
-            {field:'registerVersion', title:'注册版本', width:45},
+            {field:'hostName', title:'任务机器', width:40},
+            {field:'registerVersion', title:'注册版本', width:50},
             {field:'registerTime', title:'注册时间', width:25,
                 formatter:function(value, row, index) {
                     return new Date(value*1000).Format("yyyy-MM-dd hh:mm:ss");
