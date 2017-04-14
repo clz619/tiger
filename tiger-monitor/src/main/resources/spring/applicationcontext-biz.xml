@@ -33,4 +33,11 @@
      <bean id="monitorAlarmDao" 
      	class="com.dianping.tiger.monitor.dao.impl.MonitorAlarmDaoImpl" parent="baseDao"/>
      	
+     <!-- tiger register -->
+	 <bean id="tigerRegisterManager" 
+		class="com.dianping.tiger.register.TigerRegisterManager" init-method="init"/>
+		
+	 <bean id="tigerRegisterDao" 
+		class="com.dianping.tiger.register.dao.impl.TigerRegisterDaoImpl" parent="baseDao"/>
+     	
 </beans>
