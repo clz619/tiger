@@ -72,3 +72,9 @@ elasticsearch服务的部署请查看[es入门博客](https://my.oschina.net/tky
 
 除了对运行任务进行统计监控和任务跟踪外，还支持任务报警，对某些执行失败的任务可以配置报警规则。tiger任务执行失败重试，最多重试60次，可以根据这个约束配置报警规则，如图所示：
 ![monitoralarm](https://github.com/tkyuan/tiger/blob/master/tiger-service/src/main/resources/img/monitoralarm.png)
+
+### 六、tiger集群注册
+tiger支持双向注册，可以在监控页面看到集群注册信息，如图所示：
+
+![monitorregister](https://github.com/tkyuan/tiger/blob/master/tiger-service/src/main/resources/img/monitorregister.png)
+
