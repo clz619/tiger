@@ -71,6 +71,7 @@ public class MonitorDetailIntercepter implements MethodInterceptor{
 		Integer status = (Integer) args[1];
 		Object result = invocation.proceed();
 		TigerTaskDo taskEntity = dispatchTaskDao.loadTaskById(taskId);
+		taskEntity.setStatus(status);
 		if(status == 1){
 			monitorDetailManager.recordDetail(taskEntity, MonitorType.Success);
 		}else{
