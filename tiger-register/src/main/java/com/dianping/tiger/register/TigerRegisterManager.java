@@ -50,8 +50,8 @@ public class TigerRegisterManager {
 							String handlerGroup = entry.getKey();
 							TigerContext registerContext = entry.getValue();
 							TigerRegisterDo currentRegister = tigerRegisterDao.loadRecentlyRegister(handlerGroup);
-							if(currentRegister != null 
-									&& StringUtils.equals(registerContext.getRegisterVersion(), 
+							if(currentRegister == null 
+									|| StringUtils.equals(registerContext.getRegisterVersion(), 
 											currentRegister.getRegisterVersion())){
 								continue;
 							} else {
